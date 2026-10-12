@@ -2,10 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { Manrope } from "next/font/google";
 import Lenis from "lenis";
-import installationImage from "../../public/installation-editorial.png";
-import generatorImage from "../../public/generator-detail.png";
-import protectedHomeImage from "../../public/protected-home.png";
+import installationImage from "../../public/pics/image-1791572987018.png";
+import generatorImage from "../../public/pics/image-1791573187812.png";
+import crewImage from "../../public/pics/image-1791573202813.png";
+import reviewImage from "../../public/pics/image-1791573216228.png";
+import closingImage from "../../public/pics/image-1791573228545.png";
+
+const manropeExtraBold = Manrope({
+  weight: "800",
+  subsets: ["latin"],
+  variable: "--font-manrope-extra-bold",
+});
 
 const Arrow = () => (
   <svg aria-hidden="true" viewBox="0 0 24 24" className="arrow-icon">
@@ -13,10 +23,12 @@ const Arrow = () => (
   </svg>
 );
 
-const RevealWords = ({ text, offset = 0 }: { text: string; offset?: number }) =>
-  text.split(" ").map((word, index) => (
+const RevealWords = ({ text, offset = 0, accentLastPunctuation = false }: { text: string; offset?: number; accentLastPunctuation?: boolean }) =>
+  text.split(" ").map((word, index, words) => (
     <span className="reveal-word" style={{ transitionDelay: `${(offset + index) * 42}ms`, animationDelay: `${(offset + index) * 42}ms` }} key={`${word}-${index}`}>
-      {word}{" "}
+      {accentLastPunctuation && index === words.length - 1
+        ? <>{word.slice(0, -1)}<span className="headline-period">{word.slice(-1)}</span>{" "}</>
+        : <>{word}{" "}</>}
     </span>
   ));
 
@@ -24,8 +36,14 @@ export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const finalVideoRef = useRef<HTMLVideoElement>(null);
   const hasStartedRef = useRef(false);
-  const [solidHero, setSolidHero] = useState(false);
+  const [heroVariant, setHeroVariant] = useState<"cinematic" | "panel" | "centered" | "fullbleed">("fullbleed");
   const [isScrolled, setIsScrolled] = useState(false);
+  const [vanIsArriving, setVanIsArriving] = useState(false);
+  const solidHero = heroVariant === "panel";
+
+  const syncCopyToVan = (currentTime: number) => {
+    setVanIsArriving(currentTime >= 3);
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -53,7 +71,8 @@ export default function Home() {
       hasStartedRef.current = true;
 
       window.clearTimeout(autoTimer);
-      hero.classList.add("flash-is-active");
+      const isFullbleed = hero.classList.contains("hero-fullbleed-layout");
+      if (!isFullbleed) hero.classList.add("flash-is-active");
 
       if (finalVideo.ended || finalVideo.currentTime > 0.25) finalVideo.currentTime = 0;
       finalVideo.playbackRate = 1.5;
@@ -63,9 +82,11 @@ export default function Home() {
         hero.classList.add("final-is-active");
       }, 240);
 
-      flashTimer = window.setTimeout(() => {
-        hero.classList.remove("flash-is-active");
-      }, 950);
+      if (!isFullbleed) {
+        flashTimer = window.setTimeout(() => {
+          hero.classList.remove("flash-is-active");
+        }, 950);
+      }
     };
 
     // Auto-reveal on a crisp cinematic beat (1.2s)
@@ -145,18 +166,22 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="site-shell">
+    <main className={`site-shell ${manropeExtraBold.variable}`}>
     <header className={`site-header${solidHero ? " panel-active" : ""}${isScrolled ? " is-scrolled" : ""}`}>
-      <a className="brand" href="#" aria-label="Total Power Generators home">
-        <Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} priority />
-      </a>
+      <Link className="brand" href="/" aria-label="Total Power Generators home">
+        <span className="header-logo-lockup">
+          <Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} priority />
+          <Image className="brand-logo brand-logo-color" src="/logo.svg" alt="" width={689} height={240} aria-hidden="true" priority />
+        </span>
+      </Link>
       <nav className="main-nav" aria-label="Main navigation">
-        <a href="#generators">Generators</a><a href="#installation">Installation</a>
-        <a href="#financing">Financing</a><a href="#about">About us</a>
+        <Link href="/generators">Generators</Link><Link href="/installation">Installation</Link>
+        <Link href="/maintenance">Maintenance</Link><Link href="/financing">Financing</Link>
+        <Link href="/service-area">Service Area</Link><Link href="/about">About</Link><Link href="/builders">Builders</Link>
       </nav>
-      <a className="header-cta" href="/quote">Get a Free Quote <Arrow /></a>
+      <Link className="header-cta" href="/quote">Get a Free Quote <Arrow /></Link>
     </header>
-    <section className={`hero${solidHero ? " hero-solid-layout" : ""}`} ref={heroRef}>
+    <section className={`hero${solidHero ? " hero-solid-layout" : ""}${heroVariant === "centered" ? " hero-centered-layout" : ""}${heroVariant === "fullbleed" ? " hero-fullbleed-layout" : ""}${heroVariant === "fullbleed" && vanIsArriving ? " van-is-arriving" : ""}`} ref={heroRef}>
       <div className="hero-stage">
         <div className="video-background" aria-hidden="true">
           <video className="background-video loop-video" autoPlay loop muted playsInline preload="auto" width="1920" height="1080">
@@ -165,12 +190,17 @@ export default function Home() {
           <video ref={finalVideoRef} className="background-video final-video" muted playsInline preload="auto" width="1920" height="1080">
             <source src="/final.mp4" type="video/mp4" />
           </video>
+          <video className="background-video full-video" autoPlay muted playsInline preload="auto" width="1920" height="1080" onTimeUpdate={(event) => syncCopyToVan(event.currentTarget.currentTime)}>
+            <source src="/full.mp4" type="video/mp4" />
+          </video>
           <div className="video-shade" />
           <div className="lightning-flash" aria-hidden="true" />
         </div>
       <div className="hero-style-toggle" aria-label="Choose hero layout">
-        <button className={!solidHero ? "active" : ""} onClick={() => setSolidHero(false)} type="button">Cinematic</button>
-        <button className={solidHero ? "active" : ""} onClick={() => setSolidHero(true)} type="button">Panel</button>
+        <button className={heroVariant === "cinematic" ? "active" : ""} onClick={() => setHeroVariant("cinematic")} type="button">Cinematic</button>
+        <button className={heroVariant === "panel" ? "active" : ""} onClick={() => setHeroVariant("panel")} type="button">Panel</button>
+        <button className={heroVariant === "centered" ? "active" : ""} onClick={() => setHeroVariant("centered")} type="button">Centered</button>
+        <button className={heroVariant === "fullbleed" ? "active" : ""} onClick={() => setHeroVariant("fullbleed")} type="button">Full bleed</button>
       </div>
       <section className="hero-content" aria-labelledby="hero-title">
         <div className="eyebrow">South Florida&apos;s standby power experts</div>
@@ -190,7 +220,7 @@ export default function Home() {
             <Image className="avatar-img" src="/avatars/avatar-2.jpg" alt="South Florida homeowner" width={53} height={53} />
             <Image className="avatar-img" src="/avatars/avatar-3.jpg" alt="South Florida homeowner" width={53} height={53} />
           </div>
-          <p>Trusted by South<br />Florida homeowners</p>
+          <p>Trusted by 1,000+<br />South Florida homeowners</p>
         </div>
       </section>
 
@@ -201,7 +231,7 @@ export default function Home() {
 
       <aside className="hero-footer" aria-label="Company credentials">
         <div className="hero-stat">
-          <strong>2009</strong><span>Since 2009</span>
+          <strong>2009</strong><span>Serving South Florida</span>
         </div>
         <div className="hero-stat">
           <strong>Gas + Electric</strong><span>Licensed gas and electrical contractor</span>
@@ -218,9 +248,9 @@ export default function Home() {
 
     <section className="intro-section" id="generators">
       <div className="section-kicker">The promise</div>
-      <Image className="intro-logomark" src="/logomark.svg" alt="" width={250} height={240} aria-hidden="true" />
+      <span className="intro-logomark" aria-hidden="true" />
       <div className="intro-copy">
-        <h2><RevealWords text="Power out?" /><br /><RevealWords text="Not here." /></h2>
+        <h2><RevealWords text="Power out?" /><br /><RevealWords text="Not here." accentLastPunctuation /></h2>
         <p><RevealWords text="A standby generator starts on its own the moment the power drops. The A/C keeps running, the fridge stays cold and the Wi-Fi stays on, whether you’re home or halfway around the world." /></p>
         <a className="text-link intro-link" href="/generators">How standby generators work <Arrow /></a>
       </div>
@@ -302,7 +332,7 @@ export default function Home() {
         <a className="dark-button" href="#quote">See Your Monthly Payment <Arrow /></a>
       </article>
       <article className="mosaic-card mosaic-crew" id="about">
-        <Image src={installationImage} alt="A member of the Total Power installation crew at work" fill sizes="(max-width: 800px) 100vw, 58vw" />
+        <Image src={crewImage} alt="A Total Power specialist meeting homeowners after installation" fill sizes="(max-width: 800px) 100vw, 58vw" />
         <div className="mosaic-crew-shade" />
         <div className="mosaic-crew-copy">
           <div className="section-kicker">The crew</div>
@@ -320,7 +350,7 @@ export default function Home() {
       </div>
       <div className="reviews-grid">
         <article className="review-image-card">
-          <Image src={protectedHomeImage} alt="A protected South Florida home at night" fill sizes="(max-width: 800px) 100vw, 58vw" />
+          <Image src={reviewImage} alt="A Total Power specialist reviewing an approved permit with homeowners" fill sizes="(max-width: 800px) 100vw, 58vw" />
           <div className="review-image-shade" />
           <div className="review-image-content">
             <div className="avatar-stack" aria-hidden="true">
@@ -344,7 +374,7 @@ export default function Home() {
     </section>
 
     <section className="closing-section">
-      <Image src={protectedHomeImage} alt="A protected coastal home glowing at night" fill sizes="100vw" />
+      <Image src={closingImage} alt="A Total Power service technician arriving at a protected home" fill sizes="100vw" />
       <div className="closing-shade" />
       <div className="closing-content">
         <div className="section-kicker">Closing</div>
@@ -355,11 +385,13 @@ export default function Home() {
     </section>
 
     <footer className="site-footer">
-      <a className="brand footer-brand" href="#" aria-label="Total Power Generators home"><Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} /></a>
-      <a className="footer-phone" href="tel:+13054719010">(305) 471-9010</a>
-      <div className="footer-links"><a href="#generators">Generators</a><a href="#installation">Installation</a><a href="#financing">Financing</a><a href="#about">About</a></div>
-      <div className="footer-bottom"><span>Total Power Generators</span><span>Get a Free Quote</span></div>
-      <div className="footer-wordmark" aria-hidden="true">TOTAL POWER</div>
+      <div className="footer-lead">
+        <Link className="brand footer-brand" href="/" aria-label="Total Power Generators home"><Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} /></Link>
+        <p>Total Power &amp; Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p>
+      </div>
+      <div className="footer-column"><b>Explore</b><Link href="/generators">Generators</Link><Link href="/installation">Installation</Link><Link href="/maintenance">Maintenance</Link><Link href="/financing">Financing</Link><Link href="/service-area">Service Area</Link><Link href="/about">About</Link><Link href="/builders">Builders</Link><Link href="/faq">FAQ</Link></div>
+      <div className="footer-column"><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:hello@totalpowergenerators.com">hello@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service &amp; Repair</Link></div>
+      <small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power &amp; Gas Contractors</small>
     </footer>
     </main>
   );
