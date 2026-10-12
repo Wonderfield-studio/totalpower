@@ -1,9 +1,17 @@
+export type FeatureItem = {
+  title: string;
+  description: string;
+  icon: string;
+};
+
 export type Section = {
   kicker?: string;
   title: string;
   body?: string;
   items?: string[];
-  variant?: "dark" | "orange" | "image" | "plans" | "faq";
+  features?: FeatureItem[];
+  sideImage?: boolean;
+  variant?: "dark" | "orange" | "image" | "plans" | "faq" | "featuresGrid";
 };
 
 export type PageContent = {
@@ -20,7 +28,7 @@ export const pages: Record<string, PageContent> = {
     title: "Sized for your home. Not pulled from a catalog.",
     intro: "We recommend the right generator after we’ve seen your house, not before.",
     sections: [
-      { kicker: "How it works", title: "It knows the power’s out before you do.", body: "A standby generator sits outside, connected to your gas supply and your electrical panel. When the grid drops, it starts on its own and takes over. When power returns, it hands back and shuts itself off.", items: ["Grid drops", "Generator starts", "Power returns"], variant: "dark" },
+      { kicker: "How standby generators work", title: "The power goes out. Yours kicks in.", body: "When the grid goes down, your standby generator automatically detects the outage and restores power to your home. No scrambling, no extension cords, no interruption to what matters.", items: ["Grid drops", "Generator starts", "Power returns"], variant: "dark" },
       { kicker: "Coverage", title: "Power the whole house, or just what matters.", items: ["Whole-home. Everything runs as normal, central A/C included.", "Essentials. The circuits you choose: the fridge, the lights, a zone of A/C, medical equipment."], body: "Not sure which? That’s what the assessment is for." },
       { kicker: "Fuel", title: "Natural gas or propane. We run both.", body: "On natural gas, we connect to your line and you never think about fuel again. No gas service? We install a propane tank sized for your home.", variant: "orange" },
       { kicker: "The brands", title: "The best names in standby power. The right one for your home.", body: "We install and service the most trusted brands in the industry, including Generac and Kohler, and recommend the one that fits your home, your fuel and your budget. As a Generac PowerPro Elite Plus Dealer with factory-trained technicians, you get equipment you can count on, installed by a local crew that answers to you.", variant: "image" },
@@ -31,10 +39,53 @@ export const pages: Record<string, PageContent> = {
     title: "One crew. Start to finish.",
     intro: "Gas, electrical and permits, all in-house. One team owns your job from the first visit to the final inspection.",
     sections: [
-      { kicker: "Why it matters", title: "When one team owns every trade, everything fits.", body: "Our gas, electrical and install crews work together every day. Schedules line up, questions get answered fast, and one company is accountable for the whole job, so the crew that starts it is the crew that finishes it." },
-      { kicker: "What’s included", title: "Everything it takes. Nothing for you to arrange.", items: ["Site preparation and the generator pad", "Placing and setting the generator", "Natural gas connection, or propane tank and line", "Automatic transfer switch", "All electrical connections to your panel", "Permits, inspections and follow-up with the city", "Start-up, testing and a walkthrough with you", "Warranty registration"], variant: "dark" },
-      { kicker: "The process", title: "Five steps. Zero runaround.", items: ["Free in-home assessment", "A clear quote", "Permits, handled", "Install day", "Test and walkthrough"] },
-      { kicker: "Recent work", title: "Clean installs. Real homes.", body: "A look at recent installs across South Florida.", variant: "image" },
+      { kicker: "Why it matters", title: "When one team owns every trade, everything fits.", body: "Our gas, electrical and install crews work together every day. Schedules line up, questions get answered fast, and one company is accountable for the whole job, so the crew that starts it is the crew that finishes it.", sideImage: true },
+      {
+        kicker: "What’s included",
+        title: "Everything it takes. Nothing for you to arrange.",
+        variant: "featuresGrid",
+        features: [
+          {
+            icon: "pad",
+            title: "Site preparation and the generator pad",
+            description: "Site leveling, ground compaction, and an engineered concrete or hurricane-rated pad anchored to Florida code.",
+          },
+          {
+            icon: "placement",
+            title: "Placing and setting the generator",
+            description: "Precision rigging, delivery, and placement with strict adherence to manufacturer clearances and property setbacks.",
+          },
+          {
+            icon: "gas",
+            title: "Natural gas connection, or propane tank and line",
+            description: "Licensed in-house gas plumbing—direct tie-in to your natural gas meter or full propane tank installation and fuel line.",
+          },
+          {
+            icon: "switch",
+            title: "Automatic transfer switch",
+            description: "Whole-home or essential circuit ATS integration that detects utility outages and restores power automatically in seconds.",
+          },
+          {
+            icon: "electrical",
+            title: "All electrical connections to your panel",
+            description: "Dedicated sub-panel wiring, code-compliant breaker interlocks, whole-home surge protection, and load management configuration.",
+          },
+          {
+            icon: "permits",
+            title: "Permits, inspections and walkthrough",
+            description: "Full municipal permitting, city inspections, official warranty registration, and a complete start-up walkthrough with you.",
+          },
+        ],
+        items: [
+          "Site preparation and the generator pad",
+          "Placing and setting the generator",
+          "Natural gas connection, or propane tank and line",
+          "Automatic transfer switch",
+          "All electrical connections to your panel",
+          "Permits, inspections and walkthrough",
+        ],
+      },
+      { kicker: "The process", title: "Five steps. Zero runaround.", variant: "dark", items: ["Free in-home assessment", "A clear quote", "Permits, handled", "Install day", "Test and walkthrough"] },
     ],
   },
   maintenance: {
@@ -55,7 +106,7 @@ export const pages: Record<string, PageContent> = {
   },
   financing: {
     eyebrow: "Flexible financing", title: "Outages don’t wait for payday. Neither should your generator.",
-    intro: "Flexible financing through Synchrony turns a one-time investment into a monthly payment that fits.", cta: "See Your Monthly Payment",
+    intro: "Flexible financing through Synchrony turns a one-time investment into a monthly payment that fits.", cta: "Apply with Synchrony",
     sections: [
       { kicker: "How it works", title: "Three steps. A few minutes.", items: ["Check your options. A short application through Synchrony.", "Pick your payment. Choose the term that fits your budget.", "We schedule your install. Financing and installation move together, so nothing waits."], variant: "dark" },
       { kicker: "Start here", title: "The most expensive generator is the one you didn’t have.", body: "Start with a free in-home assessment. We’ll size the right system before you choose how to pay." },

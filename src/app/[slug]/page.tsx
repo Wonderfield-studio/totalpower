@@ -2,16 +2,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { Manrope } from "next/font/google";
 import { pages } from "./content";
 import styles from "./page.module.css";
+import InteriorEffects from "./interior-effects";
+import { FeatureIcon } from "./feature-icons";
 
 const nav = [["Generators", "/generators"], ["Installation", "/installation"], ["Maintenance", "/maintenance"], ["Financing", "/financing"], ["Service Area", "/service-area"], ["About", "/about"], ["Builders", "/builders"]];
 const photos = ["/pics/image-1791572987018.png", "/pics/image-1791573187812.png", "/pics/image-1791573202813.png"];
+const manropeExtraBold = Manrope({ weight: "800", subsets: ["latin"], variable: "--font-manrope-extra-bold" });
 
 function Arrow() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>; }
 
+function HeroTitle({ title }: { title: string }) {
+  const sentences = title.match(/^(.+?[.!?])\s+(.+)$/);
+  if (!sentences) return <>{title}</>;
+  return <>{sentences[1]}<br /><span className={styles.heroTitleSecondary}>{sentences[2]}</span></>;
+}
+
 function Header() {
-  return <header className={styles.header}><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /></Link><nav>{nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link></header>;
+  return <header className={styles.header} data-interior-header><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /><Image className={styles.logoColor} src="/logo.svg" width={689} height={240} alt="" aria-hidden="true" priority /></Link><nav>{nav.map(([label, href]) => <Link key={href} href={href}>{label === "Service Area" ? <><span className={styles.fullNavLabel}>Service Area</span><span className={styles.compactNavLabel}>Service</span></> : label}</Link>)}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link></header>;
 }
 
 function Footer() {
@@ -29,27 +39,72 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function InteriorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params; const page = pages[slug]; if (!page) notFound();
-  const heroPhoto = slug === "builders" ? photos[2] : slug === "about" ? photos[1] : photos[0];
-  return <main className={styles.page}>
+  const heroPhoto = slug === "financing" ? "/pics/financing.png" : slug === "builders" ? photos[2] : slug === "about" ? photos[1] : photos[0];
+  return <main className={`${styles.page} ${styles.secondaryPage} ${manropeExtraBold.variable} ${slug === "financing" ? styles.financingPage : ""} ${slug === "about" ? styles.aboutPage : ""} ${slug === "installation" ? styles.installationPage : styles.standardPage}`}>
+    <InteriorEffects />
     <Header />
-    <section className={styles.hero}><Image src={heroPhoto} fill priority sizes="100vw" alt="Total Power crew serving a South Florida home" /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1>{page.title}</h1>{page.intro && <p>{page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : "/quote"}>{page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
+    <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt="Total Power crew serving a South Florida home" /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits, all in-house.<br />One team owns your job from the first visit to the final inspection.</> : page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : "/quote"}>{slug === "financing" ? <>Apply with <Image className={styles.partnerLogo} src="/synchronyX.png" width={524} height={116} alt="Synchrony" /></> : page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
     {slug === "quote" && <div id="quote-form"><QuoteForm /></div>}
-    {page.sections.map((section, index) => <section key={section.title} className={`${styles.section} ${section.variant ? styles[section.variant] : ""}`}>
-      {section.variant === "image" && <Image src={photos[(index + 1) % photos.length]} fill sizes="100vw" alt="Total Power generator installation in South Florida" />}
-      <div className={styles.sectionIntro}><span>{section.kicker}</span><h2>{section.title}</h2>{section.body && <p>{section.body}</p>}</div>
-      {section.items && section.variant === "faq" && <div className={styles.faqList}>{section.items.map((item) => { const [q, a] = item.split("|"); return <details key={q}><summary>{q}<b>+</b></summary><p>{a}</p></details>; })}</div>}
-      {section.items && section.variant !== "faq" && <div className={styles.itemGrid}>{section.items.map((item, itemIndex) => {
-        const visual = section.variant !== "plans" && itemIndex % 4 === 2;
-        return <article key={item} className={visual ? styles.visualCard : undefined}>
-          {visual && <Image src={photos[(index + itemIndex) % photos.length]} fill sizes="(max-width: 800px) 100vw, 32vw" alt="Total Power crew at work" />}
-          {visual && <i aria-hidden="true" />}
-          <span>{String(itemIndex + 1).padStart(2, "0")}</span><p>{item}</p>
-        </article>;
-      })}</div>}
-    </section>)}
-    <section className={styles.closing}><span>Ready when you are</span><h2>{slug === "installation" ? "Install it before the forecast makes you wish you had." : "Call us on a sunny day. Thank yourself in a storm."}</h2><Link href="/quote">Get a Free Quote <Arrow /></Link><small>Every quote starts with a free in-home assessment. No obligation.</small></section>
+    {page.sections.map((section, index) => {
+      if (section.features && section.features.length > 0) {
+        return (
+          <section data-reveal key={section.title} className={`${styles.section} ${styles.featuresSection} ${slug === "installation" ? styles.installationFeatures : ""}`}>
+            <div className={styles.featuresIntro}>
+              {section.kicker && <span>{section.kicker}</span>}
+              <h2>
+                {section.title.includes(". ") ? (
+                  <>
+                    <span className={styles.featureTitleLead}>{section.title.split(". ")[0]}.</span><br />
+                    <span>{section.title.split(". ").slice(1).join(". ")}</span>
+                  </>
+                ) : section.title}
+              </h2>
+              {section.body && <p>{section.body}</p>}
+            </div>
+            <div className={styles.featuresGrid}>
+              {section.features.map((feature) => (
+                <article key={feature.title} className={styles.featureCard}>
+                  <div className={styles.featureIconWrap}>
+                    <FeatureIcon name={feature.icon} />
+                  </div>
+                  <h3>{feature.title}</h3>
+                  <p>{feature.description}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        );
+      }
+
+      return (
+        <section data-reveal key={section.title} className={`${styles.section} ${section.variant ? styles[section.variant] : ""} ${!section.items && section.variant !== "image" && !(slug === "financing" && index === 1) ? styles.statementSection : ""} ${section.items && section.variant !== "faq" && section.variant !== "plans" ? styles.listSection : ""} ${slug === "financing" && index === 1 ? styles.sideImageSection : ""} ${section.sideImage ? styles.installationSideSection : ""} ${section.kicker === "The process" ? styles.processSection : ""} ${slug === "installation" && index === 0 ? styles.installationIntro : ""}`}>
+          {section.variant === "image" && slug !== "about" && <Image data-parallax src={photos[(index + 1) % photos.length]} fill sizes="100vw" alt="Total Power generator installation in South Florida" />}
+          <div className={styles.sectionIntro}>
+            <span>{section.kicker}</span>
+            <h2>{section.sideImage ? <>When one team<br />owns every trade,<br /><span className={styles.introGradient}>everything fits.</span></> : section.title.includes(". ") ? <>{section.title.split(". ")[0]}.<br />{section.title.split(". ").slice(1).join(". ")}</> : section.title}</h2>
+            {section.body && <p>{section.body}</p>}
+          </div>
+          {slug === "about" && section.variant === "image" && <div className={styles.crewCards} aria-label="Total Power installation crew"><article><Image src="/pics/image-1791573216228.png" fill sizes="(max-width: 800px) 82vw, 22vw" alt="Total Power technician working on a home generator" /></article><article><Image src="/pics/image-1791572987018.png" fill sizes="(max-width: 800px) 82vw, 22vw" alt="Total Power crew member servicing a standby generator" /></article><article><Image src="/pics/image-1791573202813.png" fill sizes="(max-width: 800px) 82vw, 22vw" alt="Total Power crew completing a generator installation" /></article></div>}
+          {section.sideImage && <div className={styles.installationSideImage}><Image data-parallax src={photos[0]} fill sizes="(max-width: 800px) 100vw, 50vw" alt="Total Power crew on site" /></div>}
+          {slug === "financing" && index === 1 && <div className={styles.sectionSideImage}><Image data-parallax src="/pics/fin-content.png" fill sizes="(max-width: 800px) 100vw, 50vw" alt="A South Florida home protected by standby power" /></div>}
+          {section.items && section.variant === "faq" && <div className={styles.faqList}>{section.items.map((item) => { const [q, a] = item.split("|"); return <details key={q}><summary>{q}<b>+</b></summary><p>{a}</p></details>; })}</div>}
+          {section.items && section.variant !== "faq" && <div className={styles.itemGrid}>{section.items.map((item, itemIndex) => {
+            const visual = false;
+            const isProcess = section.kicker === "The process";
+            return <article key={item} className={visual ? styles.visualCard : undefined}>
+              {visual && <Image src={photos[(index + itemIndex) % photos.length]} fill sizes="(max-width: 800px) 100vw, 32vw" alt="Total Power crew at work" />}
+              {visual && <i aria-hidden="true" />}
+              {isProcess && <span className={styles.processNum}>{String(itemIndex + 1).padStart(2, "0")}</span>}
+              <p>{slug === "financing" ? <><strong>{item.split(". ")[0]}.</strong><small>{item.split(". ").slice(1).join(". ")}</small></> : item}</p>
+            </article>;
+          })}</div>}
+        </section>
+      );
+    })}
+    <div className={styles.closingWrapper}>
+      <section data-reveal className={styles.closing}><Image data-parallax src="/pics/cta-section.png" fill sizes="100vw" alt="Total Power technician arriving at a South Florida home" /><div className={styles.closingShade} /><div className={styles.closingInner}><i /><h2>Call us on a sunny day.</h2><h3>Thank yourself in a storm.</h3><p>Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear.</p><div><Link href="/quote">Get a Free Quote <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div></div></section>
+    </div>
     <Footer />
-    <a className={styles.chat} href="mailto:hello@totalpowergenerators.com" aria-label="Ask Total Power a question">Questions? <b>Ask us</b></a>
   </main>;
 }
 

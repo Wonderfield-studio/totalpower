@@ -249,7 +249,7 @@ export default function Home() {
       <div className="section-kicker">The promise</div>
       <span className="intro-logomark" aria-hidden="true" />
       <div className="intro-copy">
-        <h2><RevealWords text="Power out?" /><br /><RevealWords text="Not here." accentLastPunctuation /></h2>
+        <h2><RevealWords text="Power out?" /><br /><span className="intro-accent"><RevealWords text="Not here." accentLastPunctuation /></span></h2>
         <p><RevealWords text="A standby generator starts on its own the moment the power drops. The A/C keeps running, the fridge stays cold and the Wi-Fi stays on, whether you’re home or halfway around the world." /></p>
         <a className="text-link intro-link" href="/generators">How standby generators work <Arrow /></a>
       </div>

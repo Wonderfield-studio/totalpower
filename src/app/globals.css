@@ -274,6 +274,12 @@ h1 .accent { color: var(--orange); max-height: 0; margin-top: 0; overflow: hidde
 .dual-actions { display: flex; align-items: center; gap: 28px; margin-top: 42px; }
 .dark-phone { color: #132029; }
 
+/* Full-width homepage process grid; headings and actions stay on the content grid. */
+.process-section { padding-inline: 0; }
+.process-section .process-intro { padding-inline: clamp(24px, 5vw, 84px); }
+.process-section .process-list { width: 100%; }
+.process-section .dual-actions { padding-inline: clamp(24px, 5vw, 84px); }
+
 .plans-section { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(60px, 9vw, 150px); padding: clamp(90px, 11vw, 170px) clamp(24px, 5vw, 84px); background: #071620; color: #f4f2eb; }
 .plans-copy h2, .connection-card h2, .crew-copy h2, .reviews-section h2 { margin: 38px 0 28px; font-size: clamp(52px, 5.8vw, 94px); line-height: .91; letter-spacing: -.052em; font-weight: 620; }
 .plans-copy > p, .connection-card > p, .crew-copy > p, .reviews-section > p { max-width: 670px; color: #aeb9bf; font-size: 17px; line-height: 1.55; }
@@ -513,7 +519,11 @@ h1 .accent { color: var(--orange); max-height: 0; margin-top: 0; overflow: hidde
   .hero-stat strong { font-size: 24px; }
   .hero-stat span { font-size: 9px; }
   .hero-stat::after { bottom: 10px; }
-  .intro-section, .services-section, .process-section { padding-inline: 22px; }
+  .intro-section, .services-section { padding-inline: 22px; }
+  .process-section { padding-inline: 0; }
+  .process-section .process-intro,
+  .process-section .dual-actions { padding-inline: 22px; }
+  .process-section .process-row { padding-inline: 22px; }
   .intro-copy { gap: 30px; margin: 35px 0 42px; }
   .intro-copy h2, .section-heading h2, .process-intro h2 { font-size: 54px; }
   .intro-copy p { font-size: 17px; }
@@ -691,6 +701,11 @@ h1 .accent { color: var(--orange); max-height: 0; margin-top: 0; overflow: hidde
 .site-shell h2,
 .site-shell h3 {
   text-transform: uppercase;
+}
+
+.intro-accent,
+.intro-accent .headline-period {
+  color: var(--orange);
 }
 
 .wide-image-card,
