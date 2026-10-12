@@ -5,6 +5,7 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: #04111e; color: var(--cream); font-family: "Avenir Next", "Segoe UI", Arial, sans-serif; }
 a { color: inherit; text-decoration: none; }
+.site-shell { background: var(--cream); }
 
 .hero {
   min-height: 100svh; position: relative; background: #fff; padding: 18px 0;
@@ -50,7 +51,9 @@ a { color: inherit; text-decoration: none; }
 .site-header.panel-active { color: #fff; background: #0b1924; }
 .site-header.panel-active .brand-logo { filter: brightness(0) invert(1); }
 .site-header.panel-active .main-nav a:hover { color: var(--orange); }
-.site-header.is-scrolled { top: 14px; left: 50%; width: min(1120px, calc(100% - 64px)); padding-inline: clamp(28px, 3vw, 48px); background: #0b1924; backdrop-filter: none; -webkit-backdrop-filter: none; border: 1px solid rgba(255,255,255,.08); border-radius: 999px; clip-path: none; box-shadow: 0 10px 30px rgba(0,0,0,.28); color: #fff; transform: translateX(-50%); }
+.site-header.is-scrolled { top: 14px; left: 50%; width: min(1120px, calc(100% - 64px)); height: 82px; padding: 0 18px 0 28px; background: #0b1924; backdrop-filter: none; -webkit-backdrop-filter: none; border: 1px solid rgba(255,255,255,.08); border-radius: 999px; clip-path: none; box-shadow: 0 10px 30px rgba(0,0,0,.28); color: #fff; transform: translateX(-50%); }
+.site-header.is-scrolled .main-nav { font-size: clamp(12px, .92vw, 15px); }
+.site-header.is-scrolled .header-cta { font-size: 15px; }
 .site-header.is-scrolled .brand-logo { filter: brightness(0) invert(1); }
 .brand { display: inline-flex; align-items: center; width: max-content; }
 .brand-logo { display: block; width: 124px; height: auto; filter: brightness(0) invert(1); }
@@ -363,13 +366,17 @@ h1 .accent { color: var(--orange); max-height: 0; margin-top: 0; overflow: hidde
 .quote-person { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
 .quote-person span { opacity: .68; }
 
-.closing-section { min-height: 92svh; display: flex; align-items: flex-end; overflow: hidden; color: #fff; }
-.closing-section > img { object-fit: cover; }
-.closing-shade { position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(1,9,15,.86), rgba(2,11,18,.2) 70%), linear-gradient(0deg, rgba(1,8,14,.6), transparent 60%); }
-.closing-content { position: relative; z-index: 2; max-width: 900px; padding: clamp(70px, 8vw, 130px) clamp(24px, 5vw, 84px); }
+.closing-section { height: clamp(560px, 48vw, 700px); min-height: 0; margin: 72px clamp(24px, 5vw, 84px); display: flex; align-items: center; overflow: hidden; border-radius: 0; clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px); background: transparent; color: #fff; }
+.closing-background { object-fit: cover; object-position: center; }
+.closing-shade { position: absolute; z-index: 1; inset: 0; background: linear-gradient(90deg, rgba(3,15,25,.98) 0%, rgba(3,15,25,.92) 34%, rgba(3,15,25,.58) 55%, rgba(3,15,25,.1) 78%); }
+.closing-content { position: relative; z-index: 3; width: min(760px, 54vw); padding: clamp(70px, 7vw, 110px) clamp(24px, 6vw, 100px); }
 .closing-content .section-kicker { color: #fff; }
-.closing-content h2 { margin: 35px 0 28px; font-size: clamp(65px, 8vw, 132px); text-transform: uppercase; font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; letter-spacing: -.025em; }
+.closing-rule { display: block; width: 82px; height: 6px; margin-bottom: 30px; background: var(--orange); }
+.closing-content h2 { margin: 0 0 28px; font-size: clamp(56px, 5.25vw, 94px); text-transform: uppercase; font-family: var(--font-manrope-extra-bold), Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; font-weight: 800; line-height: .92; letter-spacing: -.055em; }
+.closing-response { margin: 0 0 30px; color: var(--orange); font-family: var(--font-manrope-extra-bold), Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; font-size: clamp(36px, 3.6vw, 62px); font-weight: 800; line-height: .94; letter-spacing: -.045em; text-transform: uppercase; }
 .closing-content p { max-width: 570px; margin: 0 0 32px; color: #d3d9dc; font-size: 19px; line-height: 1.45; }
+.closing-content .primary-cta { background: var(--orange); color: #fff; }
+.closing-content .primary-cta:hover { background: #ff6a30; }
 
 .site-footer { min-height: 0; display: grid; grid-template-columns: 1.3fr .7fr .8fr; align-content: start; gap: 70px; padding: 80px clamp(24px, 6vw, 100px) 35px; overflow: hidden; background: #04111e; color: #fff; }
 .footer-brand .brand-logo { width: 160px; }
@@ -537,9 +544,9 @@ h1 .accent { color: var(--orange); max-height: 0; margin-top: 0; overflow: hidde
   .assurance-metric { gap: 16px; }
   .testimonial-section { padding-inline: 22px; }
   .testimonial-section blockquote { font-size: 34px; }
-  .closing-section { min-height: 800px; }
-  .closing-section > img { object-position: 62% center; }
-  .closing-content { padding-inline: 22px; }
+  .closing-section { height: 720px; min-height: 0; margin: 44px 12px; border-radius: 0; clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px); }
+  .closing-background { width: 100% !important; left: 0 !important; object-position: 60% center; padding: 0; }
+  .closing-content { width: 100%; padding-inline: 22px; }
   .closing-content h2 { font-size: 65px; }
   .site-footer { grid-template-columns: 1fr; gap: 45px; padding: 70px 22px 28px; }
   .footer-lead { grid-column: auto; }

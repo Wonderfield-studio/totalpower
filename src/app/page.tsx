@@ -9,7 +9,7 @@ import installationImage from "../../public/pics/image-1791572987018.png";
 import generatorImage from "../../public/pics/image-1791573187812.png";
 import crewImage from "../../public/pics/image-1791573202813.png";
 import reviewImage from "../../public/pics/image-1791573216228.png";
-import closingImage from "../../public/pics/image-1791573228545.png";
+import ctaSectionImage from "../../public/pics/cta-section.png";
 
 const manropeExtraBold = Manrope({
   weight: "800",
@@ -374,11 +374,12 @@ export default function Home() {
     </section>
 
     <section className="closing-section">
-      <Image src={closingImage} alt="A Total Power service technician arriving at a protected home" fill sizes="100vw" />
+      <Image className="closing-background" src={ctaSectionImage} alt="A Total Power technician arriving at a South Florida home before a storm" fill sizes="100vw" />
       <div className="closing-shade" />
       <div className="closing-content">
-        <div className="section-kicker">Closing</div>
-        <h2>Call us on a sunny day. Thank yourself in a storm.</h2>
+        <span className="closing-rule" aria-hidden="true" />
+        <h2>Call us on a<br />sunny day.</h2>
+        <h3 className="closing-response">Thank yourself<br />in a storm.</h3>
         <p>Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear.</p>
         <div className="dual-actions light-actions"><a className="primary-cta" href="/quote">Get a Free Quote <Arrow /></a><a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
       </div>
