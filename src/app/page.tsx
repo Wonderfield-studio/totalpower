@@ -7,7 +7,6 @@ import { Manrope } from "next/font/google";
 import Lenis from "lenis";
 import installationImage from "../../public/pics/image-1791572987018.png";
 import generatorImage from "../../public/pics/image-1791573187812.png";
-import crewImage from "../../public/pics/image-1791573202813.png";
 import reviewImage from "../../public/pics/image-1791573216228.png";
 import ctaSectionImage from "../../public/pics/cta-section.png";
 
@@ -319,24 +318,34 @@ export default function Home() {
     <section className="feature-mosaic" aria-label="Monitoring, financing, and crew">
       <article className="mosaic-card mosaic-connected">
         <div className="section-kicker">Stay connected</div>
-        <h2>Your generator,<br />on your phone.</h2>
+        <h2>Your generator.<br />In your pocket.</h2>
         <p>Check its status anytime and get an alert the moment something needs attention. On a monitoring plan, our team gets that alert too, and we reach out before you have to call.</p>
         <a className="text-link" href="/maintenance">See monitoring plans <Arrow /></a>
-        <div className="phone-status"><span>Generator status</span><strong>Ready</strong><i /></div>
+        <div className="phone-status" aria-label="Generator monitoring app preview">
+          <div className="phone-speaker" aria-hidden="true" />
+          <div className="phone-top"><span>My generator</span><b>•••</b></div>
+          <div className="phone-ready"><i /><div><small>Generator status</small><strong>Ready</strong></div></div>
+          <div className="phone-metrics">
+            <div><span>Last exercise</span><strong>Today · 10:00 AM</strong></div>
+            <div><span>Fuel</span><strong>Natural gas</strong></div>
+          </div>
+          <div className="phone-alert"><span>✓</span><div><strong>All systems normal</strong><small>Total Power monitoring is active</small></div></div>
+          <div className="phone-nav" aria-hidden="true"><b>●</b><b>◫</b><b>⌁</b></div>
+        </div>
       </article>
       <article className="mosaic-card mosaic-finance" id="financing">
         <div className="section-kicker">Financing</div>
-        <h2>Total protection.<br />Monthly payments.</h2>
+        <h2>Power now.<br />Pay monthly.</h2>
         <p>Flexible financing turns a one-time investment into a payment that fits your budget. Checking your options takes a few minutes.</p>
         <p className="placeholder-copy"><em>[Button links to the Synchrony application]</em></p>
         <a className="dark-button" href="#quote">See Your Monthly Payment <Arrow /></a>
       </article>
       <article className="mosaic-card mosaic-crew" id="about">
-        <Image src={crewImage} alt="A Total Power specialist meeting homeowners after installation" fill sizes="(max-width: 800px) 100vw, 58vw" />
+        <Image src={reviewImage} alt="A Total Power specialist meeting with South Florida homeowners" fill sizes="(max-width: 800px) 100vw, 58vw" />
         <div className="mosaic-crew-shade" />
         <div className="mosaic-crew-copy">
           <div className="section-kicker">The crew</div>
-          <h2>The crew that quotes it is the crew that installs it.</h2>
+          <h2>One crew.<br />Start to finish.</h2>
           <p>Most of our installers have worked side by side for 10 to 15 years. Our own licensed team does the gas, the electrical and the install. When a job calls for a crane lift or a heavy delivery, we bring in trusted specialists and manage them ourselves, so you still have one company accountable.</p>
           <a className="text-link" href="/about">Meet the crew <Arrow /></a>
         </div>
