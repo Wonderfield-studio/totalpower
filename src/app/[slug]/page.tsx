@@ -7,6 +7,7 @@ import { pages } from "./content";
 import styles from "./page.module.css";
 import InteriorEffects from "./interior-effects";
 import { FeatureIcon } from "./feature-icons";
+import ServiceAreaMap from "./service-area-map";
 
 const nav = [["Generators", "/generators"], ["Installation", "/installation"], ["Maintenance", "/maintenance"], ["Financing", "/financing"], ["Service Area", "/service-area"], ["About", "/about"], ["Builders", "/builders"]];
 const photos = ["/pics/image-1791572987018.png", "/pics/image-1791573187812.png", "/pics/image-1791573202813.png"];
@@ -46,6 +47,31 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
     <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt="Total Power crew serving a South Florida home" /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits.<br />One team handles it all.</> : page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : "/quote"}>{slug === "financing" ? <>Apply with <Image className={styles.partnerLogo} src="/synchronyX.png" width={524} height={116} alt="Synchrony" /></> : page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
     {slug === "quote" && <div id="quote-form"><QuoteForm /></div>}
     {page.sections.map((section, index) => {
+      if (slug === "service-area" && index === 0) {
+        return <ServiceAreaMap key={section.title} />;
+      }
+
+      if (slug === "service-area" && index === 1) {
+        return <section data-reveal key={section.title} className={styles.serviceCheckSection}>
+          <div className={styles.serviceCheckCopy}>
+            <span>{section.kicker}</span>
+            <h2>Tell us where<br />you live.</h2>
+            <p>{section.body}</p>
+          </div>
+          <form className={styles.serviceCheckCard} action="/quote">
+            <div className={styles.serviceCheckIcon} aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 44s14-13.1 14-26A14 14 0 1 0 10 18c0 12.9 14 26 14 26Z" /><circle cx="24" cy="18" r="5" /></svg></div>
+            <span>Check your address</span>
+            <h3>Are we in your neighborhood?</h3>
+            <label htmlFor="service-address">Home address</label>
+            <div className={styles.serviceCheckField}>
+              <input id="service-address" name="address" autoComplete="street-address" placeholder="Enter your street address" required />
+              <button type="submit" aria-label="Check address"><Arrow /></button>
+            </div>
+            <small>We’ll confirm coverage and help schedule your free assessment.</small>
+          </form>
+        </section>;
+      }
+
       if (slug === "reviews" && index === 0) {
         return <section data-reveal key={section.title} className={styles.reviewShowcase}><div className={styles.reviewAside}><Image className={styles.reviewPerson} src="/pics/cta.png" width={575} height={977} alt="Total Power technician" /><div className={styles.reviewAsideCopy}><span>Customer reputation</span><h2>{section.title}</h2><p>{section.body}</p><div className={styles.reviewArrows} aria-hidden="true"><button tabIndex={-1}>←</button><button tabIndex={-1}>→</button></div></div></div><div className={styles.reviewRail}>{[
           ["Customer story", "Clear communication from the first visit through final testing.", "Miami-Dade homeowner"],

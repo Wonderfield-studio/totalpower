@@ -7,9 +7,9 @@ import { Manrope } from "next/font/google";
 import Lenis from "lenis";
 import { ChevronLeft, ChevronRight, Clock3, ShieldCheck, Wrench } from "lucide-react";
 import installationImage from "../../public/pics/image-1791572987018.png";
-import generatorImage from "../../public/pics/image-1791573187812.png";
 import reviewImage from "../../public/pics/image-1791573216228.png";
 import ctaSectionImage from "../../public/pics/cta-section.png";
+import { FeatureIcon } from "./[slug]/feature-icons";
 
 const manropeExtraBold = Manrope({
   weight: "800",
@@ -43,10 +43,12 @@ export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const finalVideoRef = useRef<HTMLVideoElement>(null);
   const reviewRailRef = useRef<HTMLDivElement>(null);
+  const processRailRef = useRef<HTMLDivElement>(null);
   const hasStartedRef = useRef(false);
   const [heroVariant, setHeroVariant] = useState<"cinematic" | "panel" | "centered" | "fullbleed">("fullbleed");
   const [isScrolled, setIsScrolled] = useState(false);
   const [vanIsArriving, setVanIsArriving] = useState(false);
+  const [processProgress, setProcessProgress] = useState(0);
   const solidHero = heroVariant === "panel";
 
   const syncCopyToVan = (currentTime: number) => {
@@ -57,6 +59,18 @@ export default function Home() {
     const rail = reviewRailRef.current;
     if (!rail) return;
     rail.scrollBy({ left: direction * 360, behavior: "smooth" });
+  };
+
+  const updateProcessProgress = () => {
+    const rail = processRailRef.current;
+    if (!rail) return;
+    setProcessProgress(rail.scrollWidth > 0 ? Math.min(1, (rail.scrollLeft + rail.clientWidth) / rail.scrollWidth) : 1);
+  };
+
+  const moveProcess = (direction: -1 | 1) => {
+    const rail = processRailRef.current;
+    if (!rail) return;
+    rail.scrollBy({ left: direction * rail.clientWidth * .72, behavior: "smooth" });
   };
 
   const loopReviews = () => {
@@ -75,6 +89,12 @@ export default function Home() {
     const resizeObserver = new ResizeObserver(placeInMiddle);
     resizeObserver.observe(rail);
     return () => resizeObserver.disconnect();
+  }, []);
+
+  useEffect(() => {
+    updateProcessProgress();
+    window.addEventListener("resize", updateProcessProgress);
+    return () => window.removeEventListener("resize", updateProcessProgress);
   }, []);
 
   useEffect(() => {
@@ -146,7 +166,7 @@ export default function Home() {
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealTargets = document.querySelectorAll<HTMLElement>(
-      ".site-shell > section:not(.hero):not(.intro-section) > *:not(.closing-background):not(.closing-shade), .site-shell > aside > *, .service-card, .process-row, .plan-cards article, .mosaic-card, .review-image-card, .review-copy-card, .site-footer > *",
+      ".site-shell > section:not(.hero):not(.intro-section) > *:not(.closing-background):not(.closing-shade), .site-shell > aside > *, .service-card, .process-row, .plan-cards article, .mosaic-card, .review-image-card, .review-copy-card, .turnkey-mark-reveal, .site-footer > *",
     );
     const introSection = document.querySelector<HTMLElement>(".intro-section");
 
@@ -199,237 +219,269 @@ export default function Home() {
 
   return (
     <main className={`site-shell ${manropeExtraBold.variable}`}>
-    <header className={`site-header${solidHero ? " panel-active" : ""}${isScrolled ? " is-scrolled" : ""}`}>
-      <Link className="brand" href="/" aria-label="Total Power Generators home">
-        <span className="header-logo-lockup">
-          <Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} priority />
-          <Image className="brand-logo brand-logo-color" src="/logo.svg" alt="" width={689} height={240} aria-hidden="true" priority />
-        </span>
-      </Link>
-      <nav className="main-nav" aria-label="Main navigation">
-        <Link href="/generators">Generators</Link><Link href="/installation">Installation</Link>
-        <Link href="/maintenance">Maintenance</Link><Link href="/financing">Financing</Link>
-        <Link href="/service-area">Service Area</Link><Link href="/about">About</Link><Link href="/builders">Builders</Link>
-      </nav>
-      <Link className="header-cta" href="/quote">Get a Free Quote <Arrow /></Link>
-    </header>
-    <section className={`hero${solidHero ? " hero-solid-layout" : ""}${heroVariant === "centered" ? " hero-centered-layout" : ""}${heroVariant === "fullbleed" ? " hero-fullbleed-layout" : ""}${heroVariant === "fullbleed" && vanIsArriving ? " van-is-arriving" : ""}`} ref={heroRef}>
-      <div className="hero-stage">
-        <div className="video-background" aria-hidden="true">
-          <video className="background-video loop-video" autoPlay loop muted playsInline preload="auto" width="1920" height="1080">
-            <source src="/loop.mp4" type="video/mp4" />
-          </video>
-          <video ref={finalVideoRef} className="background-video final-video" muted playsInline preload="auto" width="1920" height="1080">
-            <source src="/final.mp4" type="video/mp4" />
-          </video>
-          <video className="background-video full-video" autoPlay muted playsInline preload="auto" width="1920" height="1080" onTimeUpdate={(event) => syncCopyToVan(event.currentTarget.currentTime)}>
-            <source src="/full.mp4" type="video/mp4" />
-          </video>
-          <div className="video-shade" />
-          <div className="lightning-flash" aria-hidden="true" />
-        </div>
-      <div className="hero-style-toggle" aria-label="Choose hero layout">
-        <button className={heroVariant === "cinematic" ? "active" : ""} onClick={() => setHeroVariant("cinematic")} type="button">Cinematic</button>
-        <button className={heroVariant === "panel" ? "active" : ""} onClick={() => setHeroVariant("panel")} type="button">Panel</button>
-        <button className={heroVariant === "centered" ? "active" : ""} onClick={() => setHeroVariant("centered")} type="button">Centered</button>
-        <button className={heroVariant === "fullbleed" ? "active" : ""} onClick={() => setHeroVariant("fullbleed")} type="button">Full bleed</button>
-      </div>
-      <section className="hero-content" aria-labelledby="hero-title">
-        <div className="eyebrow">South Florida&apos;s standby power experts</div>
-        <h1 id="hero-title">
-          <span className="hero-title-line"><RevealWords text="Storms don’t" /></span>
-          <span className="hero-title-line"><RevealWords text="schedule." offset={3} /></span>
-          <span className="accent">We do.</span>
-        </h1>
-        <p className="hero-subtitle"><RevealWords text="Home standby generators, installed before you need one." offset={4} /></p>
-        <div className="action-row" id="quote">
-          <a className="primary-cta" href="/quote">Get a Free Quote <Arrow /></a>
-          <a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a>
-        </div>
-        <div className="social-proof">
-          <div className="avatar-stack" aria-hidden="true">
-            <Image className="avatar-img" src="/avatars/avatar-1.jpg" alt="South Florida homeowner" width={53} height={53} />
-            <Image className="avatar-img" src="/avatars/avatar-2.jpg" alt="South Florida homeowner" width={53} height={53} />
-            <Image className="avatar-img" src="/avatars/avatar-3.jpg" alt="South Florida homeowner" width={53} height={53} />
+      <header className={`site-header${solidHero ? " panel-active" : ""}${isScrolled ? " is-scrolled" : ""}`}>
+        <Link className="brand" href="/" aria-label="Total Power Generators home">
+          <span className="header-logo-lockup">
+            <Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} priority />
+            <Image className="brand-logo brand-logo-color" src="/logo.svg" alt="" width={689} height={240} aria-hidden="true" priority />
+          </span>
+        </Link>
+        <nav className="main-nav" aria-label="Main navigation">
+          <Link href="/generators">Generators</Link><Link href="/installation">Installation</Link>
+          <Link href="/maintenance">Maintenance</Link><Link href="/financing">Financing</Link>
+          <Link href="/service-area">Service Area</Link><Link href="/about">About</Link><Link href="/builders">Builders</Link>
+        </nav>
+        <Link className="header-cta" href="/quote">Get a Free Quote <Arrow /></Link>
+      </header>
+      <section className={`hero${solidHero ? " hero-solid-layout" : ""}${heroVariant === "centered" ? " hero-centered-layout" : ""}${heroVariant === "fullbleed" ? " hero-fullbleed-layout" : ""}${heroVariant === "fullbleed" && vanIsArriving ? " van-is-arriving" : ""}`} ref={heroRef}>
+        <div className="hero-stage">
+          <div className="video-background" aria-hidden="true">
+            <video className="background-video loop-video" autoPlay loop muted playsInline preload="auto" width="1920" height="1080">
+              <source src="/loop.mp4" type="video/mp4" />
+            </video>
+            <video ref={finalVideoRef} className="background-video final-video" muted playsInline preload="auto" width="1920" height="1080">
+              <source src="/final.mp4" type="video/mp4" />
+            </video>
+            <video className="background-video full-video" autoPlay muted playsInline preload="auto" width="1920" height="1080" onTimeUpdate={(event) => syncCopyToVan(event.currentTarget.currentTime)}>
+              <source src="/full.mp4" type="video/mp4" />
+            </video>
+            <div className="video-shade" />
+            <div className="lightning-flash" aria-hidden="true" />
           </div>
-          <p>Trusted by 1,000+<br />South Florida homeowners</p>
+          <div className="hero-style-toggle" aria-label="Choose hero layout">
+            <button className={heroVariant === "cinematic" ? "active" : ""} onClick={() => setHeroVariant("cinematic")} type="button">Cinematic</button>
+            <button className={heroVariant === "panel" ? "active" : ""} onClick={() => setHeroVariant("panel")} type="button">Panel</button>
+            <button className={heroVariant === "centered" ? "active" : ""} onClick={() => setHeroVariant("centered")} type="button">Centered</button>
+            <button className={heroVariant === "fullbleed" ? "active" : ""} onClick={() => setHeroVariant("fullbleed")} type="button">Full bleed</button>
+          </div>
+          <section className="hero-content" aria-labelledby="hero-title">
+            <div className="eyebrow">South Florida&apos;s standby power experts</div>
+            <h1 id="hero-title">
+              <span className="hero-title-line"><RevealWords text="Storms don’t" /></span>
+              <span className="hero-title-line"><RevealWords text="schedule." offset={3} /></span>
+              <span className="accent">We do.</span>
+            </h1>
+            <p className="hero-subtitle"><RevealWords text="Home standby generators, installed before you need one." offset={4} /></p>
+            <div className="action-row" id="quote">
+              <a className="primary-cta" href="/quote">Get a Free Quote <Arrow /></a>
+              <a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a>
+            </div>
+            <div className="social-proof">
+              <div className="avatar-stack" aria-hidden="true">
+                <Image className="avatar-img" src="/avatars/avatar-1.jpg" alt="South Florida homeowner" width={53} height={53} />
+                <Image className="avatar-img" src="/avatars/avatar-2.jpg" alt="South Florida homeowner" width={53} height={53} />
+                <Image className="avatar-img" src="/avatars/avatar-3.jpg" alt="South Florida homeowner" width={53} height={53} />
+              </div>
+              <p>Trusted by 1,000+<br />South Florida homeowners</p>
+            </div>
+          </section>
+
+          <div className="hero-scroll-cue" aria-hidden="true">
+            <span>Scroll down to continue</span>
+            <svg viewBox="0 0 16 28"><path d="M8 1v24M2 19l6 7 6-7" /></svg>
+          </div>
+
+          <aside className="hero-footer" aria-label="Company credentials">
+            <div className="hero-stat">
+              <strong>2009</strong><span>Serving South Florida</span>
+            </div>
+            <div className="hero-stat">
+              <strong>Gas + Electric</strong><span>Licensed gas and electrical contractor</span>
+            </div>
+            <div className="hero-stat">
+              <strong>Elite+</strong><span>Generac PowerPro Elite Plus Dealer</span>
+            </div>
+            <div className="hero-stat">
+              <strong>1000s</strong><span>Thousands of homes powered</span>
+            </div>
+          </aside>
         </div>
       </section>
 
-      <div className="hero-scroll-cue" aria-hidden="true">
-        <span>Scroll down to continue</span>
-        <svg viewBox="0 0 16 28"><path d="M8 1v24M2 19l6 7 6-7" /></svg>
-      </div>
-
-      <aside className="hero-footer" aria-label="Company credentials">
-        <div className="hero-stat">
-          <strong>2009</strong><span>Serving South Florida</span>
+      <section className="intro-section" id="generators">
+        <div className="section-kicker">The promise</div>
+        <span className="intro-logomark" aria-hidden="true" />
+        <div className="intro-copy">
+          <h2><RevealWords text="Power out?" /><br /><span className="intro-accent"><RevealWords text="Not here." accentLastPunctuation /></span></h2>
+          <p><RevealWords text="A standby generator starts on its own the moment the power drops. The A/C keeps running, the fridge stays cold and the Wi-Fi stays on, whether you’re home or halfway around the world." /></p>
+          <a className="text-link intro-link" href="/generators">How standby generators work <Arrow /></a>
         </div>
-        <div className="hero-stat">
-          <strong>Gas + Electric</strong><span>Licensed gas and electrical contractor</span>
+      </section>
+
+      <section className="services-section" id="installation">
+        <div className="section-heading light-heading">
+          <div className="section-kicker">Turnkey</div>
+          <h2>Gas. Electrical.<br /><span>Permits. One crew.</span></h2>
+          <p>Most generator jobs get passed between a dealer, an electrician, a gas contractor and the permit office. Ours never leave our hands. One schedule, one point of contact, one company responsible.</p>
         </div>
-        <div className="hero-stat">
-          <strong>Elite+</strong><span>Generac PowerPro Elite Plus Dealer</span>
-        </div>
-        <div className="hero-stat">
-          <strong>1000s</strong><span>Thousands of homes powered</span>
-        </div>
-      </aside>
-      </div>
-    </section>
+        <div className="turnkey-system">
+          <div className="turnkey-system-visual turnkey-mark-reveal" role="img" aria-label="Total Power installation team and generator service"><Image src={installationImage} alt="" fill sizes="(max-width: 900px) 82vw, 46vw" /></div>
 
-    <section className="intro-section" id="generators">
-      <div className="section-kicker">The promise</div>
-      <span className="intro-logomark" aria-hidden="true" />
-      <div className="intro-copy">
-        <h2><RevealWords text="Power out?" /><br /><span className="intro-accent"><RevealWords text="Not here." accentLastPunctuation /></span></h2>
-        <p><RevealWords text="A standby generator starts on its own the moment the power drops. The A/C keeps running, the fridge stays cold and the Wi-Fi stays on, whether you’re home or halfway around the world." /></p>
-        <a className="text-link intro-link" href="/generators">How standby generators work <Arrow /></a>
-      </div>
-    </section>
-
-    <section className="services-section" id="installation">
-      <div className="section-heading light-heading">
-        <div className="section-kicker">Turnkey</div>
-        <h2>Gas. Electrical.<br />Permits. One crew.</h2>
-        <p>Most generator jobs get passed between a dealer, an electrician, a gas contractor and the permit office. Ours never leave our hands. One schedule, one point of contact, one company responsible.</p>
-      </div>
-      <div className="service-grid turnkey-grid">
-        <article className="service-card service-card-image">
-          <Image src={installationImage} alt="A technician servicing a whole-home standby generator" fill sizes="(max-width: 800px) 100vw, 56vw" />
-        </article>
-        <article className="service-card service-card-cream turnkey-card">
-          <h3>The gas line.</h3>
-          <p>Natural gas or propane, run by our licensed gas crew.</p>
-        </article>
-        <article className="service-card service-card-orange turnkey-card">
-          <h3>The electrical.</h3>
-          <p>Transfer switch and connections by our own electricians.</p>
-        </article>
-        <article className="service-card service-card-detail turnkey-detail">
-          <Image src={generatorImage} alt="A precisely installed standby generator beside a modern home" fill sizes="(max-width: 800px) 100vw, 56vw" />
-          <div className="detail-copy"><h3>The permits.</h3><p>Filed, tracked and inspected. You never visit the building department.</p></div>
-        </article>
-      </div>
-      <a className="section-cta" href="/installation">See how installation works <Arrow /></a>
-    </section>
-
-    <section className="process-section" id="process">
-      <div className="process-intro">
-        <div className="section-kicker">The process</div>
-        <h2>Five steps.<br />Zero runaround.</h2>
-      </div>
-      <div className="process-list">
-        {[
-          ["1", "Free in-home assessment.", "We size the generator to your home and how you live."],
-          ["2", "A clear quote.", "One price, with financing available if you want it."],
-          ["3", "Permits, handled.", "We file and follow up."],
-          ["4", "Install day.", "Our crew places the unit, runs the gas and makes the connections."],
-          ["5", "Walkthrough.", "We test it with you and show you exactly what happens when the power drops."],
-        ].map(([number, title, copy]) => (
-          <article className="process-row" key={number}><span>{number}</span><h3>{title}</h3><p>{copy}</p><Arrow /></article>
-        ))}
-        <div className="dual-actions"><a className="dark-button" href="/quote">Get a Free Quote <Arrow /></a><a className="phone-link dark-phone" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
-      </div>
-    </section>
-
-    <section className="plans-section">
-      <div className="plans-copy">
-        <div className="section-kicker">Maintenance</div>
-        <h2>Installed once.<br />Ready every time.</h2>
-        <p>Scheduled service, written response times and local technicians who already know your system.</p>
-        <div className="plans-proof"><span><b>24/7</b> monitoring available</span><span><b>8 hr</b> fastest response</span></div>
-        <a className="primary-cta" href="/maintenance">Choose Your Plan <Arrow /></a>
-      </div>
-      <div className="plan-cards">
-        {[
-          { name:"Total Essentials", label:"Annual check-up", price:"$350/yr", response:"24-hour response", feature:"1 scheduled visit", Icon:Wrench },
-          { name:"Total Care", label:"Year-round confidence", price:"$625/yr", response:"12-hour response", feature:"2 scheduled visits", Icon:Clock3 },
-          { name:"Total Protect", label:"Complete protection", price:"$1,050/yr", response:"8-hour response", feature:"Monitoring included", Icon:ShieldCheck, featured:true },
-        ].map(({name,label,price,response,feature,Icon,featured}) => (
-          <article className={featured ? "featured-plan" : ""} key={name}>
-            <Icon className="plan-icon" aria-hidden="true" />
-            <div className="plan-card-copy"><span>{label}</span><h3>{name}</h3><div><b>{price}</b><small>{response} · {feature}</small></div></div>
-            <Link href="/maintenance" aria-label={`View ${name}`}><Arrow /></Link>
-          </article>
-        ))}
-      </div>
-    </section>
-
-    <section className="feature-mosaic" aria-label="Monitoring, financing, and crew">
-      <article className="mosaic-card mosaic-connected">
-        <div className="section-kicker">Stay connected</div>
-        <h2>Your generator.<br />In your pocket.</h2>
-        <p>Check its status anytime and get an alert the moment something needs attention. On a monitoring plan, our team gets that alert too, and we reach out before you have to call.</p>
-        <a className="text-link" href="/maintenance">See monitoring plans <Arrow /></a>
-        <div className="phone-status" aria-label="Generator monitoring app preview">
-          <div className="phone-speaker" aria-hidden="true" />
-          <div className="phone-top"><span>My generator</span><b>•••</b></div>
-          <div className="phone-ready"><i /><div><small>Generator status</small><strong>Ready</strong></div></div>
-          <div className="phone-metrics">
-            <div><span>Last exercise</span><strong>Today · 10:00 AM</strong></div>
-            <div><span>Fuel</span><strong>Natural gas</strong></div>
+          <div className="turnkey-capabilities">
+            {[
+              ["pad", "Site preparation and the generator pad", "Site leveling, ground compaction and a hurricane-rated pad anchored to Florida code."],
+              ["placement", "Placing and setting the generator", "Precision delivery and placement with the required clearances and property setbacks."],
+              ["gas", "Natural gas connection or propane", "Licensed in-house gas plumbing, meter tie-in or complete propane tank and fuel-line installation."],
+              ["switch", "Automatic transfer switch", "Whole-home or essential-circuit integration that restores power automatically in seconds."],
+              ["electrical", "All electrical connections", "Code-compliant panel wiring, surge protection and load-management configuration."],
+              ["permits", "Permits, inspections and walkthrough", "Municipal permitting, inspections, warranty registration and a complete startup walkthrough."],
+            ].map(([icon, title, copy]) => (
+              <article className="turnkey-capability" key={title}>
+                <div className="turnkey-capability-icon"><FeatureIcon name={icon} /></div>
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </article>
+            ))}
           </div>
-          <div className="phone-alert"><span>✓</span><div><strong>All systems normal</strong><small>Total Power monitoring is active</small></div></div>
-          <div className="phone-nav" aria-hidden="true"><b>●</b><b>◫</b><b>⌁</b></div>
         </div>
-      </article>
-      <article className="mosaic-card mosaic-finance" id="financing">
-        <div className="section-kicker">Financing</div>
-        <h2>Power now.<br />Pay monthly.</h2>
-        <p>Flexible financing turns a one-time investment into a payment that fits your budget. Checking your options takes a few minutes.</p>
-        <p className="placeholder-copy"><em>[Button links to the Synchrony application]</em></p>
-        <a className="dark-button" href="#quote">See Your Monthly Payment <Arrow /></a>
-      </article>
-      <article className="mosaic-card mosaic-crew" id="about">
-        <Image src={reviewImage} alt="A Total Power specialist meeting with South Florida homeowners" fill sizes="(max-width: 800px) 100vw, 58vw" />
-        <div className="mosaic-crew-shade" />
-        <div className="mosaic-crew-copy">
-          <div className="section-kicker">The crew</div>
-          <h2>One crew.<br />Start to finish.</h2>
-          <p>Most of our installers have worked side by side for 10 to 15 years. Our own licensed team does the gas, the electrical and the install. When a job calls for a crane lift or a heavy delivery, we bring in trusted specialists and manage them ourselves, so you still have one company accountable.</p>
-          <a className="text-link" href="/about">Meet the crew <Arrow /></a>
+        <a className="section-cta" href="/installation">See how installation works <Arrow /></a>
+      </section>
+
+      <section className="process-section" id="process">
+        <div className="process-intro">
+          <div className="section-kicker">The process</div>
+          <h2>Five steps.<br /><span>Zero runaround.</span></h2>
         </div>
-      </article>
-    </section>
+        <div className="process-slider-shell">
+          <div className="process-list" ref={processRailRef} onScroll={updateProcessProgress}>
+            {[
+              ["01", "Free in-home assessment.", "We size the generator to your home and how you live."],
+              ["02", "A clear quote.", "One price, with financing available if you want it."],
+              ["03", "Permits, handled.", "We file and follow up."],
+              ["04", "Install day.", "Our crew places the unit, runs the gas and makes the connections."],
+              ["05", "Walkthrough.", "We test it with you and show you exactly what happens when the power drops."],
+            ].map(([number, title, copy]) => (
+              <article className="process-row" key={number}><span>{number}</span><h3>{title}</h3><p>{copy}</p><Arrow /></article>
+            ))}
+          </div>
+          <div className="process-slider-controls">
+            <div className="process-progress" role="progressbar" aria-label="Process slider progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(processProgress * 100)}><span style={{ transform: `scaleX(${processProgress})` }} /></div>
+            <div><button type="button" onClick={() => moveProcess(-1)} aria-label="Previous process steps"><ChevronLeft /></button><button type="button" onClick={() => moveProcess(1)} aria-label="Next process steps"><ChevronRight /></button></div>
+          </div>
+          <div className="dual-actions"><a className="dark-button" href="/quote">Get a Free Quote <Arrow /></a><a className="phone-link dark-phone" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
+        </div>
+      </section>
 
-    <section className="home-reviews">
-      <div className="review-intro-band">
-        <span className="review-intro-label">Testimonials</span>
-        <p>We’ve helped thousands of South Florida homeowners stay ready. Their trust and referrals are our reward.</p>
-      </div>
-    <div className="home-review-showcase">
-      <div className="home-review-aside">
-        <Image className="home-review-person" src="/pics/guy.png" width={1198} height={1313} alt="Total Power technician" />
-        <div className="home-review-aside-copy"><strong className="home-review-score">4.9</strong><h2>Trusted by South Florida homeowners—and recommended neighbor to neighbor.</h2><div className="home-review-arrows"><button type="button" aria-label="Previous testimonial" onClick={() => moveReviews(-1)}><ChevronLeft /></button><button type="button" aria-label="Next testimonial" onClick={() => moveReviews(1)}><ChevronRight /></button></div></div>
-      </div>
-      <div className="home-review-rail" ref={reviewRailRef} onScroll={loopReviews}>
-        {[...testimonials, ...testimonials, ...testimonials].map(([quote,person], index)=><article key={`${person}-${index}`}><div><strong>5.0</strong><span aria-label="Five stars">★★★★★</span></div><blockquote>{quote}</blockquote><footer><Image src={`/avatars/avatar-${index % 3 + 1}.jpg`} alt="" width={52} height={52} /><p><b>{person}</b><small>Placeholder testimonial</small></p></footer></article>)}
-      </div>
-    </div>
-    </section>
+      <section className="plans-section">
+        <div className="plans-copy">
+          <div className="section-kicker">Maintenance</div>
+          <h2>Installed once.<br /><span>Ready every time.</span></h2>
+          <p>Scheduled service, written response times and local technicians who already know your system.</p>
+          <div className="plans-proof"><span><b>24/7</b> monitoring available</span><span><b>8 hr</b> fastest response</span></div>
+          <Link className="primary-cta" href="/maintenance">Choose Your Plan <Arrow /></Link>
+        </div>
+        <div className="plans-visual" aria-hidden="true">
+          <Image src="/generator-detail.png" alt="" fill sizes="100vw" />
+          <div className="plans-visual-shade" />
+        </div>
+        <div className="plan-cards">
+          {[
+            { name: "Total Essentials", label: "Annual check-up", price: "$350/yr", response: "24-hour response", feature: "1 scheduled visit", features: ["Annual system inspection", "Battery and fluid check", "Transfer-switch test", "24-hour response"], Icon: Wrench },
+            { name: "Total Care", label: "Year-round confidence", price: "$625/yr", response: "12-hour response", feature: "2 scheduled visits", features: ["Two scheduled visits", "Everything in Essentials", "Priority scheduling", "12-hour response"], Icon: Clock3 },
+            { name: "Total Protect", label: "Complete protection", price: "$1,050/yr", response: "8-hour response", feature: "Monitoring included", features: ["Two scheduled visits", "Remote monitoring included", "Priority technical support", "8-hour response"], Icon: ShieldCheck, featured: true },
+          ].map(({ name, label, price, response, feature, features, Icon, featured }, index) => (
+            <article className={featured ? "featured-plan" : ""} key={name}>
+              <span className="plan-number">0{index + 1}</span>
+              {featured && <span className="plan-recommended">Most complete</span>}
+              <Icon className="plan-icon" aria-hidden="true" />
+              <div className="plan-card-copy"><span>{label}</span><h3>{name}</h3><div><b>{price}</b><small>{response} · {feature}</small></div></div>
+              <Link href="/maintenance" aria-label={`View ${name}`}>View plan <Arrow /></Link>
+              <div className="plan-features"><span>What&apos;s included</span><ul>{features.map((item) => <li key={item}>{item}</li>)}</ul></div>
+            </article>
+          ))}
+        </div>
+      </section>
 
-    <div className="closing-band"><section className="closing-section">
-      <Image className="closing-background" src={ctaSectionImage} alt="A Total Power technician arriving at a South Florida home before a storm" fill sizes="100vw" />
-      <div className="closing-shade" />
-      <div className="closing-content">
-        <span className="closing-rule" aria-hidden="true" />
-        <h2>Call us on a<br />sunny day.</h2>
-        <h3 className="closing-response">Thank yourself<br />in a storm.</h3>
-        <p>Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear.</p>
-        <div className="dual-actions light-actions"><a className="primary-cta" href="/quote">Get a Free Quote <Arrow /></a><a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
-      </div>
-    </section><div className="closing-person" aria-hidden="true"><Image src="/pics/cta.png" alt="" width={575} height={977} /></div></div>
+      <section className="crew-mosaic-section" aria-label="The crew, monitoring, and financing">
+        <div className="feature-suite-header">
+          <div className="section-kicker">Why Total Power</div>
+          <h2>One team. Complete<br /><span>power confidence.</span></h2>
+          <p>From the people who install your system to the tools that keep it ready, everything works together under one roof.</p>
+        </div>
 
-    <footer className="site-footer">
-      <div className="footer-lead">
-        <Link className="brand footer-brand" href="/" aria-label="Total Power Generators home"><Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} /></Link>
-        <p>Total Power &amp; Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p>
-      </div>
-      <div className="footer-column"><b>Explore</b><Link href="/generators">Generators</Link><Link href="/installation">Installation</Link><Link href="/maintenance">Maintenance</Link><Link href="/financing">Financing</Link><Link href="/service-area">Service Area</Link><Link href="/about">About</Link><Link href="/builders">Builders</Link><Link href="/faq">FAQ</Link></div>
-      <div className="footer-column"><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:hello@totalpowergenerators.com">hello@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service &amp; Repair</Link></div>
-      <small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power &amp; Gas Contractors</small>
-    </footer>
+        <div className="feature-suite-grid">
+          <article className="mosaic-card feature-suite-card feature-suite-crew" id="about">
+            <div className="feature-suite-visual">
+              <Image src={reviewImage} alt="A Total Power specialist meeting with South Florida homeowners" fill sizes="(max-width: 900px) 100vw, 34vw" />
+              <div className="feature-suite-image-shade" />
+              <span className="feature-suite-badge">10–15 years together</span>
+            </div>
+            <div className="feature-suite-copy">
+              <span className="feature-suite-number">The crew</span>
+              <h3>One crew.<br />Start to finish.</h3>
+              <p>Our licensed gas and electrical team handles the entire installation, with one company accountable from quote to walkthrough.</p>
+              <Link href="/about">Meet the crew <Arrow /></Link>
+            </div>
+          </article>
+
+          <article className="mosaic-card feature-suite-card feature-suite-connected">
+            <div className="feature-suite-visual">
+              <Image className="feature-suite-phone-image" src="/pics/phone.png" alt="A homeowner checking their generator status on a phone" fill sizes="(max-width: 900px) 100vw, 34vw" />
+            </div>
+            <div className="feature-suite-copy">
+              <span className="feature-suite-number">Stay connected</span>
+              <h3>Your generator.<br />In your pocket.</h3>
+              <p>Check its status anytime. With monitoring, our team sees alerts too and can reach out before you need to call.</p>
+              <Link href="/maintenance">See monitoring plans <Arrow /></Link>
+            </div>
+          </article>
+
+          <article className="mosaic-card feature-suite-card feature-suite-finance" id="financing">
+            <div className="feature-suite-visual">
+              <div className="finance-preview">
+                <span>Flexible financing</span>
+                <strong>Power now.<br />Pay monthly.</strong>
+                <div><small>Simple application</small><b>Minutes, not days</b></div>
+                <div><small>Payment options</small><b>Built for your budget</b></div>
+              </div>
+            </div>
+            <div className="feature-suite-copy">
+              <span className="feature-suite-number">Financing</span>
+              <h3>A better way<br />to get ready.</h3>
+              <p>Turn a one-time investment into a monthly payment that fits your plans. Checking your options only takes a few minutes.</p>
+              <a href="#quote">See your monthly payment <Arrow /></a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section className="home-reviews">
+        <div className="review-intro-band">
+          <span className="review-intro-label">Testimonials</span>
+          <p>We’ve helped thousands of South Florida homeowners stay ready. Their trust and referrals are our reward.</p>
+        </div>
+        <div className="home-review-showcase">
+          <div className="home-review-aside">
+            <Image className="home-review-person" src="/pics/guy.png" width={1198} height={1313} alt="Total Power technician" />
+            <div className="home-review-aside-copy"><strong className="home-review-score">4.9</strong><h2>Trusted by South Florida homeowners—and recommended neighbor to neighbor.</h2><div className="home-review-arrows"><button type="button" aria-label="Previous testimonial" onClick={() => moveReviews(-1)}><ChevronLeft /></button><button type="button" aria-label="Next testimonial" onClick={() => moveReviews(1)}><ChevronRight /></button></div></div>
+          </div>
+          <div className="home-review-rail" ref={reviewRailRef} onScroll={loopReviews}>
+            {[...testimonials, ...testimonials, ...testimonials].map(([quote, person], index) => <article key={`${person}-${index}`}><div><strong>5.0</strong><span aria-label="Five stars">★★★★★</span></div><blockquote>{quote}</blockquote><footer><Image src={`/avatars/avatar-${index % 3 + 1}.jpg`} alt="" width={52} height={52} /><p><b>{person}</b><small>Placeholder testimonial</small></p></footer></article>)}
+          </div>
+        </div>
+      </section>
+
+      <div className="closing-band"><section className="closing-section">
+        <Image className="closing-background" src={ctaSectionImage} alt="A Total Power technician arriving at a South Florida home before a storm" fill sizes="100vw" />
+        <div className="closing-shade" />
+        <div className="closing-content">
+          <span className="closing-rule" aria-hidden="true" />
+          <h2>Call us on a<br />sunny day.</h2>
+          <h3 className="closing-response">Thank yourself<br />in a storm.</h3>
+          <p>Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear.</p>
+          <div className="dual-actions light-actions"><a className="primary-cta" href="/quote">Get a Free Quote <Arrow /></a><a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
+        </div>
+      </section><div className="closing-person" aria-hidden="true"><Image src="/pics/cta.png" alt="" width={575} height={977} /></div></div>
+
+      <footer className="site-footer">
+        <div className="footer-lead">
+          <Link className="brand footer-brand" href="/" aria-label="Total Power Generators home"><Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} /></Link>
+          <p>Total Power &amp; Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p>
+        </div>
+        <div className="footer-column"><b>Explore</b><Link href="/generators">Generators</Link><Link href="/installation">Installation</Link><Link href="/maintenance">Maintenance</Link><Link href="/financing">Financing</Link><Link href="/service-area">Service Area</Link><Link href="/about">About</Link><Link href="/builders">Builders</Link><Link href="/faq">FAQ</Link></div>
+        <div className="footer-column"><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:hello@totalpowergenerators.com">hello@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service &amp; Repair</Link></div>
+        <small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power &amp; Gas Contractors</small>
+      </footer>
     </main>
   );
 }

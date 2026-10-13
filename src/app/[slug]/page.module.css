@@ -1585,3 +1585,363 @@
   .crewCards article:nth-child(n) { margin-top: 0; }
   .installationPage .processSection .sectionIntro { margin-bottom: 40px; }
 }
+
+/* Financing section contrast: light process first, dark editorial split second. */
+.financingPage .listSection.dark {
+  background: #f1f0e9;
+  color: var(--navy);
+}
+.financingPage .listSection.dark .sectionIntro h2 {
+  color: var(--navy);
+}
+.financingPage .listSection.dark .itemGrid article,
+.financingPage .listSection.dark .itemGrid article:nth-child(n) {
+  border: 1px solid #d7d5cc !important;
+  background: #faf9f4 !important;
+  color: var(--navy);
+}
+.financingPage .listSection.dark .itemGrid article > p strong {
+  color: var(--navy);
+}
+.financingPage .listSection.dark .itemGrid article > p small {
+  color: #59676d;
+}
+.financingPage .sideImageSection {
+  background: var(--navy);
+  color: #fff;
+}
+.financingPage .sideImageSection .sectionIntro h2 {
+  color: #fff;
+}
+.financingPage .sideImageSection .sectionIntro p {
+  color: #b9c3c7;
+}
+
+/* Service area: live Google map with a branded South Florida locator. */
+.serviceMapSection {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(250px,.62fr) minmax(520px,1.38fr);
+  column-gap: clamp(36px,5vw,84px);
+  row-gap: 26px;
+  padding: clamp(90px,10vw,150px) clamp(24px,6vw,100px);
+  overflow: hidden;
+  background: var(--navy);
+  color: #fff;
+}
+.serviceMapIntro {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+}
+.serviceMapIntro > span,
+.mapStatus span {
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.serviceMapIntro h2 {
+  margin: 18px 0 25px;
+  font-size: clamp(50px,6vw,94px);
+  font-weight: 550;
+  line-height: .88;
+  letter-spacing: -.06em;
+}
+.serviceMapIntro h2 em {
+  color: var(--orange);
+  font-style: normal;
+}
+.serviceMapIntro p {
+  max-width: 470px;
+  color: #aebac0;
+  font-size: clamp(17px,1.4vw,21px);
+  line-height: 1.55;
+}
+.serviceMapFrame {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  position: relative;
+  min-height: clamp(520px,52vw,760px);
+  overflow: hidden;
+  background: #10232d;
+  clip-path: polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px);
+}
+.serviceMapFrame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: grayscale(1) invert(.88) hue-rotate(155deg) saturate(1.6) contrast(1.12) brightness(.78);
+}
+.mapGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 70% 45%,rgba(255,90,31,.28),transparent 23%),linear-gradient(90deg,rgba(4,17,30,.25),transparent 38%);
+  mix-blend-mode: screen;
+}
+.mapMarkers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.mapMarker {
+  --marker-line: clamp(72px,8vw,132px);
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: min(44%,330px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  pointer-events: auto;
+  text-align: left;
+  transform: translateY(-50%);
+  filter: drop-shadow(0 5px 18px rgba(0,0,0,.65));
+}
+.mapMarker0 { left: 61%; top: 72%; }
+.mapMarker1 { left: 64%; top: 50%; }
+.mapMarker2 { left: 68%; top: 28%; }
+.mapMarkerIcon {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 clamp(52px,5vw,78px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle,#3a261d 20%,rgba(255,90,31,.78) 62%,rgba(255,90,31,0) 72%);
+  transform: translateX(-50%);
+  transition: transform .25s ease;
+}
+.mapMarkerIcon img {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+}
+.mapMarkerLine {
+  width: var(--marker-line);
+  height: 2px;
+  margin-left: -4px;
+  background: var(--orange);
+  transform: rotate(-13deg);
+  transform-origin: left center;
+}
+.mapMarker strong {
+  position: absolute;
+  left: calc(clamp(52px,5vw,78px) + var(--marker-line) - 6px);
+  bottom: calc(50% + 10px);
+  width: max-content;
+  max-width: 185px;
+  font-size: clamp(10px,.95vw,14px);
+  letter-spacing: .13em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-shadow: 0 2px 12px #04111e;
+}
+.mapMarker strong small {
+  display: block;
+  margin-top: 7px;
+  color: #aebac0;
+  font-size: .78em;
+  letter-spacing: .1em;
+}
+.mapMarker:hover .mapMarkerIcon,
+.activeMapMarker .mapMarkerIcon { transform: translateX(-50%) scale(1.13); }
+.activeMapMarker strong { color: #fff; }
+.activeMapMarker .mapMarkerLine { height: 3px; }
+.mapStatus {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  align-items: center;
+  gap: 14px;
+  min-width: 280px;
+  padding: 18px 20px;
+  background: var(--navy);
+}
+.mapStatus > img { width: 48px; height: 48px; object-fit: contain; }
+.mapStatus > div { display: flex; flex-direction: column; gap: 5px; }
+.mapStatus strong { font-size: 17px; }
+.serviceLocations {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: #30414a;
+}
+.serviceLocations button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 15px;
+  min-height: 112px;
+  padding: 20px;
+  border: 0;
+  background: #10232d;
+  color: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: background .25s ease,color .25s ease;
+}
+.serviceLocations button:hover,
+.serviceLocations .activeLocation {
+  background: var(--orange);
+}
+.serviceLocations button > span:first-child { display: flex; flex-direction: column; gap: 7px; }
+.serviceLocations strong { font-size: clamp(15px,1.25vw,19px); text-transform: uppercase; }
+.serviceLocations small { color: #91a0a7; font-size: 11px; }
+.serviceLocations .activeLocation small { color: #fff; }
+.serviceLocations i { font-style: normal; font-size: 20px; }
+.mapAreaLink {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--orange);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.mapAreaLink span { color: var(--orange); font-size: 20px; }
+
+@media(max-width:950px) {
+  .serviceMapSection { grid-template-columns: 1fr; }
+  .serviceMapIntro,
+  .serviceMapFrame,
+  .serviceLocations,
+  .mapAreaLink { grid-column: 1; grid-row: auto; }
+}
+@media(max-width:600px) {
+  .serviceMapSection { padding: 80px 22px; }
+  .serviceMapFrame { min-height: 520px; }
+  .serviceLocations { grid-template-columns: 1fr; }
+  .serviceLocations button { min-height: 94px; }
+  .mapStatus { right: 12px; bottom: 12px; left: 12px; min-width: 0; }
+  .mapMarker { --marker-line: 42px; width: 42%; }
+  .mapMarker0 { left: 57%; }
+  .mapMarker1 { left: 60%; }
+  .mapMarker2 { left: 63%; }
+  .mapMarker strong { left: calc(52px + var(--marker-line) - 6px); max-width: 100px; font-size: 8px; }
+}
+
+/* Service-area address check: a compact, useful close to the map. */
+.serviceCheckSection {
+  display: grid;
+  grid-template-columns: minmax(0,.95fr) minmax(420px,.75fr);
+  align-items: center;
+  gap: clamp(50px,9vw,150px);
+  padding: clamp(88px,10vw,145px) clamp(24px,9vw,150px);
+  background: #f1f0e9;
+  color: var(--navy);
+}
+.serviceCheckCopy > span,
+.serviceCheckCard > span {
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.serviceCheckCopy h2 {
+  max-width: 760px;
+  margin: 16px 0 24px;
+  font-size: clamp(54px,6.4vw,102px);
+  font-weight: 550;
+  line-height: .9;
+  letter-spacing: -.06em;
+}
+.serviceCheckCopy p {
+  max-width: 640px;
+  margin: 0;
+  color: #59676d;
+  font-size: clamp(17px,1.4vw,21px);
+  line-height: 1.55;
+}
+.serviceCheckCard {
+  position: relative;
+  min-height: 430px;
+  padding: clamp(34px,4vw,58px);
+  overflow: hidden;
+  background: var(--orange);
+  color: #fff;
+  clip-path: polygon(24px 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%,0 24px);
+}
+.serviceCheckCard > span { color: var(--navy); }
+.serviceCheckIcon {
+  position: absolute;
+  top: 34px;
+  right: 36px;
+  width: 52px;
+  color: var(--navy);
+}
+.serviceCheckIcon svg { width: 100%; stroke-width: 1.4; }
+.serviceCheckCard h3 {
+  max-width: 420px;
+  margin: 64px 0 48px;
+  font-size: clamp(31px,3vw,48px);
+  font-weight: 600;
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+.serviceCheckCard label {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.serviceCheckField {
+  display: grid;
+  grid-template-columns: 1fr 58px;
+  min-height: 58px;
+  background: #fff;
+}
+.serviceCheckField input {
+  min-width: 0;
+  padding: 0 18px;
+  border: 0;
+  outline: 0;
+  background: #fff;
+  color: var(--navy);
+  font: inherit;
+  font-size: 15px;
+}
+.serviceCheckField button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: var(--navy);
+  color: #fff;
+  cursor: pointer;
+}
+.serviceCheckField button svg { width: 20px; }
+.serviceCheckCard small {
+  display: block;
+  margin-top: 16px;
+  color: rgba(4,17,30,.72);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media(max-width:900px) {
+  .serviceCheckSection { grid-template-columns: 1fr; }
+  .serviceCheckCard { min-height: 390px; }
+}
+@media(max-width:600px) {
+  .serviceCheckSection { padding: 78px 22px; gap: 42px; }
+  .serviceCheckCard { min-height: 370px; padding: 30px 24px; }
+  .serviceCheckIcon { top: 26px; right: 24px; width: 44px; }
+}
