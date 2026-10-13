@@ -133,13 +133,9 @@ export const pages: Record<string, PageContent> = {
     sections: [{ kicker: "Our reputation", title: "Our best advertising lives next door.", body: "Most of our business comes from referrals. Ask our team for recent references from homeowners near you.", variant: "dark" }],
   },
   builders: {
-    eyebrow: "Builders & trade partners", title: "Built in. Ready to sell.", cta: "Talk to Our Builder Team",
-    intro: "We plan, install and support standby power for South Florida builders.",
-    sections: [
-      { kicker: "Why it matters", title: "Backup power is a feature buyers notice.", body: "In South Florida, buyers ask about it. A standby generator built into the plan adds value to the listing and saves the new owner a project after move-in." },
-      { kicker: "How we work", title: "On your schedule. To your spec.", items: ["Generator sizing and specs from your plans", "Coordination from rough-in to final", "Gas and electrical connections by our licensed crew", "Permits and inspections, handled", "Start-up, testing and warranty registration", "Maintenance and service after move-in"], variant: "dark" },
-      { kicker: "Electricians", title: "Partner with us on the generator.", body: "We supply the unit, run the gas, handle the permits and back the install with factory-trained service." },
-    ],
+    eyebrow: "For builders", title: "Build it in. Sell it ready.", cta: "Talk to Our Builder Team",
+    intro: "We partner with builders, developers and contractors to spec, install and permit standby power on your schedule, so every home closes ready for the next storm.",
+    sections: [],
   },
   faq: {
     eyebrow: "Frequently asked questions", title: "Good questions. Straight answers.",

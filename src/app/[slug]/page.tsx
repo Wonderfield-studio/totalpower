@@ -76,6 +76,52 @@ function GeneratorContent() {
   </>;
 }
 
+const builderBenefits = [
+  ["01", "Builder pricing.", "Wholesale or volume pricing on equipment and installs."],
+  ["02", "One dedicated contact.", "A single person managing every lot and every project."],
+  ["03", "Spec support.", "Generator sizing and load calculations from your plans."],
+  ["04", "On your timeline.", "Gas and electrical rough-in coordinated with your GC, with the final install timed to your closing."],
+  ["05", "Permits, handled.", "Filing, inspections and follow-up with the city, done by Total Power."],
+  ["06", "After closing.", "Warranty registration before handover, and maintenance plans offered to the homeowner."],
+];
+
+function BuilderContent() {
+  return <>
+    <section data-reveal className={styles.builderProgram}>
+      <div className={styles.builderProgramIntro}>
+        <span>One partner. Every lot.</span>
+        <h2>Standby power,<br /><em>built into the plan.</em></h2>
+        <p>From first takeoff to homeowner handover, one local team keeps equipment, trades, permits and inspections moving with the build.</p>
+      </div>
+      <div className={styles.builderBenefits}>
+        {builderBenefits.map(([number, title, copy]) => <article key={title}>
+          <span>{number}</span>
+          <div><h3>{title}</h3><p>{copy}</p></div>
+        </article>)}
+      </div>
+    </section>
+
+    <section data-reveal id="builder-inquiry" className={styles.builderInquiry}>
+      <div className={styles.builderInquiryIntro}>
+        <span>Builder inquiry</span>
+        <h2>Tell us what<br />you’re building.</h2>
+        <p>Share the basics and our builder team will follow up to talk plans, pricing and schedule.</p>
+        <a href="tel:+13054719010">Prefer to call? <strong>(305) 471-9010</strong></a>
+      </div>
+      <form className={styles.builderForm}>
+        <label>Full name<input required name="name" autoComplete="name" /></label>
+        <label>Company<input required name="company" autoComplete="organization" /></label>
+        <label>Email<input required type="email" name="email" autoComplete="email" /></label>
+        <label>Phone<input required type="tel" name="phone" autoComplete="tel" /></label>
+        <label>Project location<input name="location" autoComplete="street-address" /></label>
+        <label>Homes or lots<input name="project-size" inputMode="numeric" /></label>
+        <label className={styles.builderFormWide}>Project notes <span>(optional)</span><textarea name="notes" rows={4} placeholder="Timeline, plan stage or anything else we should know" /></label>
+        <button type="submit">Talk to Our Builder Team <Arrow /></button>
+      </form>
+    </section>
+  </>;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params; const page = pages[slug];
   if (!page) return { robots: { index: false, follow: false } };
@@ -93,15 +139,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function InteriorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params; const page = pages[slug]; if (!page) notFound();
-  const heroPhoto = slug === "generators" ? "/hero/WHEN THE GRID STOPS. YOUR HOME DOESN’T.png" : slug === "installation" ? "/hero/ONE CREW. START TO FINISH.png" : slug === "financing" ? "/hero/Financing POWER NOW. PAY OVER TIME.png" : slug === "service-area" ? "/hero/service-area.png" : slug === "about" ? "/hero/about.png" : slug === "builders" ? "/hero-builders.png" : slug === "quote" ? "/hero-quote.png" : photos[0];
+  const heroPhoto = slug === "generators" ? "/hero/WHEN THE GRID STOPS. YOUR HOME DOESN’T.png" : slug === "installation" ? "/hero/ONE CREW. START TO FINISH.png" : slug === "financing" ? "/hero/Financing POWER NOW. PAY OVER TIME.png" : slug === "service-area" ? "/hero/service-area.png" : slug === "about" ? "/hero/about.png" : slug === "builders" ? "/hero/builders.png" : slug === "quote" ? "/hero-quote.png" : photos[0];
   const heroAlt = slug === "generators" ? "A standby generator protecting a South Florida waterfront home after a storm" : slug === "financing" ? "A South Florida home with financing available for standby generator installation" : slug === "service-area" ? "Aerial view of South Florida coastal communities served by Total Power" : slug === "about" ? "The Total Power generator installation crew at a South Florida home" : slug === "builders" ? "Builder and generator specialists coordinating a South Florida home project" : slug === "quote" ? "A Total Power specialist meeting homeowners for a generator assessment" : "Total Power crew serving a South Florida home";
   return <main className={`${styles.page} ${styles.secondaryPage} ${manropeExtraBold.variable} ${slug === "generators" ? styles.generatorPage : ""} ${slug === "service-area" ? styles.serviceAreaPage : ""} ${slug === "builders" ? styles.buildersPage : ""} ${slug === "quote" ? styles.quotePage : ""} ${slug === "financing" ? styles.financingPage : ""} ${slug === "about" ? styles.aboutPage : ""} ${slug === "installation" ? styles.installationPage : styles.standardPage}`}>
     <InteriorEffects />
     <Header activeSlug={slug} />
-    <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt={heroAlt} /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits.<br />One team handles it all.</> : page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : "/quote"}>{slug === "financing" ? <>Apply with <Image className={styles.partnerLogo} src="/synchronyX.png" width={524} height={116} alt="Synchrony" /></> : page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
+    <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt={heroAlt} /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits.<br />One team handles it all.</> : page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : slug === "builders" ? "#builder-inquiry" : "/quote"}>{slug === "financing" ? <>Apply with <Image className={styles.partnerLogo} src="/synchronyX.png" width={524} height={116} alt="Synchrony" /></> : page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
     {slug === "quote" && <div id="quote-form"><QuoteForm /></div>}
     {slug === "generators" && <GeneratorContent />}
-    {slug !== "generators" && page.sections.map((section, index) => {
+    {slug === "builders" && <BuilderContent />}
+    {slug !== "generators" && slug !== "builders" && page.sections.map((section, index) => {
       if (slug === "service-area" && index === 0) {
         return <ServiceAreaMap key={section.title} />;
       }
@@ -190,9 +237,9 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
         </section>
       );
     })}
-    <div className={styles.closingWrapper}>
+    {slug !== "builders" && <div className={styles.closingWrapper}>
       <section data-reveal className={styles.closing}><Image data-parallax src="/pics/cta-section.png" fill sizes="100vw" alt="Total Power technician arriving at a South Florida home" /><div className={styles.closingShade} /><div className={styles.closingInner}><i /><h2>{slug === "generators" ? "Start with a free in-home assessment." : "Call us on a sunny day."}</h2><h3>{slug === "generators" ? "No obligation. Just expert advice." : "Thank yourself in a storm."}</h3><p>{slug === "generators" ? "We’ll visit your home, understand what you want to keep powered and recommend the right system for your home, fuel and budget." : "Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear."}</p><div><Link href="/quote">Get a Free Quote <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div></div></section><div className={styles.closingPerson} aria-hidden="true"><Image src="/pics/cta.png" alt="" width={575} height={977} /></div>
-    </div>
+    </div>}
     <Footer />
   </main>;
 }
