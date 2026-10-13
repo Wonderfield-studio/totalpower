@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Manrope } from "next/font/google";
 import Lenis from "lenis";
+import { ChevronLeft, ChevronRight, Clock3, ShieldCheck, Wrench } from "lucide-react";
 import installationImage from "../../public/pics/image-1791572987018.png";
 import generatorImage from "../../public/pics/image-1791573187812.png";
 import reviewImage from "../../public/pics/image-1791573216228.png";
@@ -15,6 +16,13 @@ const manropeExtraBold = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope-extra-bold",
 });
+
+const testimonials = [
+  ["Clear communication from the first visit through final testing. The team explained the options, kept the project moving and made every step easy to understand.", "Miami-Dade homeowner"],
+  ["One local team coordinated the generator, gas, electrical work and permits. We always knew who to call and what would happen next.", "Broward homeowner"],
+  ["The installation was carefully planned around our home and completed with close attention to the details that mattered to us.", "South Florida homeowner"],
+  ["From the assessment to the final walkthrough, the process felt organized, responsive and handled by people who knew the work.", "Local homeowner"],
+];
 
 const Arrow = () => (
   <svg aria-hidden="true" viewBox="0 0 24 24" className="arrow-icon">
@@ -34,6 +42,7 @@ const RevealWords = ({ text, offset = 0, accentLastPunctuation = false }: { text
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const finalVideoRef = useRef<HTMLVideoElement>(null);
+  const reviewRailRef = useRef<HTMLDivElement>(null);
   const hasStartedRef = useRef(false);
   const [heroVariant, setHeroVariant] = useState<"cinematic" | "panel" | "centered" | "fullbleed">("fullbleed");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -43,6 +52,30 @@ export default function Home() {
   const syncCopyToVan = (currentTime: number) => {
     setVanIsArriving(currentTime >= 3);
   };
+
+  const moveReviews = (direction: -1 | 1) => {
+    const rail = reviewRailRef.current;
+    if (!rail) return;
+    rail.scrollBy({ left: direction * 360, behavior: "smooth" });
+  };
+
+  const loopReviews = () => {
+    const rail = reviewRailRef.current;
+    if (!rail) return;
+    const segment = rail.scrollWidth / 3;
+    if (rail.scrollLeft < segment * .25) rail.scrollLeft += segment;
+    else if (rail.scrollLeft > segment * 1.75) rail.scrollLeft -= segment;
+  };
+
+  useEffect(() => {
+    const rail = reviewRailRef.current;
+    if (!rail) return;
+    const placeInMiddle = () => { rail.scrollLeft = rail.scrollWidth / 3; };
+    placeInMiddle();
+    const resizeObserver = new ResizeObserver(placeInMiddle);
+    resizeObserver.observe(rail);
+    return () => resizeObserver.disconnect();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -113,7 +146,7 @@ export default function Home() {
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const revealTargets = document.querySelectorAll<HTMLElement>(
-      ".site-shell > section:not(.hero):not(.intro-section), .site-shell > aside, .service-card, .process-row, .plan-cards article, .mosaic-card, .review-image-card, .review-copy-card, .site-footer",
+      ".site-shell > section:not(.hero):not(.intro-section) > *:not(.closing-background):not(.closing-shade), .site-shell > aside > *, .service-card, .process-row, .plan-cards article, .mosaic-card, .review-image-card, .review-copy-card, .site-footer > *",
     );
     const introSection = document.querySelector<HTMLElement>(".intro-section");
 
@@ -304,13 +337,21 @@ export default function Home() {
       <div className="plans-copy">
         <div className="section-kicker">Maintenance</div>
         <h2>Installed once.<br />Ready every time.</h2>
-        <p>A generator sits quiet for months, then has to work perfectly the day it’s needed. Our maintenance plans make sure it does.</p>
-        <p className="placeholder-copy"><em>[Plan details to come from Donald]</em></p>
+        <p>Scheduled service, written response times and local technicians who already know your system.</p>
+        <div className="plans-proof"><span><b>24/7</b> monitoring available</span><span><b>8 hr</b> fastest response</span></div>
         <a className="primary-cta" href="/maintenance">Choose Your Plan <Arrow /></a>
       </div>
       <div className="plan-cards">
-        {["Total Essentials", "Total Care", "Total Protect"].map((name) => (
-          <article key={name}><h3>{name}</h3><Arrow /></article>
+        {[
+          { name:"Total Essentials", label:"Annual check-up", price:"$350/yr", response:"24-hour response", feature:"1 scheduled visit", Icon:Wrench },
+          { name:"Total Care", label:"Year-round confidence", price:"$625/yr", response:"12-hour response", feature:"2 scheduled visits", Icon:Clock3 },
+          { name:"Total Protect", label:"Complete protection", price:"$1,050/yr", response:"8-hour response", feature:"Monitoring included", Icon:ShieldCheck, featured:true },
+        ].map(({name,label,price,response,feature,Icon,featured}) => (
+          <article className={featured ? "featured-plan" : ""} key={name}>
+            <Icon className="plan-icon" aria-hidden="true" />
+            <div className="plan-card-copy"><span>{label}</span><h3>{name}</h3><div><b>{price}</b><small>{response} · {feature}</small></div></div>
+            <Link href="/maintenance" aria-label={`View ${name}`}><Arrow /></Link>
+          </article>
         ))}
       </div>
     </section>
@@ -352,37 +393,23 @@ export default function Home() {
       </article>
     </section>
 
-    <section className="reviews-section">
-      <div className="reviews-header">
-        <div className="section-kicker">Reviews</div>
-        <h2>Our best advertising<br />lives next door.</h2>
+    <section className="home-reviews">
+      <div className="review-intro-band">
+        <span className="review-intro-label">Testimonials</span>
+        <p>We’ve helped thousands of South Florida homeowners stay ready. Their trust and referrals are our reward.</p>
       </div>
-      <div className="reviews-grid">
-        <article className="review-image-card">
-          <Image src={reviewImage} alt="A Total Power specialist reviewing an approved permit with homeowners" fill sizes="(max-width: 800px) 100vw, 58vw" />
-          <div className="review-image-shade" />
-          <div className="review-image-content">
-            <div className="avatar-stack" aria-hidden="true">
-              <Image className="avatar-img" src="/avatars/avatar-1.jpg" alt="South Florida homeowner" width={53} height={53} />
-              <Image className="avatar-img" src="/avatars/avatar-2.jpg" alt="South Florida homeowner" width={53} height={53} />
-              <Image className="avatar-img" src="/avatars/avatar-3.jpg" alt="South Florida homeowner" width={53} height={53} />
-            </div>
-            <div><strong>Customer stories</strong><span>From South Florida homeowners</span></div>
-          </div>
-        </article>
-        <article className="review-copy-card">
-          <Image className="review-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} />
-          <p>Most of our business comes from referrals. Here’s what your neighbors say.</p>
-          <div className="testimonial-placeholder">
-            <blockquote>“[Customer testimonial to come from Total Power]”</blockquote>
-            <div><strong>[Customer name]</strong><span>[City, FL]</span></div>
-          </div>
-          <div className="review-controls" aria-hidden="true"><button tabIndex={-1}>←</button><span>Testimonials</span><button tabIndex={-1}>→</button></div>
-        </article>
+    <div className="home-review-showcase">
+      <div className="home-review-aside">
+        <Image className="home-review-person" src="/pics/guy.png" width={1198} height={1313} alt="Total Power technician" />
+        <div className="home-review-aside-copy"><strong className="home-review-score">4.9</strong><h2>Trusted by South Florida homeowners—and recommended neighbor to neighbor.</h2><div className="home-review-arrows"><button type="button" aria-label="Previous testimonial" onClick={() => moveReviews(-1)}><ChevronLeft /></button><button type="button" aria-label="Next testimonial" onClick={() => moveReviews(1)}><ChevronRight /></button></div></div>
       </div>
+      <div className="home-review-rail" ref={reviewRailRef} onScroll={loopReviews}>
+        {[...testimonials, ...testimonials, ...testimonials].map(([quote,person], index)=><article key={`${person}-${index}`}><div><strong>5.0</strong><span aria-label="Five stars">★★★★★</span></div><blockquote>{quote}</blockquote><footer><Image src={`/avatars/avatar-${index % 3 + 1}.jpg`} alt="" width={52} height={52} /><p><b>{person}</b><small>Placeholder testimonial</small></p></footer></article>)}
+      </div>
+    </div>
     </section>
 
-    <section className="closing-section">
+    <div className="closing-band"><section className="closing-section">
       <Image className="closing-background" src={ctaSectionImage} alt="A Total Power technician arriving at a South Florida home before a storm" fill sizes="100vw" />
       <div className="closing-shade" />
       <div className="closing-content">
@@ -392,7 +419,7 @@ export default function Home() {
         <p>Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear.</p>
         <div className="dual-actions light-actions"><a className="primary-cta" href="/quote">Get a Free Quote <Arrow /></a><a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
       </div>
-    </section>
+    </section><div className="closing-person" aria-hidden="true"><Image src="/pics/cta.png" alt="" width={575} height={977} /></div></div>
 
     <footer className="site-footer">
       <div className="footer-lead">

@@ -43,9 +43,17 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
   return <main className={`${styles.page} ${styles.secondaryPage} ${manropeExtraBold.variable} ${slug === "financing" ? styles.financingPage : ""} ${slug === "about" ? styles.aboutPage : ""} ${slug === "installation" ? styles.installationPage : styles.standardPage}`}>
     <InteriorEffects />
     <Header />
-    <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt="Total Power crew serving a South Florida home" /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits, all in-house.<br />One team owns your job from the first visit to the final inspection.</> : page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : "/quote"}>{slug === "financing" ? <>Apply with <Image className={styles.partnerLogo} src="/synchronyX.png" width={524} height={116} alt="Synchrony" /></> : page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
+    <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt="Total Power crew serving a South Florida home" /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits.<br />One team handles it all.</> : page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : "/quote"}>{slug === "financing" ? <>Apply with <Image className={styles.partnerLogo} src="/synchronyX.png" width={524} height={116} alt="Synchrony" /></> : page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
     {slug === "quote" && <div id="quote-form"><QuoteForm /></div>}
     {page.sections.map((section, index) => {
+      if (slug === "reviews" && index === 0) {
+        return <section data-reveal key={section.title} className={styles.reviewShowcase}><div className={styles.reviewAside}><Image className={styles.reviewPerson} src="/pics/cta.png" width={575} height={977} alt="Total Power technician" /><div className={styles.reviewAsideCopy}><span>Customer reputation</span><h2>{section.title}</h2><p>{section.body}</p><div className={styles.reviewArrows} aria-hidden="true"><button tabIndex={-1}>←</button><button tabIndex={-1}>→</button></div></div></div><div className={styles.reviewRail}>{[
+          ["Customer story", "Clear communication from the first visit through final testing.", "Miami-Dade homeowner"],
+          ["Customer story", "One local team coordinated the generator, gas, electrical and permits.", "Broward homeowner"],
+          ["Customer story", "Recent homeowner references are available from our team.", "South Florida homeowner"],
+        ].map(([label, quote, person]) => <article key={person}><div><strong>5.0</strong><span aria-label="Five stars">★★★★★</span></div><blockquote>{quote}</blockquote><footer><i>{person.slice(0,1)}</i><p><b>{person}</b><small>{label}</small></p></footer></article>)}</div></section>;
+      }
+
       if (section.features && section.features.length > 0) {
         return (
           <section data-reveal key={section.title} className={`${styles.section} ${styles.featuresSection} ${slug === "installation" ? styles.installationFeatures : ""}`}>
@@ -102,7 +110,7 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
       );
     })}
     <div className={styles.closingWrapper}>
-      <section data-reveal className={styles.closing}><Image data-parallax src="/pics/cta-section.png" fill sizes="100vw" alt="Total Power technician arriving at a South Florida home" /><div className={styles.closingShade} /><div className={styles.closingInner}><i /><h2>Call us on a sunny day.</h2><h3>Thank yourself in a storm.</h3><p>Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear.</p><div><Link href="/quote">Get a Free Quote <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div></div></section>
+      <section data-reveal className={styles.closing}><Image data-parallax src="/pics/cta-section.png" fill sizes="100vw" alt="Total Power technician arriving at a South Florida home" /><div className={styles.closingShade} /><div className={styles.closingInner}><i /><h2>Call us on a sunny day.</h2><h3>Thank yourself in a storm.</h3><p>Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear.</p><div><Link href="/quote">Get a Free Quote <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div></div></section><div className={styles.closingPerson} aria-hidden="true"><Image src="/pics/cta.png" alt="" width={575} height={977} /></div>
     </div>
     <Footer />
   </main>;
