@@ -6152,6 +6152,54 @@ h1 .accent {
   }
 }
 
+/* Shorter supporting-copy measure and a clean, near-full-width CTA banner. */
+.hero-subtitle { max-width: 460px; }
+.intro-copy > p,
+.section-heading > p,
+.plans-copy > p,
+.feature-suite-header > p,
+.closing-content > p { max-width: 560px; }
+
+.closing-band {
+  padding: 18px;
+  overflow: visible;
+  background: var(--cream);
+}
+.closing-section {
+  width: 100%;
+  max-width: none;
+  height: clamp(500px,42vw,590px);
+}
+.closing-person {
+  top: -52px;
+  right: clamp(28px,7vw,120px);
+  bottom: 18px;
+}
+
+@media (max-width: 600px) {
+  .closing-band { padding: 12px; }
+  .closing-section { width: 100%; height: 610px; }
+  .closing-person { top: 18px; right: -16px; bottom: 12px; }
+}
+
+.main-nav a {
+  position: relative;
+  padding-block: 10px;
+}
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 3px;
+  left: 0;
+  height: 2px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s cubic-bezier(.16,1,.3,1);
+}
+.main-nav a.active-nav::after { transform: scaleX(1); }
+
 /* Stable local mark treatment: no cross-section floating element. */
 .intro-section .intro-logomark {
   opacity: 1 !important;

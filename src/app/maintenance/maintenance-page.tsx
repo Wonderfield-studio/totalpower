@@ -79,7 +79,7 @@ export default function MaintenancePage({ fontClassName }: { fontClassName: stri
       <nav className="main-nav" aria-label="Main navigation">
         <Link href="/generators">Generators</Link>
         <Link href="/installation">Installation</Link>
-        <Link href="/maintenance">Maintenance</Link>
+        <Link className="active-nav" aria-current="page" href="/maintenance">Maintenance</Link>
         <Link href="/financing">Financing</Link>
         <Link href="/service-area">Service Area</Link>
         <Link href="/about">About</Link>

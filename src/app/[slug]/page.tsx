@@ -35,8 +35,8 @@ function HeroTitle({ title }: { title: string }) {
   return <>{sentences[1]}<br /><span className={styles.heroTitleSecondary}>{sentences[2]}</span></>;
 }
 
-function Header() {
-  return <header className={styles.header} data-interior-header><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /><Image className={styles.logoColor} src="/logo.svg" width={689} height={240} alt="" aria-hidden="true" priority /></Link><nav>{nav.map(([label, href]) => <Link key={href} href={href}>{label === "Service Area" ? <><span className={styles.fullNavLabel}>Service Area</span><span className={styles.compactNavLabel}>Service</span></> : label}</Link>)}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link><MobileNav /></header>;
+function Header({ activeSlug }: { activeSlug: string }) {
+  return <header className={styles.header} data-interior-header><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /><Image className={styles.logoColor} src="/logo.svg" width={689} height={240} alt="" aria-hidden="true" priority /></Link><nav>{nav.map(([label, href]) => { const active = href === `/${activeSlug}`; return <Link className={active ? styles.activeNav : undefined} aria-current={active ? "page" : undefined} key={href} href={href}>{label === "Service Area" ? <><span className={styles.fullNavLabel}>Service Area</span><span className={styles.compactNavLabel}>Service</span></> : label}</Link>; })}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link><MobileNav /></header>;
 }
 
 function Footer() {
@@ -45,6 +45,35 @@ function Footer() {
 
 function QuoteForm() {
   return <section className={styles.formSection}><form><div className={styles.formGrid}><label>Name<input required name="name" /></label><label>Phone<input required type="tel" name="phone" /></label><label>Email<input required type="email" name="email" /></label><label>Home address<input required name="address" /></label><label>Fuel<select name="fuel" defaultValue=""><option value="" disabled>Select one</option><option>Natural gas</option><option>Propane</option><option>Not sure</option></select></label><label>I need<select name="need" defaultValue=""><option value="" disabled>Select one</option><option>New install</option><option>Maintenance</option><option>Service</option></select></label><label>Best time to reach you<input name="best-time" /></label><label>Who referred you? <span>(optional)</span><input name="referral" /></label></div><button type="submit">Request My Free Quote <Arrow /></button><p>Or call <a href="tel:+13054719010">(305) 471-9010</a> · <a href="mailto:hello@totalpowergenerators.com">Email our team</a></p></form></section>;
+}
+
+function GeneratorContent() {
+  return <>
+    <section data-reveal className={`${styles.generatorFlow} ${styles.generatorSection}`}>
+      <div className={styles.generatorSectionHead}><span>Why a generator</span><h2>The grid goes down.<br /><em>Your home stays on.</em></h2><p>From hurricanes to everyday outages, backup power keeps your home, family and essentials running safely and automatically.</p></div>
+      <div className={styles.generatorSteps}>
+        {[['switch', 'Automatic protection', 'Detects outages and powers your home within seconds.'], ['electrical', 'Total home coverage', 'Keep your A/C, fridge, internet and more running.'], ['permits', 'Peace of mind', 'Professional installation and long-term local support.']].map(([icon, title, copy]) => <article key={title}><div><FeatureIcon name={icon} /></div><h3>{title}</h3><p>{copy}</p></article>)}
+      </div>
+    </section>
+
+    <section data-reveal className={`${styles.generatorCoverage} ${styles.generatorSection}`}>
+      <div className={styles.generatorSectionHead}><span>Coverage</span><h2>Power everything.<br />Or only what matters.</h2><p>We size the system around your home, your electrical service and how you want to live through an outage—not from a chart over the phone.</p></div>
+      <div className={styles.coverageCards}>
+        <article><Image src="/pics/image-1791573187812.png" fill sizes="(max-width: 800px) 100vw, 50vw" alt="A South Florida family enjoying uninterrupted whole-home power" /><i /><div><b>Whole-home generators</b><h3>Life continues normally.</h3><p>Uninterrupted power for your entire home, central A/C included.</p><Link href="/quote">Explore whole-home power <Arrow /></Link></div></article>
+        <article><Image src="/protected-home.png" fill sizes="(max-width: 800px) 100vw, 50vw" alt="A South Florida home protected during a storm" /><i /><div><b>Essential power solutions</b><h3>The priorities stay powered.</h3><p>Keep the circuits that matter most running through the outage.</p><Link href="/quote">Explore essential power <Arrow /></Link></div></article>
+      </div>
+    </section>
+
+    <section data-reveal className={`${styles.generatorFuel} ${styles.generatorSection}`}>
+      <div className={styles.generatorSectionHead}><span>Fuel options</span><h2>Natural gas<br />or propane.</h2><p>Our licensed gas team handles the complete fuel connection. If your home has natural gas, we tie into the line. If it doesn’t, we size and install the propane system too.</p><Link href="/installation">See how installation works <Arrow /></Link></div>
+      <div className={styles.fuelVisual}><Image src="/generator-detail.png" fill sizes="(max-width: 800px) 100vw, 56vw" alt="A standby generator installed beside a South Florida home" /></div>
+    </section>
+
+    <section data-reveal className={`${styles.generatorBrands} ${styles.generatorSection}`}>
+      <div className={styles.generatorSectionHead}><span>Equipment</span><h2>The right generator.<br /><em>Not just the biggest one.</em></h2><p>We install and service trusted standby systems from Generac and Kohler. As a Generac PowerPro Elite Plus Dealer with factory-trained technicians, we match the equipment to your home, fuel supply and budget.</p></div>
+      <div className={styles.brandProof}><div><strong>Generac</strong><span>PowerPro Elite Plus Dealer</span></div><div><strong>Kohler</strong><span>Installed and serviced locally</span></div><div><strong>Briggs &amp; Stratton</strong><span>Reliable standby power systems</span></div></div>
+    </section>
+  </>;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -64,13 +93,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function InteriorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params; const page = pages[slug]; if (!page) notFound();
-  const heroPhoto = slug === "financing" ? "/pics/financing.png" : slug === "builders" ? photos[2] : slug === "about" ? photos[1] : photos[0];
-  return <main className={`${styles.page} ${styles.secondaryPage} ${manropeExtraBold.variable} ${slug === "financing" ? styles.financingPage : ""} ${slug === "about" ? styles.aboutPage : ""} ${slug === "installation" ? styles.installationPage : styles.standardPage}`}>
+  const heroPhoto = slug === "generators" ? "/hero-generators.png" : slug === "service-area" ? "/hero-service-area.png" : slug === "about" ? "/hero-about.png" : slug === "builders" ? "/hero-builders.png" : slug === "quote" ? "/hero-quote.png" : slug === "financing" ? "/pics/financing.png" : photos[0];
+  const heroAlt = slug === "generators" ? "A standby generator protecting a South Florida waterfront home after a storm" : slug === "service-area" ? "Aerial view of South Florida coastal communities served by Total Power" : slug === "about" ? "The Total Power generator installation crew at a South Florida home" : slug === "builders" ? "Builder and generator specialists coordinating a South Florida home project" : slug === "quote" ? "A Total Power specialist meeting homeowners for a generator assessment" : "Total Power crew serving a South Florida home";
+  return <main className={`${styles.page} ${styles.secondaryPage} ${manropeExtraBold.variable} ${slug === "generators" ? styles.generatorPage : ""} ${slug === "service-area" ? styles.serviceAreaPage : ""} ${slug === "builders" ? styles.buildersPage : ""} ${slug === "quote" ? styles.quotePage : ""} ${slug === "financing" ? styles.financingPage : ""} ${slug === "about" ? styles.aboutPage : ""} ${slug === "installation" ? styles.installationPage : styles.standardPage}`}>
     <InteriorEffects />
-    <Header />
-    <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt="Total Power crew serving a South Florida home" /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits.<br />One team handles it all.</> : page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : "/quote"}>{slug === "financing" ? <>Apply with <Image className={styles.partnerLogo} src="/synchronyX.png" width={524} height={116} alt="Synchrony" /></> : page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
+    <Header activeSlug={slug} />
+    <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt={heroAlt} /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits.<br />One team handles it all.</> : page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : "/quote"}>{slug === "financing" ? <>Apply with <Image className={styles.partnerLogo} src="/synchronyX.png" width={524} height={116} alt="Synchrony" /></> : page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
     {slug === "quote" && <div id="quote-form"><QuoteForm /></div>}
-    {page.sections.map((section, index) => {
+    {slug === "generators" && <GeneratorContent />}
+    {slug !== "generators" && page.sections.map((section, index) => {
       if (slug === "service-area" && index === 0) {
         return <ServiceAreaMap key={section.title} />;
       }
@@ -160,7 +191,7 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
       );
     })}
     <div className={styles.closingWrapper}>
-      <section data-reveal className={styles.closing}><Image data-parallax src="/pics/cta-section.png" fill sizes="100vw" alt="Total Power technician arriving at a South Florida home" /><div className={styles.closingShade} /><div className={styles.closingInner}><i /><h2>Call us on a sunny day.</h2><h3>Thank yourself in a storm.</h3><p>Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear.</p><div><Link href="/quote">Get a Free Quote <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div></div></section><div className={styles.closingPerson} aria-hidden="true"><Image src="/pics/cta.png" alt="" width={575} height={977} /></div>
+      <section data-reveal className={styles.closing}><Image data-parallax src="/pics/cta-section.png" fill sizes="100vw" alt="Total Power technician arriving at a South Florida home" /><div className={styles.closingShade} /><div className={styles.closingInner}><i /><h2>{slug === "generators" ? "Start with a free in-home assessment." : "Call us on a sunny day."}</h2><h3>{slug === "generators" ? "No obligation. Just expert advice." : "Thank yourself in a storm."}</h3><p>{slug === "generators" ? "We’ll visit your home, understand what you want to keep powered and recommend the right system for your home, fuel and budget." : "Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear."}</p><div><Link href="/quote">Get a Free Quote <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div></div></section><div className={styles.closingPerson} aria-hidden="true"><Image src="/pics/cta.png" alt="" width={575} height={977} /></div>
     </div>
     <Footer />
   </main>;

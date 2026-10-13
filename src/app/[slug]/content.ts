@@ -25,8 +25,8 @@ export type PageContent = {
 export const pages: Record<string, PageContent> = {
   generators: {
     eyebrow: "Standby generators",
-    title: "Right-sized for your home.",
-    intro: "We size your generator after seeing your home.",
+    title: "When the grid stops. Your home doesn’t.",
+    intro: "A standby generator sized around your home, installed by one local gas and electrical team.",
     sections: [
       { kicker: "How standby generators work", title: "The power goes out. Yours kicks in.", body: "When the grid goes down, your standby generator automatically detects the outage and restores power to your home. No scrambling, no extension cords, no interruption to what matters.", items: ["Grid drops", "Generator starts", "Power returns"], variant: "dark" },
       { kicker: "Coverage", title: "Power the whole house, or just what matters.", items: ["Whole-home. Everything runs as normal, central A/C included.", "Essentials. The circuits you choose: the fridge, the lights, a zone of A/C, medical equipment."], body: "Not sure which? That’s what the assessment is for." },

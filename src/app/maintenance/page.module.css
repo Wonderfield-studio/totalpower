@@ -639,3 +639,18 @@
   height: 21px;
   stroke-width: 1.7;
 }
+
+.hero .lede,
+.sectionHead > div > p:last-child,
+.monitorIntro .lede,
+.footerMain > div:first-child > p { max-width: 560px; }
+
+.ctaBand {
+  padding: 18px;
+  overflow: visible;
+  background: var(--cream);
+}
+
+@media(max-width:650px) {
+  .ctaBand { padding: 12px; }
+}

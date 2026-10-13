@@ -32,7 +32,7 @@ export function generateStaticParams() { return Object.keys(cities).map((city) =
 function Arrow() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>; }
 
 function Header() {
-  return <header className={styles.header} data-interior-header><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /><Image className={styles.logoColor} src="/logo.svg" width={689} height={240} alt="" aria-hidden="true" priority /></Link><nav>{nav.map(([label, href]) => <Link key={href} href={href}>{label === "Service Area" ? <><span className={styles.fullNavLabel}>Service Area</span><span className={styles.compactNavLabel}>Service</span></> : label}</Link>)}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link><MobileNav /></header>;
+  return <header className={styles.header} data-interior-header><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /><Image className={styles.logoColor} src="/logo.svg" width={689} height={240} alt="" aria-hidden="true" priority /></Link><nav>{nav.map(([label, href]) => { const active = href === "/service-area"; return <Link className={active ? styles.activeNav : undefined} aria-current={active ? "page" : undefined} key={href} href={href}>{label === "Service Area" ? <><span className={styles.fullNavLabel}>Service Area</span><span className={styles.compactNavLabel}>Service</span></> : label}</Link>; })}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link><MobileNav /></header>;
 }
 
 function Footer() {
