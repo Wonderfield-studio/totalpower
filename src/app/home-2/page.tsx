@@ -42,7 +42,7 @@ export default function SecondaryHome() {
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>South Florida&apos;s standby power experts</p>
           <h1>Storms don&apos;t<br />schedule. <em>We do.</em></h1>
-          <p>Home standby generators, installed before you need one.</p>
+          <p>Home standby generators,<br />installed before you need one.</p>
           <div className={styles.heroActions}>
             <Link className={styles.lightButton} href="/quote">Get a Free Quote <Arrow /></Link>
             <a className={styles.phone} href="tel:+13054719010">(305) 471-9010</a>

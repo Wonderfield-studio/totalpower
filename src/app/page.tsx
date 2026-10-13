@@ -312,7 +312,11 @@ export default function Home() {
               <span className="hero-title-line"><RevealWords text="schedule." offset={3} /></span>
               <span className="accent">We do.</span>
             </h1>
-            <p className="hero-subtitle"><RevealWords text="Home standby generators, installed before you need one." offset={4} /></p>
+            <p className="hero-subtitle">
+              <RevealWords text="Home standby generators," offset={4} />
+              <br />
+              <RevealWords text="installed before you need one." offset={7} />
+            </p>
             <div className="action-row" id="quote">
               <Link className="primary-cta" href="/quote">Get a Free Quote <Arrow /></Link>
               <a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a>
