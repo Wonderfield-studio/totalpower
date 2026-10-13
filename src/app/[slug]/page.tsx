@@ -52,7 +52,7 @@ function GeneratorContent() {
     <section data-reveal className={`${styles.generatorFlow} ${styles.generatorSection}`}>
       <div className={styles.generatorSectionHead}><span>Why a generator</span><h2>The grid goes down.<br /><em>Your home stays on.</em></h2><p>From hurricanes to everyday outages, backup power keeps your home, family and essentials running safely and automatically.</p></div>
       <div className={styles.generatorSteps}>
-        {[['switch', 'Automatic protection', 'Detects outages and powers your home within seconds.'], ['electrical', 'Total home coverage', 'Keep your A/C, fridge, internet and more running.'], ['permits', 'Peace of mind', 'Professional installation and long-term local support.']].map(([icon, title, copy]) => <article key={title}><div><FeatureIcon name={icon} /></div><h3>{title}</h3><p>{copy}</p></article>)}
+        {[['Automatic protection', 'Detects outages and powers your home within seconds.'], ['Total home coverage', 'Keep your A/C, fridge, internet and more running.'], ['Peace of mind', 'Professional installation and long-term local support.']].map(([title, copy], index) => <article key={title}><span className={styles.generatorBenefitNumber}>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{copy}</p><Arrow /></article>)}
       </div>
     </section>
 
@@ -93,8 +93,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function InteriorPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params; const page = pages[slug]; if (!page) notFound();
-  const heroPhoto = slug === "generators" ? "/hero-generators.png" : slug === "service-area" ? "/hero-service-area.png" : slug === "about" ? "/hero-about.png" : slug === "builders" ? "/hero-builders.png" : slug === "quote" ? "/hero-quote.png" : slug === "financing" ? "/pics/financing.png" : photos[0];
-  const heroAlt = slug === "generators" ? "A standby generator protecting a South Florida waterfront home after a storm" : slug === "service-area" ? "Aerial view of South Florida coastal communities served by Total Power" : slug === "about" ? "The Total Power generator installation crew at a South Florida home" : slug === "builders" ? "Builder and generator specialists coordinating a South Florida home project" : slug === "quote" ? "A Total Power specialist meeting homeowners for a generator assessment" : "Total Power crew serving a South Florida home";
+  const heroPhoto = slug === "generators" ? "/hero/WHEN THE GRID STOPS. YOUR HOME DOESN’T.png" : slug === "installation" ? "/hero/ONE CREW. START TO FINISH.png" : slug === "financing" ? "/hero/Financing POWER NOW. PAY OVER TIME.png" : slug === "service-area" ? "/hero/service-area.png" : slug === "about" ? "/hero/about.png" : slug === "builders" ? "/hero-builders.png" : slug === "quote" ? "/hero-quote.png" : photos[0];
+  const heroAlt = slug === "generators" ? "A standby generator protecting a South Florida waterfront home after a storm" : slug === "financing" ? "A South Florida home with financing available for standby generator installation" : slug === "service-area" ? "Aerial view of South Florida coastal communities served by Total Power" : slug === "about" ? "The Total Power generator installation crew at a South Florida home" : slug === "builders" ? "Builder and generator specialists coordinating a South Florida home project" : slug === "quote" ? "A Total Power specialist meeting homeowners for a generator assessment" : "Total Power crew serving a South Florida home";
   return <main className={`${styles.page} ${styles.secondaryPage} ${manropeExtraBold.variable} ${slug === "generators" ? styles.generatorPage : ""} ${slug === "service-area" ? styles.serviceAreaPage : ""} ${slug === "builders" ? styles.buildersPage : ""} ${slug === "quote" ? styles.quotePage : ""} ${slug === "financing" ? styles.financingPage : ""} ${slug === "about" ? styles.aboutPage : ""} ${slug === "installation" ? styles.installationPage : styles.standardPage}`}>
     <InteriorEffects />
     <Header activeSlug={slug} />
@@ -170,7 +170,7 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
           {section.variant === "image" && slug !== "about" && <Image data-parallax src={photos[(index + 1) % photos.length]} fill sizes="100vw" alt="Total Power generator installation in South Florida" />}
           <div className={styles.sectionIntro}>
             <span>{section.kicker}</span>
-            <h2>{section.sideImage ? <>When one team<br />owns every trade,<br /><span className={styles.introGradient}>everything fits.</span></> : section.title.includes(". ") ? <>{section.title.split(". ")[0]}.<br />{section.title.split(". ").slice(1).join(". ")}</> : section.title}</h2>
+            <h2>{section.kicker === "The process" ? <><span className={styles.processTitleLead}>Five steps.</span><br /><span className={styles.processTitleAccent}>Zero runaround.</span></> : section.sideImage ? <>When one team<br />owns every trade,<br /><span className={styles.introGradient}>everything fits.</span></> : section.title.includes(". ") ? <>{section.title.split(". ")[0]}.<br />{section.title.split(". ").slice(1).join(". ")}</> : section.title}</h2>
             {section.body && <p>{section.body}</p>}
           </div>
           {slug === "about" && section.variant === "image" && <div className={styles.crewCards} aria-label="Total Power installation crew"><article><Image src="/pics/image-1791573216228.png" fill sizes="(max-width: 800px) 82vw, 22vw" alt="Total Power technician working on a home generator" /></article><article><Image src="/pics/image-1791572987018.png" fill sizes="(max-width: 800px) 82vw, 22vw" alt="Total Power crew member servicing a standby generator" /></article><article><Image src="/pics/image-1791573202813.png" fill sizes="(max-width: 800px) 82vw, 22vw" alt="Total Power crew completing a generator installation" /></article></div>}
@@ -184,7 +184,7 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
               {visual && <Image src={photos[(index + itemIndex) % photos.length]} fill sizes="(max-width: 800px) 100vw, 32vw" alt="Total Power crew at work" />}
               {visual && <i aria-hidden="true" />}
               {isProcess && <span className={styles.processNum}>{String(itemIndex + 1).padStart(2, "0")}</span>}
-              <p>{slug === "financing" ? <><strong>{item.split(". ")[0]}.</strong><small>{item.split(". ").slice(1).join(". ")}</small></> : item}</p>
+              {isProcess ? <><h3>{item.split("|")[0]}</h3><p>{item.split("|")[1]}</p><Arrow /></> : <p>{slug === "financing" ? <><strong>{item.split(". ")[0]}.</strong><small>{item.split(". ").slice(1).join(". ")}</small></> : item}</p>}
             </article>;
           })}</div>}
         </section>

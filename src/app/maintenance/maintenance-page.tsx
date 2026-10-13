@@ -90,7 +90,7 @@ export default function MaintenancePage({ fontClassName }: { fontClassName: stri
     </header>
 
     <section className={styles.hero}>
-      <Image data-parallax src="/generator-detail.png" fill priority sizes="100vw" alt="Standby generator detail" />
+      <Image data-parallax src="/hero/Maintenance. Ready when it matters.png" fill priority sizes="100vw" alt="Total Power generator maintenance technician at a South Florida home" />
       <div className={styles.heroShade} />
       <div className={styles.heroCopy}><p className={styles.kicker}>Maintenance plans</p><h1>Ready when it matters.</h1><p className={styles.lede}>Three plans for year-round confidence.</p><div className={styles.actions}><a className={styles.primary} href="#plans">Choose Your Plan <Arrow /></a><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div>
       <div className={styles.response}><p className={styles.kicker}>Guaranteed response, in writing</p>{plans.map(p => <a href="#plans" key={p.name}><strong>{p.name}</strong><span><b>{p.response}</b> hrs</span></a>)}</div>

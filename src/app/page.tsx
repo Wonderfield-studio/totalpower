@@ -319,9 +319,9 @@ export default function Home() {
             </div>
             <div className="social-proof">
               <div className="avatar-stack" aria-hidden="true">
-                <Image className="avatar-img" src="/avatars/avatar-1.jpg" alt="South Florida homeowner" width={53} height={53} />
-                <Image className="avatar-img" src="/avatars/avatar-2.jpg" alt="South Florida homeowner" width={53} height={53} />
-                <Image className="avatar-img" src="/avatars/avatar-3.jpg" alt="South Florida homeowner" width={53} height={53} />
+                <Image className="avatar-img" src="/avatars/homeowner-1.png" alt="South Florida homeowner" width={53} height={53} />
+                <Image className="avatar-img" src="/avatars/homeowner-2.png" alt="South Florida homeowner" width={53} height={53} />
+                <Image className="avatar-img" src="/avatars/homeowner-3.png" alt="South Florida homeowner" width={53} height={53} />
               </div>
               <p>Trusted by 1,000+<br />South Florida homeowners</p>
             </div>

@@ -3744,7 +3744,7 @@ h1 .accent {
 .feature-suite-header > p {
   max-width: 670px;
   margin: 0 auto;
-  color: rgba(255, 245, 237, .75);
+  color: rgb(255, 245, 237);
   font-size: clamp(16px, 1.3vw, 20px);
   line-height: 1.55;
 }
@@ -6152,6 +6152,17 @@ h1 .accent {
   }
 }
 
+/* Home maintenance-card CTAs stay pill-shaped after all card variants. */
+.site-shell .plans-section .plan-cards article > a {
+  border-radius: 999px !important;
+}
+
+.site-shell .feature-suite-header > p {
+  color: #fff !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
 /* Shorter supporting-copy measure and a clean, near-full-width CTA banner. */
 .hero-subtitle { max-width: 460px; }
 .intro-copy > p,
@@ -6199,6 +6210,11 @@ h1 .accent {
   transition: transform .25s cubic-bezier(.16,1,.3,1);
 }
 .main-nav a.active-nav::after { transform: scaleX(1); }
+
+/* Home promise section: clean white surface. */
+.site-shell .intro-section { background: #fff; }
+
+.plans-section .plan-cards article > a { border-radius: 999px; }
 
 /* Stable local mark treatment: no cross-section floating element. */
 .intro-section .intro-logomark {
@@ -7289,6 +7305,7 @@ h1 .accent {
 .plans-section .plan-cards article > a {
   margin: 18px 0 22px;
   padding: 10px 13px;
+  border-radius: 999px;
   background: #0a1924;
   color: #fff;
 }

@@ -85,7 +85,7 @@ export const pages: Record<string, PageContent> = {
           "Permits, inspections and walkthrough",
         ],
       },
-      { kicker: "The process", title: "Five steps. Zero runaround.", variant: "dark", items: ["Free in-home assessment", "A clear quote", "Permits, handled", "Install day", "Test and walkthrough"] },
+      { kicker: "The process", title: "Five steps. Zero runaround.", variant: "dark", items: ["Free in-home assessment|We size the generator to your home and how you live.", "A clear quote|One price, with financing available if you want it.", "Permits, handled|We file, follow up and coordinate the inspections.", "Install day|Our crew handles placement, gas and every electrical connection.", "Test and walkthrough|We test the system with you and show you exactly how it works."] },
     ],
   },
   maintenance: {
