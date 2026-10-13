@@ -43,6 +43,7 @@ const RevealWords = ({ text, offset = 0, accentLastPunctuation = false }: { text
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const finalVideoRef = useRef<HTMLVideoElement>(null);
+  const fullVideoRef = useRef<HTMLVideoElement>(null);
   const reviewRailRef = useRef<HTMLDivElement>(null);
   const processRailRef = useRef<HTMLDivElement>(null);
   const hasStartedRef = useRef(false);
@@ -51,10 +52,6 @@ export default function Home() {
   const [vanIsArriving, setVanIsArriving] = useState(false);
   const [processProgress, setProcessProgress] = useState(0);
   const solidHero = heroVariant === "panel";
-
-  const syncCopyToVan = (currentTime: number) => {
-    setVanIsArriving(currentTime >= 3);
-  };
 
   const moveReviews = (direction: -1 | 1) => {
     const rail = reviewRailRef.current;
@@ -109,8 +106,60 @@ export default function Home() {
 
   useEffect(() => {
     const hero = heroRef.current;
+    const video = fullVideoRef.current;
+    if (!hero || !video) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let frame = 0;
+    let lastTime = -1;
+
+    const syncVideoToScroll = () => {
+      frame = 0;
+
+      if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+
+      if (reducedMotion) {
+        const stillFrame = Math.min(3.2, video.duration - 0.05);
+        video.currentTime = stillFrame;
+        setVanIsArriving(true);
+        return;
+      }
+
+      const scrollRange = Math.max(1, hero.offsetHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / scrollRange));
+      const rawTime = progress * Math.max(0, video.duration - 0.05);
+      const nextTime = Math.round(rawTime * 24) / 24;
+
+      if (nextTime !== lastTime) {
+        video.currentTime = nextTime;
+        lastTime = nextTime;
+      }
+      setVanIsArriving(nextTime >= 3);
+    };
+
+    const requestSync = () => {
+      if (!frame) frame = window.requestAnimationFrame(syncVideoToScroll);
+    };
+
+    video.pause();
+    video.addEventListener("loadedmetadata", syncVideoToScroll);
+    window.addEventListener("scroll", requestSync, { passive: true });
+    window.addEventListener("resize", requestSync);
+    syncVideoToScroll();
+
+    return () => {
+      video.removeEventListener("loadedmetadata", syncVideoToScroll);
+      window.removeEventListener("scroll", requestSync);
+      window.removeEventListener("resize", requestSync);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  useEffect(() => {
+    const hero = heroRef.current;
     const finalVideo = finalVideoRef.current;
     if (!hero || !finalVideo) return;
+    if (hero.classList.contains("hero-fullbleed-layout")) return;
 
     finalVideo.defaultPlaybackRate = 1.5;
     finalVideo.playbackRate = 1.5;
@@ -244,8 +293,8 @@ export default function Home() {
             <video ref={finalVideoRef} className="background-video final-video" muted playsInline preload="auto" width="1920" height="1080">
               <source src="/final.mp4" type="video/mp4" />
             </video>
-            <video className="background-video full-video" autoPlay muted playsInline preload="auto" width="1920" height="1080" onTimeUpdate={(event) => syncCopyToVan(event.currentTarget.currentTime)}>
-              <source src="/full.mp4" type="video/mp4" />
+            <video ref={fullVideoRef} className="background-video full-video" muted playsInline preload="auto" width="1920" height="1080">
+              <source src="/full-scroll.mp4" type="video/mp4" />
             </video>
             <div className="video-shade" />
             <div className="lightning-flash" aria-hidden="true" />

@@ -442,10 +442,13 @@ a {
 }
 
 .hero.hero-fullbleed-layout {
+  min-height: 185svh;
   padding: 0;
 }
 
 .hero-fullbleed-layout .hero-stage {
+  position: sticky;
+  top: 0;
   height: 100svh;
   margin: 0;
   clip-path: none;
@@ -3460,6 +3463,10 @@ h1 .accent {
 /* These rules intentionally live after the hero variants: the selected full-bleed
    variant must never override the mobile type scale or force horizontal overflow. */
 @media (max-width: 600px) {
+  .hero.hero-fullbleed-layout {
+    min-height: 170svh;
+  }
+
   .hero.hero-fullbleed-layout h1 {
     max-width: 100%;
     font-size: clamp(40px, 10.5vw, 47px);
