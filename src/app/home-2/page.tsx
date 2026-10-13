@@ -1,6 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
+import MobileNav from "../../components/MobileNav";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Homepage Concept",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/" },
+};
 
 const Arrow = () => (
   <svg aria-hidden="true" viewBox="0 0 24 24" className={styles.arrow}>
@@ -27,7 +35,8 @@ export default function SecondaryHome() {
             <a href="#process">Process</a>
             <a href="#about">About</a>
           </nav>
-          <a className={styles.compactCta} href="/quote">Free quote <Arrow /></a>
+          <Link className={styles.compactCta} href="/quote">Free quote <Arrow /></Link>
+          <MobileNav />
         </header>
 
         <div className={styles.heroCopy}>
@@ -35,7 +44,7 @@ export default function SecondaryHome() {
           <h1>Storms don&apos;t<br />schedule. <em>We do.</em></h1>
           <p>Home standby generators, installed before you need one.</p>
           <div className={styles.heroActions}>
-            <a className={styles.lightButton} href="/quote">Get a Free Quote <Arrow /></a>
+            <Link className={styles.lightButton} href="/quote">Get a Free Quote <Arrow /></Link>
             <a className={styles.phone} href="tel:+13054719010">(305) 471-9010</a>
           </div>
         </div>
@@ -47,7 +56,7 @@ export default function SecondaryHome() {
         <h2>Power out?<br /><em>Not here.</em></h2>
         <div className={styles.introBody}>
           <p>A standby generator starts on its own the moment the power drops. The A/C keeps running, the fridge stays cold and the Wi-Fi stays on, whether you&apos;re home or halfway around the world.</p>
-          <a className={styles.darkButton} href="/generators">How standby generators work <Arrow /></a>
+          <Link className={styles.darkButton} href="/generators">How standby generators work <Arrow /></Link>
         </div>
       </section>
 
@@ -98,7 +107,7 @@ export default function SecondaryHome() {
         <div>
           <span className={styles.label}>The crew</span>
           <h2>The crew that quotes it<br />is the crew that installs it.</h2>
-          <a className={styles.lightButton} href="/about">Meet the crew <Arrow /></a>
+          <Link className={styles.lightButton} href="/about">Meet the crew <Arrow /></Link>
         </div>
       </section>
 
@@ -131,7 +140,7 @@ export default function SecondaryHome() {
       <section className={styles.closing}>
         <span className={styles.label}>Ready when you are</span>
         <h2>Call us on a sunny day.<br />Thank yourself in a storm.</h2>
-        <a className={styles.darkButton} href="/quote">Get a Free Quote <Arrow /></a>
+        <Link className={styles.darkButton} href="/quote">Get a Free Quote <Arrow /></Link>
       </section>
 
       <footer className={styles.footer}>

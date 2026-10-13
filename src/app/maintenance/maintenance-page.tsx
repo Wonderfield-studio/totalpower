@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { BadgeDollarSign, BellRing, ChevronLeft, ChevronRight, CirclePlus, CloudLightning, Clock3, Wrench } from "lucide-react";
 import styles from "./page.module.css";
 import InteriorEffects from "../[slug]/interior-effects";
+import MobileNav from "../../components/MobileNav";
 
 const nav = [["Generators", "/generators"], ["Installation", "/installation"], ["Maintenance", "/maintenance"], ["Financing", "/financing"], ["Service Area", "/service-area"], ["About", "/about"], ["Builders", "/builders"]];
 const sizes = ["Up to 28kW", "30–48kW", "60–80kW", "100–150kW"];
@@ -85,6 +86,7 @@ export default function MaintenancePage({ fontClassName }: { fontClassName: stri
         <Link href="/builders">Builders</Link>
       </nav>
       <Link className="header-cta" href="/quote">Get a Free Quote <Arrow /></Link>
+      <MobileNav />
     </header>
 
     <section className={styles.hero}>

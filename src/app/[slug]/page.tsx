@@ -8,10 +8,24 @@ import styles from "./page.module.css";
 import InteriorEffects from "./interior-effects";
 import { FeatureIcon } from "./feature-icons";
 import ServiceAreaMap from "./service-area-map";
+import MobileNav from "../../components/MobileNav";
 
 const nav = [["Generators", "/generators"], ["Installation", "/installation"], ["Maintenance", "/maintenance"], ["Financing", "/financing"], ["Service Area", "/service-area"], ["About", "/about"], ["Builders", "/builders"]];
 const photos = ["/pics/image-1791572987018.png", "/pics/image-1791573187812.png", "/pics/image-1791573202813.png"];
 const manropeExtraBold = Manrope({ weight: "800", subsets: ["latin"], variable: "--font-manrope-extra-bold" });
+const seoTitles: Record<string, string> = {
+  generators: "Whole-Home Standby Generators in South Florida",
+  installation: "Standby Generator Installation in South Florida",
+  maintenance: "Generator Maintenance & Monitoring Plans",
+  "service-repair": "Generator Service & Repair in South Florida",
+  financing: "Home Generator Financing Options",
+  "service-area": "South Florida Generator Service Area",
+  about: "About Our Licensed Generator Installation Team",
+  reviews: "South Florida Generator Customer Reviews",
+  builders: "Generator Installation for Builders & Trade Partners",
+  faq: "Home Generator Frequently Asked Questions",
+  quote: "Free In-Home Generator Assessment",
+};
 
 function Arrow() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>; }
 
@@ -22,7 +36,7 @@ function HeroTitle({ title }: { title: string }) {
 }
 
 function Header() {
-  return <header className={styles.header} data-interior-header><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /><Image className={styles.logoColor} src="/logo.svg" width={689} height={240} alt="" aria-hidden="true" priority /></Link><nav>{nav.map(([label, href]) => <Link key={href} href={href}>{label === "Service Area" ? <><span className={styles.fullNavLabel}>Service Area</span><span className={styles.compactNavLabel}>Service</span></> : label}</Link>)}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link></header>;
+  return <header className={styles.header} data-interior-header><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /><Image className={styles.logoColor} src="/logo.svg" width={689} height={240} alt="" aria-hidden="true" priority /></Link><nav>{nav.map(([label, href]) => <Link key={href} href={href}>{label === "Service Area" ? <><span className={styles.fullNavLabel}>Service Area</span><span className={styles.compactNavLabel}>Service</span></> : label}</Link>)}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link><MobileNav /></header>;
 }
 
 function Footer() {
@@ -35,7 +49,17 @@ function QuoteForm() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params; const page = pages[slug];
-  return page ? { title: `${page.eyebrow} | Total Power Generators`, description: page.intro ?? page.title } : {};
+  if (!page) return { robots: { index: false, follow: false } };
+  const title = seoTitles[slug] ?? page.eyebrow;
+  const description = page.intro ?? page.title;
+  const url = `/${slug}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: { title, description, url, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "A South Florida home protected by a standby generator" }] },
+    twitter: { card: "summary_large_image", title, description, images: ["/og-image.png"] },
+  };
 }
 
 export default async function InteriorPage({ params }: { params: Promise<{ slug: string }> }) {

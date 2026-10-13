@@ -86,7 +86,7 @@
 @media (max-width: 800px) {
   .header { height: 76px; grid-template-columns: 1fr auto; padding-inline: 18px; }
   .header nav { display: none; }
-  .compactCta { padding: 10px 14px; }
+  .compactCta { display: none; }
   .heroCopy h1 { font-size: clamp(54px, 16vw, 82px); }
   .heroActions { flex-direction: column; gap: 16px; }
   .intro { grid-template-columns: 1fr; gap: 34px; }

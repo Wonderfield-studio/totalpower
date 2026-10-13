@@ -10,6 +10,7 @@ import installationImage from "../../public/pics/image-1791572987018.png";
 import reviewImage from "../../public/pics/image-1791573216228.png";
 import ctaSectionImage from "../../public/pics/cta-section.png";
 import { FeatureIcon } from "./[slug]/feature-icons";
+import MobileNav from "../components/MobileNav";
 
 const manropeExtraBold = Manrope({
   weight: "800",
@@ -232,6 +233,7 @@ export default function Home() {
           <Link href="/service-area">Service Area</Link><Link href="/about">About</Link><Link href="/builders">Builders</Link>
         </nav>
         <Link className="header-cta" href="/quote">Get a Free Quote <Arrow /></Link>
+        <MobileNav />
       </header>
       <section className={`hero${solidHero ? " hero-solid-layout" : ""}${heroVariant === "centered" ? " hero-centered-layout" : ""}${heroVariant === "fullbleed" ? " hero-fullbleed-layout" : ""}${heroVariant === "fullbleed" && vanIsArriving ? " van-is-arriving" : ""}`} ref={heroRef}>
         <div className="hero-stage">
@@ -263,7 +265,7 @@ export default function Home() {
             </h1>
             <p className="hero-subtitle"><RevealWords text="Home standby generators, installed before you need one." offset={4} /></p>
             <div className="action-row" id="quote">
-              <a className="primary-cta" href="/quote">Get a Free Quote <Arrow /></a>
+              <Link className="primary-cta" href="/quote">Get a Free Quote <Arrow /></Link>
               <a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a>
             </div>
             <div className="social-proof">
@@ -304,7 +306,7 @@ export default function Home() {
         <div className="intro-copy">
           <h2><RevealWords text="Power out?" /><br /><span className="intro-accent"><RevealWords text="Not here." accentLastPunctuation /></span></h2>
           <p><RevealWords text="A standby generator starts on its own the moment the power drops. The A/C keeps running, the fridge stays cold and the Wi-Fi stays on, whether you’re home or halfway around the world." /></p>
-          <a className="text-link intro-link" href="/generators">How standby generators work <Arrow /></a>
+          <Link className="text-link intro-link" href="/generators">How standby generators work <Arrow /></Link>
         </div>
       </section>
 
@@ -334,7 +336,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <a className="section-cta" href="/installation">See how installation works <Arrow /></a>
+        <Link className="section-cta" href="/installation">See how installation works <Arrow /></Link>
       </section>
 
       <section className="process-section" id="process">
@@ -358,7 +360,7 @@ export default function Home() {
             <div className="process-progress" role="progressbar" aria-label="Process slider progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(processProgress * 100)}><span style={{ transform: `scaleX(${processProgress})` }} /></div>
             <div><button type="button" onClick={() => moveProcess(-1)} aria-label="Previous process steps"><ChevronLeft /></button><button type="button" onClick={() => moveProcess(1)} aria-label="Next process steps"><ChevronRight /></button></div>
           </div>
-          <div className="dual-actions"><a className="dark-button" href="/quote">Get a Free Quote <Arrow /></a><a className="phone-link dark-phone" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
+          <div className="dual-actions"><Link className="dark-button" href="/quote">Get a Free Quote <Arrow /></Link><a className="phone-link dark-phone" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
         </div>
       </section>
 
@@ -439,7 +441,7 @@ export default function Home() {
               <span className="feature-suite-number">Financing</span>
               <h3>A better way<br />to get ready.</h3>
               <p>Turn a one-time investment into a monthly payment that fits your plans. Checking your options only takes a few minutes.</p>
-              <a href="#quote">See your monthly payment <Arrow /></a>
+              <Link href="/financing">See your monthly payment <Arrow /></Link>
             </div>
           </article>
         </div>
@@ -469,7 +471,7 @@ export default function Home() {
           <h2>Call us on a<br />sunny day.</h2>
           <h3 className="closing-response">Thank yourself<br />in a storm.</h3>
           <p>Permits and installs take time, and schedules fill fast once a storm is on the map. Book your assessment while the sky is clear.</p>
-          <div className="dual-actions light-actions"><a className="primary-cta" href="/quote">Get a Free Quote <Arrow /></a><a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
+          <div className="dual-actions light-actions"><Link className="primary-cta" href="/quote">Get a Free Quote <Arrow /></Link><a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div>
         </div>
       </section><div className="closing-person" aria-hidden="true"><Image src="/pics/cta.png" alt="" width={575} height={977} /></div></div>
 

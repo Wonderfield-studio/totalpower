@@ -2,17 +2,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Manrope } from "next/font/google";
+import type { Metadata } from "next";
 import styles from "../../[slug]/page.module.css";
 import InteriorEffects from "../../[slug]/interior-effects";
+import MobileNav from "../../../components/MobileNav";
 
 const cities: Record<string, string> = { miami: "Miami", "fort-lauderdale": "Fort Lauderdale", "boca-raton": "Boca Raton", "boynton-beach": "Boynton Beach" };
 const nav = [["Generators", "/generators"], ["Installation", "/installation"], ["Maintenance", "/maintenance"], ["Financing", "/financing"], ["Service Area", "/service-area"], ["About", "/about"], ["Builders", "/builders"]];
 const manropeExtraBold = Manrope({ weight: "800", subsets: ["latin"], variable: "--font-manrope-extra-bold" });
 
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const { city } = await params;
+  const name = cities[city];
+  if (!name) return { robots: { index: false, follow: false } };
+  const title = `Home Generator Installation in ${name}, FL`;
+  const description = `Whole-home standby generator sizing, permits, installation and maintenance in ${name} from one licensed South Florida team.`;
+  const url = `/service-area/${city}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: { title, description, url, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: `Standby generator service in ${name}, Florida` }] },
+    twitter: { card: "summary_large_image", title, description, images: ["/og-image.png"] },
+  };
+}
+
+export function generateStaticParams() { return Object.keys(cities).map((city) => ({ city })); }
+
 function Arrow() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>; }
 
 function Header() {
-  return <header className={styles.header} data-interior-header><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /><Image className={styles.logoColor} src="/logo.svg" width={689} height={240} alt="" aria-hidden="true" priority /></Link><nav>{nav.map(([label, href]) => <Link key={href} href={href}>{label === "Service Area" ? <><span className={styles.fullNavLabel}>Service Area</span><span className={styles.compactNavLabel}>Service</span></> : label}</Link>)}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link></header>;
+  return <header className={styles.header} data-interior-header><Link href="/" className={styles.logo}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" priority /><Image className={styles.logoColor} src="/logo.svg" width={689} height={240} alt="" aria-hidden="true" priority /></Link><nav>{nav.map(([label, href]) => <Link key={href} href={href}>{label === "Service Area" ? <><span className={styles.fullNavLabel}>Service Area</span><span className={styles.compactNavLabel}>Service</span></> : label}</Link>)}</nav><Link className={styles.headerCta} href="/quote">Get a Free Quote <Arrow /></Link><MobileNav /></header>;
 }
 
 function Footer() {

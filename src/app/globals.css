@@ -26,6 +26,73 @@ a {
   text-decoration: none;
 }
 
+.mobile-nav {
+  display: none;
+  position: relative;
+  justify-self: end;
+}
+
+.mobile-nav summary {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .32);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  list-style: none;
+}
+
+.mobile-nav summary::-webkit-details-marker { display: none; }
+
+.mobile-nav summary span,
+.mobile-nav summary span::before,
+.mobile-nav summary span::after {
+  width: 18px;
+  height: 2px;
+  display: block;
+  border-radius: 99px;
+  background: currentColor;
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+.mobile-nav summary span { position: relative; }
+.mobile-nav summary span::before,
+.mobile-nav summary span::after { content: ""; position: absolute; left: 0; }
+.mobile-nav summary span::before { top: -6px; }
+.mobile-nav summary span::after { top: 6px; }
+.mobile-nav[open] summary span { background: transparent; }
+.mobile-nav[open] summary span::before { top: 0; transform: rotate(45deg); }
+.mobile-nav[open] summary span::after { top: 0; transform: rotate(-45deg); }
+
+.mobile-nav nav {
+  position: fixed;
+  z-index: 120;
+  top: 82px;
+  right: 12px;
+  left: 12px;
+  padding: 14px;
+  display: grid;
+  gap: 2px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 20px;
+  background: #0b1924;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .4);
+  color: #fff;
+}
+
+.mobile-nav nav a {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.mobile-nav nav a:hover,
+.mobile-nav nav a:focus-visible { background: rgba(255, 255, 255, .08); }
+.mobile-nav nav .mobile-nav-cta { margin-top: 6px; background: var(--orange); text-align: center; }
+
 .site-shell {
   background: var(--cream);
 }
@@ -2624,6 +2691,8 @@ h1 .accent {
 }
 
 @media (max-width: 900px) {
+  .mobile-nav { display: block; }
+
   .site-header {
     top: 14px;
     left: 8px;
@@ -2645,6 +2714,8 @@ h1 .accent {
   .main-nav {
     display: none;
   }
+
+  .site-header .header-cta { display: none; }
 
   .hero-content {
     width: 100%;
@@ -3386,6 +3457,70 @@ h1 .accent {
   }
 }
 
+/* These rules intentionally live after the hero variants: the selected full-bleed
+   variant must never override the mobile type scale or force horizontal overflow. */
+@media (max-width: 600px) {
+  .hero.hero-fullbleed-layout h1 {
+    max-width: 100%;
+    font-size: clamp(40px, 10.5vw, 47px);
+    overflow-wrap: anywhere;
+  }
+
+  .hero-fullbleed-layout .hero-content {
+    max-width: calc(100vw - 60px);
+  }
+
+  .hero-fullbleed-layout .hero-title-line {
+    white-space: normal;
+  }
+
+  .hero-fullbleed-layout .hero-stat strong {
+    white-space: normal;
+  }
+
+  .site-header .mobile-nav {
+    position: absolute;
+    right: 18px;
+  }
+
+  /* Keep the mobile video full-width and bottom-aligned while filling its
+     dedicated media region above the stats. */
+  .hero-fullbleed-layout .video-background {
+    background: #04111e;
+  }
+
+  .hero-fullbleed-layout .full-video {
+    inset: auto 0 92px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center bottom;
+    opacity: 1;
+    transform: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .55) 48px, #000 104px, #000 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .55) 48px, #000 104px, #000 100%);
+  }
+
+  .hero-fullbleed-layout .video-shade {
+    display: none;
+  }
+
+  .hero-fullbleed-layout .hero-content {
+    justify-content: flex-start;
+    padding-top: 126px;
+  }
+
+  .hero-fullbleed-layout .hero-content,
+  .hero-fullbleed-layout .hero-footer {
+    z-index: 2;
+  }
+
+  .hero-fullbleed-layout .hero-footer {
+    background: #04111e;
+  }
+}
+
 /* Center the compact maintenance section within the site grid. */
 .plans-section .plans-copy {
   width: min(900px, 100%);
@@ -3462,13 +3597,14 @@ h1 .accent {
 
 @media (max-width: 600px) {
   .hero-fullbleed-layout .hero-footer {
-    right: 12px;
-    bottom: 10px;
-    left: 12px;
-    min-height: 82px;
-    padding: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    min-height: 92px;
+    padding: 0 12px;
     grid-template-columns: repeat(4, minmax(145px, 1fr));
     overflow-x: auto;
+    background: #04111e;
   }
 
   .hero-fullbleed-layout .hero-stat {
@@ -4027,6 +4163,7 @@ h1 .accent {
 /* Compact CTA banner with a shared warm gradient surround. */
 .closing-band {
   position: relative;
+  overflow: hidden;
   padding-block: clamp(110px, 13vw, 200px);
   background: linear-gradient(to top, #ffb9ba 0%, #ff5a1f 100%);
 }
@@ -4119,11 +4256,24 @@ h1 .accent {
   }
 
   .closing-person {
-    top: 36px;
-    right: -8px;
+    z-index: 2;
+    top: 76px;
+    right: 0;
     bottom: 76px;
-    width: 260px;
-    opacity: .58;
+    width: 58vw;
+    opacity: 1;
+    overflow: hidden;
+  }
+
+  .closing-person img {
+    right: -18%;
+    bottom: 0;
+    width: auto;
+    max-width: none;
+    height: 100%;
+    opacity: 1;
+    object-fit: contain;
+    object-position: right bottom;
   }
 }
 
