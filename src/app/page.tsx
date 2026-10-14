@@ -431,16 +431,17 @@ export default function Home() {
         </div>
         <div className="plan-cards">
           {[
-            { name: "Total Essentials", label: "Annual check-up", price: "$350/yr", response: "24-hour response", feature: "1 scheduled visit", features: ["Annual system inspection", "Battery and fluid check", "Transfer-switch test", "24-hour response"], Icon: Wrench },
-            { name: "Total Care", label: "Year-round confidence", price: "$625/yr", response: "12-hour response", feature: "2 scheduled visits", features: ["Two scheduled visits", "Everything in Essentials", "Priority scheduling", "12-hour response"], Icon: Clock3 },
-            { name: "Total Protect", label: "Complete protection", price: "$1,050/yr", response: "8-hour response", feature: "Monitoring included", features: ["Two scheduled visits", "Remote monitoring included", "Priority technical support", "8-hour response"], Icon: ShieldCheck, featured: true },
-          ].map(({ name, label, price, response, feature, features, Icon, featured }, index) => (
+            { name: "Total Essentials", label: "Annual check-up", price: "$350/yr", monthly: "$31/mo", response: "24-hour response", feature: "1 scheduled visit", features: ["Annual system inspection", "Battery and fluid check", "Transfer-switch test", "24-hour response"], Icon: Wrench },
+            { name: "Total Care", label: "Year-round confidence", price: "$625/yr", monthly: "$54/mo", response: "12-hour response", feature: "2 scheduled visits", features: ["Two scheduled visits", "Everything in Essentials", "Priority scheduling", "12-hour response"], Icon: Clock3 },
+            { name: "Total Protect", label: "Complete protection", price: "$1,050/yr", monthly: "$91/mo", response: "8-hour response", feature: "Monitoring included", features: ["Two scheduled visits", "Remote monitoring included", "Priority technical support", "8-hour response"], Icon: ShieldCheck, featured: true },
+          ].map(({ name, label, price, monthly, response, feature, features, Icon, featured }, index) => (
             <article className={featured ? "featured-plan" : ""} key={name}>
               <span className="plan-number">0{index + 1}</span>
               {featured && <span className="plan-recommended">Most complete</span>}
               <Icon className="plan-icon" aria-hidden="true" />
-              <div className="plan-card-copy"><span>{label}</span><h3>{name}</h3><div><b>{price}</b><small>{response} · {feature}</small></div></div>
-              <Link href="/maintenance" aria-label={`View ${name}`}>View plan <Arrow /></Link>
+              <div className="plan-card-copy"><span>{label}</span><h3>{name}</h3><div><small>Starting at</small><b>{price}</b><small>or from {monthly}<br />{response} · {feature}</small></div></div>
+              <Link href={`/quote?need=Maintenance&plan=${encodeURIComponent(`${name} · Up to 28kW · Annual`)}`} aria-label={`View ${name}`}>View plan <Arrow /></Link>
+              <Link className="plan-restrictions" href="/terms">Restrictions apply</Link>
               <div className="plan-features"><span>What&apos;s included</span><ul>{features.map((item) => <li key={item}>{item}</li>)}</ul></div>
             </article>
           ))}
@@ -511,7 +512,7 @@ export default function Home() {
             <div className="home-review-aside-copy"><strong className="home-review-score">4.9</strong><h2>Trusted by South Florida homeowners—and recommended neighbor to neighbor.</h2><div className="home-review-arrows"><button type="button" aria-label="Previous testimonial" onClick={() => moveReviews(-1)}><ChevronLeft /></button><button type="button" aria-label="Next testimonial" onClick={() => moveReviews(1)}><ChevronRight /></button></div></div>
           </div>
           <div className="home-review-rail" ref={reviewRailRef} onScroll={loopReviews}>
-            {[...testimonials, ...testimonials, ...testimonials].map(([quote, person], index) => <article key={`${person}-${index}`}><div><strong>5.0</strong><span aria-label="Five stars">★★★★★</span></div><blockquote>{quote}</blockquote><footer><Image src={`/avatars/avatar-${index % 3 + 1}.jpg`} alt="" width={52} height={52} /><p><b>{person}</b><small>Placeholder testimonial</small></p></footer></article>)}
+            {[...testimonials, ...testimonials, ...testimonials].map(([quote, person], index) => <article key={`${person}-${index}`}><div><strong>{[4.8, 4.9, 4.9, 5.0][index % 4].toFixed(1)}</strong><span aria-label="Five stars">★★★★★</span></div><blockquote>{quote}</blockquote><footer><Image src={`/avatars/avatar-${index % 3 + 1}.jpg`} alt="" width={52} height={52} /><p><b>{person}</b></p></footer></article>)}
           </div>
         </div>
       </section>
@@ -533,7 +534,7 @@ export default function Home() {
           <Link className="brand footer-brand" href="/" aria-label="Total Power Generators home"><Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} /></Link>
           <p>Total Power &amp; Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p>
         </div>
-        <div className="footer-column"><b>Explore</b><Link href="/generators">Generators</Link><Link href="/installation">Installation</Link><Link href="/maintenance">Maintenance</Link><Link href="/financing">Financing</Link><Link href="/service-area">Service Area</Link><Link href="/about">About</Link><Link href="/builders">Builders</Link><Link href="/faq">FAQ</Link></div>
+        <div className="footer-column"><b>Explore</b><Link href="/generators">Generators</Link><Link href="/installation">Installation</Link><Link href="/maintenance">Maintenance</Link><Link href="/financing">Financing</Link><Link href="/service-area">Service Area</Link><Link href="/about">About</Link><Link href="/builders">Builders</Link><Link href="/faq">FAQ</Link><Link href="/terms">Terms &amp; Conditions</Link></div>
         <div className="footer-column"><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:hello@totalpowergenerators.com">hello@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service &amp; Repair</Link></div>
         <small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power &amp; Gas Contractors</small>
       </footer>

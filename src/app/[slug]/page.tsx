@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Manrope } from "next/font/google";
 import { pages } from "./content";
 import styles from "./page.module.css";
@@ -9,6 +10,8 @@ import InteriorEffects from "./interior-effects";
 import { FeatureIcon } from "./feature-icons";
 import ServiceAreaMap from "./service-area-map";
 import MobileNav from "../../components/MobileNav";
+import QuoteForm from "./quote-form";
+import ServiceAreaChecker from "./service-area-checker";
 
 const nav = [["Generators", "/generators"], ["Installation", "/installation"], ["Maintenance", "/maintenance"], ["Financing", "/financing"], ["Service Area", "/service-area"], ["About", "/about"], ["Builders", "/builders"]];
 const photos = ["/pics/image-1791572987018.png", "/pics/image-1791573187812.png", "/pics/image-1791573202813.png"];
@@ -40,11 +43,7 @@ function Header({ activeSlug }: { activeSlug: string }) {
 }
 
 function Footer() {
-  return <footer className={styles.footer}><div className={styles.footerLead}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" /><p>Total Power & Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p></div><div><b>Explore</b>{nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}<Link href="/faq">FAQ</Link></div><div><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:hello@totalpowergenerators.com">hello@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service & Repair</Link></div><small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power & Gas Contractors</small></footer>;
-}
-
-function QuoteForm() {
-  return <section className={styles.formSection}><form><div className={styles.formGrid}><label>Name<input required name="name" /></label><label>Phone<input required type="tel" name="phone" /></label><label>Email<input required type="email" name="email" /></label><label>Home address<input required name="address" /></label><label>Fuel<select name="fuel" defaultValue=""><option value="" disabled>Select one</option><option>Natural gas</option><option>Propane</option><option>Not sure</option></select></label><label>I need<select name="need" defaultValue=""><option value="" disabled>Select one</option><option>New install</option><option>Maintenance</option><option>Service</option></select></label><label>Best time to reach you<input name="best-time" /></label><label>Who referred you? <span>(optional)</span><input name="referral" /></label></div><button type="submit">Request My Free Quote <Arrow /></button><p>Or call <a href="tel:+13054719010">(305) 471-9010</a> · <a href="mailto:hello@totalpowergenerators.com">Email our team</a></p></form></section>;
+  return <footer className={styles.footer}><div className={styles.footerLead}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" /><p>Total Power & Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p></div><div><b>Explore</b>{nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}<Link href="/faq">FAQ</Link><Link href="/terms">Terms &amp; Conditions</Link></div><div><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:hello@totalpowergenerators.com">hello@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service & Repair</Link></div><small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power & Gas Contractors</small></footer>;
 }
 
 function GeneratorContent() {
@@ -144,8 +143,8 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
   return <main className={`${styles.page} ${styles.secondaryPage} ${manropeExtraBold.variable} ${slug === "generators" ? styles.generatorPage : ""} ${slug === "service-area" ? styles.serviceAreaPage : ""} ${slug === "builders" ? styles.buildersPage : ""} ${slug === "quote" ? styles.quotePage : ""} ${slug === "financing" ? styles.financingPage : ""} ${slug === "about" ? styles.aboutPage : ""} ${slug === "installation" ? styles.installationPage : styles.standardPage}`}>
     <InteriorEffects />
     <Header activeSlug={slug} />
-    <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt={heroAlt} /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits.<br />One team handles it all.</> : page.intro}</p>}<div className={styles.actions}><Link href={slug === "quote" ? "#quote-form" : slug === "builders" ? "#builder-inquiry" : "/quote"}>{slug === "financing" ? <>Apply with <Image className={styles.partnerLogo} src="/synchronyX.png" width={524} height={116} alt="Synchrony" /></> : page.cta ?? "Get a Free Quote"} <Arrow /></Link><a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
-    {slug === "quote" && <div id="quote-form"><QuoteForm /></div>}
+    <section className={styles.hero}><Image data-parallax src={heroPhoto} fill priority sizes="100vw" alt={heroAlt} /><div className={styles.heroShade} /><div className={styles.heroCopy}><span>{page.eyebrow}</span><h1><HeroTitle title={page.title} /></h1>{page.intro && <p>{slug === "installation" ? <>Gas, electrical and permits.<br />One team handles it all.</> : page.intro}</p>}<div className={styles.actions}>{slug === "financing" ? <a href="https://etail.mysynchrony.com/eapply/eapply.action?client=Generac&uniqueId=287888F10090B2C3873347796F2DA7DE169BFA96C73A4429" target="_blank" rel="noopener noreferrer">See Your Monthly Payment <Arrow /></a> : <Link href={slug === "quote" ? "#quote-form" : slug === "builders" ? "#builder-inquiry" : "/quote"}>{page.cta ?? "Get a Free Quote"} <Arrow /></Link>}<a href="tel:+13054719010">Or call (305) 471-9010</a></div></div><div className={styles.proof}><span>Since 2009</span><span>Licensed gas + electrical</span><span>Generac PowerPro Elite Plus</span></div></section>
+    {slug === "quote" && <div id="quote-form"><Suspense fallback={<div className={styles.formSection}>Loading quote form…</div>}><QuoteForm className={styles.formSection} gridClassName={styles.formGrid} /></Suspense></div>}
     {slug === "generators" && <GeneratorContent />}
     {slug === "builders" && <BuilderContent />}
     {slug !== "generators" && slug !== "builders" && page.sections.map((section, index) => {
@@ -160,17 +159,7 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
             <h2>Tell us where<br />you live.</h2>
             <p>{section.body}</p>
           </div>
-          <form className={styles.serviceCheckCard} action="/quote">
-            <div className={styles.serviceCheckIcon} aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 44s14-13.1 14-26A14 14 0 1 0 10 18c0 12.9 14 26 14 26Z" /><circle cx="24" cy="18" r="5" /></svg></div>
-            <span>Check your address</span>
-            <h3>Are we in your neighborhood?</h3>
-            <label htmlFor="service-address">Home address</label>
-            <div className={styles.serviceCheckField}>
-              <input id="service-address" name="address" autoComplete="street-address" placeholder="Enter your street address" required />
-              <button type="submit" aria-label="Check address"><Arrow /></button>
-            </div>
-            <small>We’ll confirm coverage and help schedule your free assessment.</small>
-          </form>
+          <ServiceAreaChecker styles={styles} />
         </section>;
       }
 
@@ -179,7 +168,7 @@ export default async function InteriorPage({ params }: { params: Promise<{ slug:
           ["Customer story", "Clear communication from the first visit through final testing.", "Miami-Dade homeowner"],
           ["Customer story", "One local team coordinated the generator, gas, electrical and permits.", "Broward homeowner"],
           ["Customer story", "Recent homeowner references are available from our team.", "South Florida homeowner"],
-        ].map(([label, quote, person]) => <article key={person}><div><strong>5.0</strong><span aria-label="Five stars">★★★★★</span></div><blockquote>{quote}</blockquote><footer><i>{person.slice(0,1)}</i><p><b>{person}</b><small>{label}</small></p></footer></article>)}</div></section>;
+        ].map(([, quote, person], index) => <article key={person}><div><strong>{[4.8, 4.9, 5.0][index].toFixed(1)}</strong><span aria-label="Five stars">★★★★★</span></div><blockquote>{quote}</blockquote><footer><i>{person.slice(0,1)}</i><p><b>{person}</b></p></footer></article>)}</div></section>;
       }
 
       if (section.features && section.features.length > 0) {

@@ -654,3 +654,15 @@
 @media(max-width:650px) {
   .ctaBand { padding: 12px; }
 }
+.planGrid h3{min-height:72px}
+.planGrid article>a.restrictions{align-self:center;width:auto;margin-top:12px!important;padding:0!important;display:inline!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#6d777c!important;font-size:11px!important;font-weight:400!important;line-height:1.4!important;text-decoration:underline!important;clip-path:none!important}
+.planGrid .featured>a.restrictions{background:transparent!important;color:#a9b1b6!important}
+.billingControl{display:flex!important;align-items:flex-end;justify-content:flex-end;gap:16px}
+.billingControl .controlLabel{margin-bottom:15px}
+.billingControl .segmented{padding:5px;border-radius:999px;overflow:hidden}
+.billingControl .segmented button{min-height:44px;padding:10px 20px;border-width:0;border-radius:999px;clip-path:none}
+.sizeOptions{grid-column:1/-1;display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:10px}
+@media(max-width:650px){.billingControl{align-items:flex-start;justify-content:flex-start;flex-direction:column}.sizeOptions{grid-template-columns:1fr 1fr!important}}
+.kicker,.controlLabel,.cardLabel,.planGrid em,.monitorPlans article>span,.benefitDetail strong,.tableWrap thead th:first-child{font-weight:600}
+.alertFlow{grid-template-columns:auto auto;justify-content:center;margin-top:22px;padding:18px 0;clip-path:none;background:transparent;color:#fff;text-align:left}
+.alertFlow i{color:#fff}.alertFlow p,.alertFlow b{color:#fff}

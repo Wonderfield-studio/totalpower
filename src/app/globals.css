@@ -7297,6 +7297,7 @@ h1 .accent {
 }
 
 /* Minimal maintenance cards on the Turnkey section background. */
+.plan-restrictions { margin-top: 10px !important; padding: 0 !important; border: 0 !important; color: #69757b !important; font-size: 11px !important; text-decoration: underline !important; }
 .plans-section {
   padding: clamp(76px, 7vw, 112px) clamp(20px, 5vw, 84px);
   background: #0a1924;

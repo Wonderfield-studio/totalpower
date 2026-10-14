@@ -1111,10 +1111,7 @@
 .installationPage .processSection .itemGrid article:nth-child(n) {
   padding: clamp(38px,3.2vw,52px) 0;
 }
-.installationPage .processSection .itemGrid article > p {
-  max-width: none;
-  white-space: nowrap;
-}
+.installationPage .processSection .itemGrid article > p { max-width: none; white-space: normal; overflow-wrap: anywhere; }
 
 @media(max-width:1100px) {
   .installationPage .processSection .itemGrid article > p { white-space: normal; }

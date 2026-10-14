@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const origin = "https://totalpowergenerators.com";
-const mainRoutes = ["", "/generators", "/installation", "/maintenance", "/financing", "/service-area", "/about", "/builders", "/reviews", "/faq", "/service-repair", "/quote"];
+const mainRoutes = ["", "/generators", "/installation", "/maintenance", "/financing", "/service-area", "/about", "/builders", "/reviews", "/faq", "/service-repair", "/quote", "/terms"];
 const cityRoutes = ["/service-area/miami", "/service-area/fort-lauderdale", "/service-area/boca-raton", "/service-area/boynton-beach"];
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -18,7 +18,7 @@ const prices = [
 const plans = [
   { name: "Total Essentials", label: "The annual check-up", response: "24", features: ["1 scheduled visit per year", "Oil, filter, air filter & spark plug service", "Full inspection & battery test", "10% off parts & labor"] },
   { name: "Total Care", label: "Year-round confidence", response: "12", features: ["2 scheduled visits per year", "Everything in Essentials", "Coolant service", "Transfer switch & controller check", "15% off parts & labor"] },
-  { name: "Total Protect", label: "Complete peace of mind", response: "8", features: ["Everything in Total Care", "24/7 remote monitoring", "Dedicated pre-storm visit", "Free battery replacement", "Repairs covered up to $500", "20% off parts & labor"], featured: true },
+  { name: "Total Protect", label: "Complete peace of mind", response: "8", features: ["Everything in Total Care", "24/7 remote monitoring", "Dedicated pre-storm visit", "Free battery replacement*", "Repairs covered up to $500*", "20% off parts & labor"], featured: true },
 ];
 const comparison = [
   ["Scheduled visits", "1 / year", "2 / year", "2 / year"],
@@ -27,10 +27,10 @@ const comparison = [
   ["Full annual service", "✓", "✓", "✓"],
   ["Coolant service", "—", "✓", "✓"],
   ["Transfer switch & controller check", "—", "✓", "✓"],
-  ["Free battery replacement", "—", "—", "✓"],
+  ["Free battery replacement*", "—", "—", "✓"],
   ["24/7 remote monitoring", "Add-on", "Add-on", "Included"],
   ["Dedicated pre-storm visit", "Add-on", "Add-on", "Included"],
-  ["Repairs covered up to $500", "—", "—", "✓"],
+  ["Repairs covered up to $500*", "—", "—", "✓"],
   ["Parts & labor discount", "10%", "15%", "20%"],
 ];
 const benefits = [
@@ -97,9 +97,9 @@ export default function MaintenancePage({ fontClassName }: { fontClassName: stri
     </section>
 
     <section className={styles.pricing} id="plans" data-reveal><div className={styles.container}>
-      <div className={styles.sectionHead}><div><h2>Pick your size.<br />Pick your plan.</h2><p>Clear, published pricing. Know what you’ll pay upfront.</p></div><div><span className={styles.controlLabel}>Billing</span><div className={styles.segmented}><button aria-pressed={annual} onClick={() => setAnnual(true)}>Annual <small>· save ~8%</small></button><button aria-pressed={!annual} onClick={() => setAnnual(false)}>Monthly</button></div></div></div>
-      <div className={styles.sizes}><div><span className={styles.controlLabel}>Generator size</span><p>Prices update for your unit.</p></div><div>{sizes.map((label, i) => <button aria-pressed={size === i} onClick={() => setSize(i)} key={label}><b>{label}</b><small>from ${prices[0][i][annual ? 0 : 1].toLocaleString()}/{annual ? "yr" : "mo"}</small></button>)}</div></div>
-      <div className={styles.planGrid}>{plans.map((p, i) => <article className={p.featured ? styles.featured : ""} key={p.name}>{p.featured && <em>Most complete</em>}<p className={styles.cardLabel}>{p.label}</p><h3>{p.name}</h3><div className={styles.price}>{price(i)} <span>/{annual ? "yr" : "mo"}</span></div><p className={styles.alt}>{alt(i)} · {sizes[size]}</p><hr /><ul>{p.features.map(f => <li key={f}><Check /> <span>{f}</span></li>)}</ul><Link href="/quote">Choose {p.name.replace("Total ", "")} <Arrow /></Link></article>)}</div>
+      <div className={styles.sectionHead}><div><h2>Pick your size.<br />Pick your plan.</h2><p>Clear, published pricing. Know what you’ll pay upfront.</p></div></div>
+      <div className={styles.sizes}><div><span className={styles.controlLabel}>Generator size</span><p>Prices update for your unit.</p></div><div className={styles.billingControl}><span className={styles.controlLabel}>Billing</span><div className={styles.segmented}><button aria-pressed={annual} onClick={() => setAnnual(true)}>Annual <small>· save ~8%</small></button><button aria-pressed={!annual} onClick={() => setAnnual(false)}>Monthly</button></div></div><div className={styles.sizeOptions}>{sizes.map((label, i) => <button aria-pressed={size === i} onClick={() => setSize(i)} key={label}><b>{label}</b><small>from ${prices[0][i][annual ? 0 : 1].toLocaleString()}/{annual ? "yr" : "mo"}</small></button>)}</div></div>
+      <div className={styles.planGrid}>{plans.map((p, i) => <article className={p.featured ? styles.featured : ""} key={p.name}>{p.featured && <em>Most complete</em>}<p className={styles.cardLabel}>{p.label}</p><h3>{p.name}</h3><div className={styles.price}>{price(i)} <span>/{annual ? "yr" : "mo"}</span></div><p className={styles.alt}>{alt(i)} · {sizes[size]}</p><hr /><ul>{p.features.map(f => <li key={f}><Check /> <span>{f}</span></li>)}</ul><Link href={`/quote?need=Maintenance&plan=${encodeURIComponent(`${p.name} · ${sizes[size]} · ${annual ? "Annual" : "Monthly"}`)}`}>Choose {p.name.replace("Total ", "")} <Arrow /></Link><Link className={styles.restrictions} href="/terms">Restrictions apply</Link></article>)}</div>
     </div></section>
 
     <section className={styles.compare}><div className={styles.container}><div className={styles.sectionHead}><div><p className={styles.kicker}>Compare plans</p><h2>Every detail,<br />side by side.</h2></div><p>Showing prices for <b>{sizes[size]}</b> · billed {annual ? "annually" : "monthly"}</p></div><div className={styles.tableWrap}><table><thead><tr><th>Plan features</th>{plans.map((p,i)=><th key={p.name}>{p.name}<small>{price(i)}/{annual ? "yr" : "mo"}</small></th>)}</tr></thead><tbody>{comparison.map(row=><tr key={row[0]}>{row.map((cell,i)=><th scope={i === 0 ? "row" : undefined} key={i}>{cell}</th>)}</tr>)}</tbody></table></div></div></section>
@@ -114,6 +114,6 @@ export default function MaintenancePage({ fontClassName }: { fontClassName: stri
       <div className="closing-content"><span className="closing-rule" aria-hidden="true" /><h2>Ready every time.</h2><h3 className="closing-response">Not most of the time.</h3><p>We’ll answer your questions and help you choose the right maintenance plan for your home.</p><div className="dual-actions light-actions"><a className="primary-cta" href="#plans">Choose Your Plan <Arrow /></a><a className="phone-link" href="tel:+13054719010">Or call (305) 471-9010 <Arrow /></a></div></div>
     </section><div className="closing-person" aria-hidden="true"><Image src="/pics/cta.png" alt="" width={575} height={977} /></div></div>
 
-    <footer className="site-footer"><div className="footer-lead"><Link className="brand footer-brand" href="/" aria-label="Total Power Generators home"><Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} /></Link><p>Total Power &amp; Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p></div><div className="footer-column"><b>Explore</b>{nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}<Link href="/faq">FAQ</Link></div><div className="footer-column"><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:hello@totalpowergenerators.com">hello@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service &amp; Repair</Link></div><small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power &amp; Gas Contractors</small></footer>
+    <footer className="site-footer"><div className="footer-lead"><Link className="brand footer-brand" href="/" aria-label="Total Power Generators home"><Image className="brand-logo" src="/logo.svg" alt="Total Power Generators" width={689} height={240} /></Link><p>Total Power &amp; Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p></div><div className="footer-column"><b>Explore</b>{nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}<Link href="/faq">FAQ</Link><Link href="/terms">Terms &amp; Conditions</Link></div><div className="footer-column"><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:hello@totalpowergenerators.com">hello@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service &amp; Repair</Link></div><small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power &amp; Gas Contractors</small></footer>
   </main>;
 }
