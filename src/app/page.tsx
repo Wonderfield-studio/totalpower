@@ -50,8 +50,15 @@ export default function Home() {
   const [heroVariant, setHeroVariant] = useState<"cinematic" | "panel" | "centered" | "fullbleed">("fullbleed");
   const [isScrolled, setIsScrolled] = useState(false);
   const [vanIsArriving, setVanIsArriving] = useState(false);
+  const [showMobileHeroFallback, setShowMobileHeroFallback] = useState(false);
   const [processProgress, setProcessProgress] = useState(0);
   const solidHero = heroVariant === "panel";
+
+  const handleHeroVideoError = () => {
+    if (window.matchMedia("(max-width: 600px)").matches) {
+      setShowMobileHeroFallback(true);
+    }
+  };
 
   const moveReviews = (direction: -1 | 1) => {
     const rail = reviewRailRef.current;
@@ -293,9 +300,10 @@ export default function Home() {
             <video ref={finalVideoRef} className="background-video final-video" muted playsInline preload="auto" width="1920" height="1080">
               <source src="/final.mp4" type="video/mp4" />
             </video>
-            <video ref={fullVideoRef} className="background-video full-video" muted playsInline preload="auto" width="1920" height="1080">
-              <source src="/full-scroll.mp4" type="video/mp4" />
+            <video ref={fullVideoRef} className="background-video full-video" muted playsInline preload="auto" width="1920" height="1080" onError={handleHeroVideoError}>
+              <source src="/full-scroll.mp4" type="video/mp4" onError={handleHeroVideoError} />
             </video>
+            {showMobileHeroFallback && <Image className="mobile-video-fallback" src="/hero-video-last-frame-mobile.webp" alt="" width={1920} height={1080} priority />}
             <div className="video-shade" />
             <div className="lightning-flash" aria-hidden="true" />
           </div>
@@ -441,8 +449,8 @@ export default function Home() {
               <Icon className="plan-icon" aria-hidden="true" />
               <div className="plan-card-copy"><span>{label}</span><h3>{name}</h3><div><small>Starting at</small><b>{price}</b><small>or from {monthly}<br />{response} · {feature}</small></div></div>
               <Link href={`/quote?need=Maintenance&plan=${encodeURIComponent(`${name} · Up to 28kW · Annual`)}`} aria-label={`View ${name}`}>View plan <Arrow /></Link>
-              <Link className="plan-restrictions" href="/terms">Restrictions apply</Link>
               <div className="plan-features"><span>What&apos;s included</span><ul>{features.map((item) => <li key={item}>{item}</li>)}</ul></div>
+              <Link className="plan-restrictions" href="/terms">Restrictions apply</Link>
             </article>
           ))}
         </div>

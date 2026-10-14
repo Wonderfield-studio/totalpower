@@ -655,7 +655,7 @@
   .ctaBand { padding: 12px; }
 }
 .planGrid h3{min-height:72px}
-.planGrid article>a.restrictions{align-self:center;width:auto;margin-top:12px!important;padding:0!important;display:inline!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#6d777c!important;font-size:11px!important;font-weight:400!important;line-height:1.4!important;text-decoration:underline!important;clip-path:none!important}
+.planGrid article>a.restrictions{align-self:center;width:auto;margin-top:12px!important;padding:0!important;display:inline!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#6d777c!important;font-size:12px!important;font-style:italic;font-weight:400!important;line-height:1.4!important;text-decoration:underline!important;clip-path:none!important}
 .planGrid .featured>a.restrictions{background:transparent!important;color:#a9b1b6!important}
 .billingControl{display:flex!important;align-items:flex-end;justify-content:flex-end;gap:16px}
 .billingControl .controlLabel{margin-bottom:15px}

@@ -127,6 +127,9 @@ a {
 }
 
 .site-shell {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   background: var(--cream);
 }
 
@@ -181,6 +184,10 @@ a {
 
 .full-video {
   opacity: 0;
+}
+
+.mobile-video-fallback {
+  display: none;
 }
 
 .final-is-active .loop-video {
@@ -3534,7 +3541,7 @@ h1 .accent {
   }
 
   .hero-fullbleed-layout .full-video {
-    inset: auto 0 92px;
+    inset: auto 0 76px;
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
@@ -3542,6 +3549,19 @@ h1 .accent {
     object-position: center bottom;
     opacity: 1;
     transform: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .55) 48px, #000 104px, #000 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .55) 48px, #000 104px, #000 100%);
+  }
+
+  .hero-fullbleed-layout .mobile-video-fallback {
+    position: absolute;
+    inset: auto 0 76px;
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center bottom;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .55) 48px, #000 104px, #000 100%);
     mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .55) 48px, #000 104px, #000 100%);
   }
@@ -3644,20 +3664,38 @@ h1 .accent {
     right: 0;
     bottom: 0;
     left: 0;
-    min-height: 92px;
+    width: auto;
+    min-height: 76px;
+    margin: 0;
     padding: 0 12px;
-    grid-template-columns: repeat(4, minmax(145px, 1fr));
-    overflow-x: auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    overflow: hidden;
     background: #04111e;
   }
 
   .hero-fullbleed-layout .hero-stat {
-    min-height: 82px;
-    padding-bottom: 16px;
+    min-height: 68px;
+    padding: 4px 0 13px;
+    gap: 3px;
+  }
+
+  .hero-fullbleed-layout .hero-stat:nth-child(4) {
+    display: none;
+  }
+
+  .hero-fullbleed-layout .hero-stat strong {
+    font-size: 18px;
+    line-height: .95;
+  }
+
+  .hero-fullbleed-layout .hero-stat span {
+    font-size: 7px;
+    line-height: 1.2;
   }
 
   .hero-fullbleed-layout .hero-stat::after {
-    bottom: 4px;
+    bottom: 3px;
   }
 }
 
@@ -4096,6 +4134,9 @@ h1 .accent {
   letter-spacing: -.025em;
   text-transform: none;
 }
+.plans-section .plan-cards .plan-features,
+.plans-section .plan-cards .featured-plan .plan-features { margin-top: 22px; }
+.plans-section .plan-cards article>a.plan-restrictions { display: inline !important; }
 
 .turnkey-capability p,
 .turnkey-capability:hover p {
@@ -6206,6 +6247,32 @@ h1 .accent {
   }
 }
 
+/* Keep the maintenance-card disclaimer as plain footer text. */
+.site-shell .plans-section .plan-cards article>a.plan-restrictions,
+.site-shell .plans-section .plan-cards article>a.plan-restrictions:hover,
+.site-shell .plans-section .plan-cards .featured-plan>a.plan-restrictions,
+.site-shell .plans-section .plan-cards .featured-plan>a.plan-restrictions:hover {
+  align-self: center !important;
+  width: auto !important;
+  min-height: 0 !important;
+  margin: auto auto 0 !important;
+  padding: 18px 0 0 !important;
+  display: block !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #9aa1a4 !important;
+  clip-path: none !important;
+  font-size: 12px !important;
+  font-style: italic;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+  text-align: center !important;
+  text-decoration: underline !important;
+  text-transform: none !important;
+}
+
 /* Home maintenance-card CTAs stay pill-shaped after all card variants. */
 .site-shell .plans-section .plan-cards article>a {
   border-radius: 999px !important;
@@ -7298,6 +7365,28 @@ h1 .accent {
 
 /* Minimal maintenance cards on the Turnkey section background. */
 .plan-restrictions { margin-top: 10px !important; padding: 0 !important; border: 0 !important; color: #69757b !important; font-size: 11px !important; text-decoration: underline !important; }
+.plans-section .plan-cards article>a.plan-restrictions,
+.plans-section .plan-cards .featured-plan>a.plan-restrictions {
+  align-self: flex-start;
+  width: auto;
+  min-height: 0;
+  margin-top: auto !important;
+  padding: 18px 0 0 !important;
+  display: inline;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #9aa1a4 !important;
+  clip-path: none !important;
+  font-size: 9px !important;
+  font-style: italic;
+  font-weight: 400 !important;
+  line-height: 1.35;
+  letter-spacing: .01em;
+  text-decoration: none !important;
+  text-transform: none;
+}
 .plans-section {
   padding: clamp(76px, 7vw, 112px) clamp(20px, 5vw, 84px);
   background: #0a1924;
