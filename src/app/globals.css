@@ -157,7 +157,7 @@ a {
   position: absolute;
   z-index: -2;
   inset: 0;
-  background: #04111e;
+  background: #04111e url("/hero-final.webp") center bottom / cover no-repeat;
   overflow: hidden;
 }
 
@@ -7748,5 +7748,27 @@ h1 .accent {
     top: 50%;
     left: calc(100% + 36px);
     transform: translateY(-50%);
+  }
+}
+
+/* The final animation frame sits behind the video so slow or failed playback
+   never leaves the hero blank. */
+@media (max-width: 767px) {
+  .video-background {
+    background-image: url("/hero-final-mobile.webp");
+    background-position: center center;
+  }
+
+  .hero-fullbleed-layout .video-shade {
+    display: block;
+    background:
+      linear-gradient(180deg, rgba(4, 17, 30, .52) 0%, rgba(4, 17, 30, .2) 38%, rgba(4, 17, 30, .04) 62%, rgba(4, 17, 30, .12) 100%),
+      linear-gradient(90deg, rgba(4, 17, 30, .38) 0%, rgba(4, 17, 30, .14) 68%, transparent 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-background .background-video {
+    display: none;
   }
 }

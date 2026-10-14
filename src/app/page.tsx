@@ -50,15 +50,8 @@ export default function Home() {
   const [heroVariant, setHeroVariant] = useState<"cinematic" | "panel" | "centered" | "fullbleed">("fullbleed");
   const [isScrolled, setIsScrolled] = useState(false);
   const [vanIsArriving, setVanIsArriving] = useState(false);
-  const [showMobileHeroFallback, setShowMobileHeroFallback] = useState(false);
   const [processProgress, setProcessProgress] = useState(0);
   const solidHero = heroVariant === "panel";
-
-  const handleHeroVideoError = () => {
-    if (window.matchMedia("(max-width: 600px)").matches) {
-      setShowMobileHeroFallback(true);
-    }
-  };
 
   const moveReviews = (direction: -1 | 1) => {
     const rail = reviewRailRef.current;
@@ -294,16 +287,15 @@ export default function Home() {
       <section className={`hero${solidHero ? " hero-solid-layout" : ""}${heroVariant === "centered" ? " hero-centered-layout" : ""}${heroVariant === "fullbleed" ? " hero-fullbleed-layout" : ""}${heroVariant === "fullbleed" && vanIsArriving ? " van-is-arriving" : ""}`} ref={heroRef}>
         <div className="hero-stage">
           <div className="video-background" aria-hidden="true">
-            <video className="background-video loop-video" autoPlay loop muted playsInline preload="auto" width="1920" height="1080">
-              <source src="/loop.mp4" type="video/mp4" />
+            <video className="background-video loop-video" autoPlay loop muted playsInline preload="auto" poster="/hero-final.webp" width="1920" height="1080">
+              <source src="/loop.mp4" type="video/mp4" media="(prefers-reduced-motion: no-preference)" />
             </video>
-            <video ref={finalVideoRef} className="background-video final-video" muted playsInline preload="auto" width="1920" height="1080">
-              <source src="/final.mp4" type="video/mp4" />
+            <video ref={finalVideoRef} className="background-video final-video" autoPlay loop muted playsInline preload="auto" poster="/hero-final.webp" width="1920" height="1080">
+              <source src="/final.mp4" type="video/mp4" media="(prefers-reduced-motion: no-preference)" />
             </video>
-            <video ref={fullVideoRef} className="background-video full-video" muted playsInline preload="auto" width="1920" height="1080" onError={handleHeroVideoError}>
-              <source src="/full-scroll.mp4" type="video/mp4" onError={handleHeroVideoError} />
+            <video ref={fullVideoRef} className="background-video full-video" autoPlay loop muted playsInline preload="auto" poster="/hero-final.webp" width="1920" height="1080">
+              <source src="/full-scroll.mp4" type="video/mp4" media="(prefers-reduced-motion: no-preference)" />
             </video>
-            {showMobileHeroFallback && <Image className="mobile-video-fallback" src="/hero-video-last-frame-mobile.webp" alt="" width={1920} height={1080} priority />}
             <div className="video-shade" />
             <div className="lightning-flash" aria-hidden="true" />
           </div>
