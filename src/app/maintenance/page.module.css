@@ -666,3 +666,23 @@
 .kicker,.controlLabel,.cardLabel,.planGrid em,.monitorPlans article>span,.benefitDetail strong,.tableWrap thead th:first-child{font-weight:600}
 .alertFlow{grid-template-columns:auto auto;justify-content:center;margin-top:22px;padding:18px 0;clip-path:none;background:transparent;color:#fff;text-align:left}
 .alertFlow i{color:#fff}.alertFlow p,.alertFlow b{color:#fff}
+
+/* Keep plan selection distinct from the featured product badge. */
+.pricing,.compare { scroll-margin-top: 108px; }
+.planGrid article { min-width: 0; }
+.planGrid .selectedPlan { box-shadow: inset 0 0 0 3px var(--orange); }
+.planSelect { align-self: flex-start; min-height: 44px; margin: 0 0 20px; padding: 10px 12px; border: 1px solid currentColor; background: transparent; color: inherit; font: inherit; font-size: 13px; cursor: pointer; }
+.planSelect[aria-pressed="true"] { border-color: var(--orange); background: var(--orange); color: #061620; font-weight: 700; }
+.serviceLevel { margin: 18px 0 26px; padding: 18px 14px; background: #eae7dd; }
+.serviceLevel h4 { margin: 0 0 14px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+.serviceLevel dl { margin: 0; font-size: 13px; line-height: 1.5; }
+.serviceLevel dl>div { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: start; gap: 12px; margin-top: 10px; }
+.serviceLevel dt { color: #53616a; }
+.serviceLevel dd { margin: 0; font-weight: 700; text-align: right; }
+.featured .serviceLevel { background: #162a36; }
+.featured .serviceLevel dt { color: #c4cdd2; }
+.serviceLevel .waived { padding: 2px 8px; background: var(--orange); color: #061620; }
+.tableWrap .feeRow th { background: #fff0e8; }
+.tableWrap .feeRow th:last-child { color: #a93209; }
+.page :is(button,a,[tabindex]):focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+@media(min-width:1001px) and (max-width:1200px) { .planGrid article { padding-inline: 20px; } .planGrid h3 { font-size: 28px; } .price { font-size: 46px; } .serviceLevel dl>div { grid-template-columns: 1fr; gap: 2px; } .serviceLevel dd { text-align: left; } }

@@ -1,20 +1,19 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useState } from "react";
 
-const plans = ["Total Essentials", "Total Care", "Total Protect"];
-const sizes = ["Up to 28kW", "30–48kW", "60–80kW", "100–150kW"];
-const billing = ["Annual", "Monthly"];
+import { quotePlanOptions } from "@/lib/maintenance";
 
 export default function QuoteForm({ className, gridClassName }: { className: string; gridClassName: string }) {
   const params = useSearchParams();
-  const plan = params.get("plan") ?? "";
+  const requestedPlan = params.get("plan") ?? "";
+  const plan = quotePlanOptions.includes(requestedPlan) ? requestedPlan : "";
   const initialNeed = params.get("need") ?? "";
   const [need, setNeed] = useState(initialNeed);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [message, setMessage] = useState("");
-  const planOptions = useMemo(() => Array.from(new Set([plan, ...plans.flatMap(name => sizes.flatMap(size => billing.map(cycle => `${name} · ${size} · ${cycle}`)))]).values()).filter(Boolean), [plan]);
+  const planOptions = quotePlanOptions;
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); const form = event.currentTarget; setStatus("sending"); setMessage("");

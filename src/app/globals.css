@@ -7772,3 +7772,11 @@ h1 .accent {
     display: none;
   }
 }
+
+.plans-section .plan-service { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; font-size: 12px; line-height: 1.5; }
+.plans-section .plan-service span { padding: 4px 7px; background: #e6e2d7; }
+.plans-section .plan-service strong { padding: 4px 7px; background: #ffe3d4; color: #9c3009; font-weight: 600; }
+.plans-section .plan-compare-link { grid-column: 1 / -1; margin-top: 32px; text-align: center; }
+.plans-section .plan-compare-link a { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px; padding: 12px 20px; border: 1px solid #52616a; border-radius: 999px; color: #f4f2eb; }
+.plans-section .plan-compare-link p { color: #aeb9c0; font-size: 12px; line-height: 1.5; }
+.plans-section a:focus-visible { outline: 3px solid #ff5a1f; outline-offset: 4px; }

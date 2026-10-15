@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -41,4 +42,16 @@ test('provider rejections, malformed responses and network errors are not report
     assert.equal((await POST(request('New install'))).status, 502);
     mock.mock.restore();
   }
+});
+
+test('maintenance configuration reaches the existing service recipient unchanged', async t => {
+  const plan = 'Total Care · 60–80kW · Monthly';
+  let delivered;
+  t.mock.method(global, 'fetch', async (url, options) => {
+    delivered = { url, ...JSON.parse(options.body) };
+    return Response.json({ success: true });
+  });
+  assert.equal((await POST(request('Maintenance', { plan }))).status, 200);
+  assert.equal(delivered.plan, plan);
+  assert.equal(delivered.url, 'https://formsubmit.co/ajax/service@totalpowergenerators.com');
 });

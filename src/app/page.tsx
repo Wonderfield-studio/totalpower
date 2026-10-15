@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { plans, prices } from "@/lib/maintenance";
 import Image from "next/image";
 import Link from "next/link";
 import { Manrope } from "next/font/google";
@@ -430,22 +431,22 @@ export default function Home() {
           <div className="plans-visual-shade" />
         </div>
         <div className="plan-cards">
-          {[
-            { name: "Total Essentials", label: "Annual check-up", price: "$350/yr", monthly: "$31/mo", response: "24-hour response", feature: "1 scheduled visit", features: ["Annual system inspection", "Battery and fluid check", "Transfer-switch test", "24-hour response"], Icon: Wrench },
-            { name: "Total Care", label: "Year-round confidence", price: "$625/yr", monthly: "$54/mo", response: "12-hour response", feature: "2 scheduled visits", features: ["Two scheduled visits", "Everything in Essentials", "Priority scheduling", "12-hour response"], Icon: Clock3 },
-            { name: "Total Protect", label: "Complete protection", price: "$1,050/yr", monthly: "$91/mo", response: "8-hour response", feature: "Monitoring included", features: ["Two scheduled visits", "Remote monitoring included", "Priority technical support", "8-hour response"], Icon: ShieldCheck, featured: true },
-          ].map(({ name, label, price, monthly, response, feature, features, Icon, featured }, index) => (
+          {plans.map(({ id, name, label, response, priority, features, featured }, index) => {
+            const Icon = [Wrench, Clock3, ShieldCheck][index];
+            return (
             <article className={featured ? "featured-plan" : ""} key={name}>
               <span className="plan-number">0{index + 1}</span>
               {featured && <span className="plan-recommended">Most complete</span>}
               <Icon className="plan-icon" aria-hidden="true" />
-              <div className="plan-card-copy"><span>{label}</span><h3>{name}</h3><div><small>Starting at</small><b>{price}</b><small>or from {monthly}<br />{response} · {feature}</small></div></div>
-              <Link href={`/quote?need=Maintenance&plan=${encodeURIComponent(`${name} · Up to 28kW · Annual`)}`} aria-label={`View ${name}`}>View plan <Arrow /></Link>
+              <div className="plan-card-copy"><span>{label}</span><h3>{name}</h3><div><small>Starting at</small><b>${prices[index][0][0].toLocaleString("en-US")}/yr</b><small>or from ${prices[index][0][1]}/mo</small></div></div>
+              <div className="plan-service"><span>{response}-hr response</span><span>Service priority: {priority}</span>{featured && <strong>After-hours emergency service charge waived</strong>}</div>
+              <Link href={`/maintenance?plan=${id}#plans`} aria-label={`See pricing & details for ${name}`}>See Pricing &amp; Details <Arrow /></Link>
               <div className="plan-features"><span>What&apos;s included</span><ul>{features.map((item) => <li key={item}>{item}</li>)}</ul></div>
               <Link className="plan-restrictions" href="/terms">Restrictions apply</Link>
             </article>
-          ))}
+          ); })}
         </div>
+        <div className="plan-compare-link"><Link href="/maintenance#compare">Compare all three plans side by side <Arrow /></Link><p>Prices shown for generators up to 28kW. Pick your size on the next page.</p></div>
       </section>
 
       <section className="crew-mosaic-section" aria-label="The crew, monitoring, and financing">

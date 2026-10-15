@@ -71,7 +71,7 @@ function GeneratorContent() {
 
     <section data-reveal className={`${styles.generatorBrands} ${styles.generatorSection}`}>
       <div className={styles.generatorSectionHead}><span>Equipment</span><h2>The right generator.<br /><em>Not just the biggest one.</em></h2><p>We install and service trusted standby systems from Generac and Kohler. As a Generac PowerPro Elite Plus Dealer with factory-trained technicians, we match the equipment to your home, fuel supply and budget.</p></div>
-      <div className={styles.brandProof}><div><strong>Generac</strong><span>PowerPro Elite Plus Dealer</span></div><div><strong>Kohler</strong><span>Installed and serviced locally</span></div><div><strong>Briggs &amp; Stratton</strong><span>Reliable standby power systems</span></div></div>
+      <div className={styles.brandProof}><div><strong>Generac</strong><span>PowerPro Elite Plus Dealer</span></div><div><strong>Kohler</strong><span>Installed and serviced locally</span></div></div>
     </section>
   </>;
 }

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import MaintenancePage from "./maintenance-page";
@@ -22,5 +23,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <MaintenancePage fontClassName={manropeExtraBold.variable} />;
+  return <Suspense><MaintenancePage fontClassName={manropeExtraBold.variable} /></Suspense>;
 }
