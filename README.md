@@ -36,24 +36,30 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Form email routing
 
-The quote form routes new installation, sales, estimate, and quote requests to
-`power@totalpowergenerators.com`, maintenance and service/repair requests to
-`service@totalpowergenerators.com`, and general inquiries to
-`Contact@totalpowergenerators.com`. Public contact links use the general address.
+Quote and builder forms submit through `/api/quote` to FormSubmit. No Resend
+account, API key, SMTP credentials, or Vercel email environment variables are
+required. Recipients are fixed on the server:
 
-The hosting environment can override these defaults. When deploying, update or
-remove old overrides:
+- New installation and builder inquiries: power@totalpowergenerators.com
+- Maintenance and service/repair: service@totalpowergenerators.com
+- General inquiries: contact@totalpowergenerators.com
 
-```dotenv
-SALES_EMAIL=power@totalpowergenerators.com
-SERVICE_EMAIL=service@totalpowergenerators.com
-HELLO_EMAIL=Contact@totalpowergenerators.com
-```
+### Required activation before launch
 
-`HELLO_EMAIL` remains the configuration key for general inquiries. Email delivery
-also requires `RESEND_API_KEY` and a verified sender in `QUOTE_FROM_EMAIL`. Deploy
-the updated code and environment settings to apply the changes to the live site;
-no repository or ownership transfer is needed.
+1. Deploy this code to Vercel.
+2. Submit a clearly labeled setup inquiry for each of the three destinations
+   (New install, Maintenance, General / other).
+3. Have each inbox owner click the activation link sent by FormSubmit. Check spam
+   if necessary. This is required before that inbox can receive submissions.
+4. Submit another test for each destination and a builder inquiry, and confirm
+   receipt in the intended inbox. An API acceptance response alone is not proof
+   of inbox delivery.
 
-The separate builder inquiry form currently has no submission handler and does
-not send email.
+Visitors stay on the website. Provider failures display an error and preserve
+their input for retry. FormSubmit processes submission contents and retains
+submissions for 30 days per its documentation.
+
+Documentation: https://formsubmit.co/ and https://formsubmit.co/documentation
+
+Legacy RESEND_API_KEY, QUOTE_FROM_EMAIL, SALES_EMAIL, SERVICE_EMAIL, and HELLO_EMAIL
+variables are no longer used and can be removed from Vercel.

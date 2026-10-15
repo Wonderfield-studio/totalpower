@@ -56,7 +56,7 @@ const localBusinessSchema = {
   logo: "https://totalpowergenerators.com/logo.svg",
   image: "https://totalpowergenerators.com/og-image.png",
   telephone: "+1-305-471-9010",
-  email: "Contact@totalpowergenerators.com",
+  email: "contact@totalpowergenerators.com",
   foundingDate: "2009",
   address: {
     "@type": "PostalAddress",

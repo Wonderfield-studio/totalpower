@@ -11,6 +11,7 @@ import { FeatureIcon } from "./feature-icons";
 import ServiceAreaMap from "./service-area-map";
 import MobileNav from "../../components/MobileNav";
 import QuoteForm from "./quote-form";
+import BuilderForm from "./builder-form";
 import ServiceAreaChecker from "./service-area-checker";
 
 const nav = [["Generators", "/generators"], ["Installation", "/installation"], ["Maintenance", "/maintenance"], ["Financing", "/financing"], ["Service Area", "/service-area"], ["About", "/about"], ["Builders", "/builders"]];
@@ -43,7 +44,7 @@ function Header({ activeSlug }: { activeSlug: string }) {
 }
 
 function Footer() {
-  return <footer className={styles.footer}><div className={styles.footerLead}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" /><p>Total Power & Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p></div><div><b>Explore</b>{nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}<Link href="/faq">FAQ</Link><Link href="/terms">Terms &amp; Conditions</Link></div><div><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:Contact@totalpowergenerators.com">Contact@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service & Repair</Link></div><small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power & Gas Contractors</small></footer>;
+  return <footer className={styles.footer}><div className={styles.footerLead}><Image src="/logo.svg" width={689} height={240} alt="Total Power Generators" /><p>Total Power & Gas Contractors. Home generators, installed and maintained by one local crew since 2009.</p></div><div><b>Explore</b>{nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}<Link href="/faq">FAQ</Link><Link href="/terms">Terms &amp; Conditions</Link></div><div><b>Contact</b><a href="tel:+13054719010">(305) 471-9010</a><a href="mailto:contact@totalpowergenerators.com">contact@totalpowergenerators.com</a><span>4794 SW 75th Ave<br />Miami, FL 33155</span><Link href="/service-repair">Service & Repair</Link></div><small>Generac PowerPro Elite Plus Dealer · © 2026 Total Power & Gas Contractors</small></footer>;
 }
 
 function GeneratorContent() {
@@ -107,7 +108,7 @@ function BuilderContent() {
         <p>Share the basics and our builder team will follow up to talk plans, pricing and schedule.</p>
         <a href="tel:+13054719010">Prefer to call? <strong>(305) 471-9010</strong></a>
       </div>
-      <form className={styles.builderForm}>
+      <BuilderForm className={styles.builderForm}>
         <label>Full name<input required name="name" autoComplete="name" /></label>
         <label>Company<input required name="company" autoComplete="organization" /></label>
         <label>Email<input required type="email" name="email" autoComplete="email" /></label>
@@ -115,8 +116,7 @@ function BuilderContent() {
         <label>Project location<input name="location" autoComplete="street-address" /></label>
         <label>Homes or lots<input name="project-size" inputMode="numeric" /></label>
         <label className={styles.builderFormWide}>Project notes <span>(optional)</span><textarea name="notes" rows={4} placeholder="Timeline, plan stage or anything else we should know" /></label>
-        <button type="submit">Talk to Our Builder Team <Arrow /></button>
-      </form>
+        </BuilderForm>
     </section>
   </>;
 }
