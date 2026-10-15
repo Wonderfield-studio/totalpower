@@ -43,6 +43,30 @@ export default function MaintenancePage({ fontClassName }: { fontClassName: stri
   const alt = (plan: number) => annual ? `or $${prices[plan][size][1]}/mo billed monthly` : `or $${prices[plan][size][0].toLocaleString()}/yr paid annually`;
 
   useEffect(() => {
+    // This client-rendered section may mount after Next's initial hash scroll.
+    // Wait for layout, then honor the anchor without a smooth-scroll animation.
+    let frame = 0;
+    let cancelled = false;
+    const scrollToHash = () => {
+      if (window.location.hash !== "#plans" && window.location.hash !== "#compare") return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => {
+          document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ behavior: "instant", block: "start" });
+        });
+      });
+    };
+    scrollToHash();
+    document.fonts.ready.then(() => { if (!cancelled) scrollToHash(); });
+    window.addEventListener("hashchange", scrollToHash);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", scrollToHash);
+    };
+  }, []);
+
+  useEffect(() => {
     const onScroll = () => {
       setIsScrolled(window.scrollY > 24);
     };

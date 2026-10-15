@@ -440,13 +440,15 @@ export default function Home() {
               <Icon className="plan-icon" aria-hidden="true" />
               <div className="plan-card-copy"><span>{label}</span><h3>{name}</h3><div><small>Starting at</small><b>${prices[index][0][0].toLocaleString("en-US")}/yr</b><small>or from ${prices[index][0][1]}/mo</small></div></div>
               <div className="plan-service"><span>{response}-hr response</span><span>Service priority: {priority}</span>{featured && <strong>After-hours emergency service charge waived</strong>}</div>
-              <Link href={`/maintenance?plan=${id}#plans`} aria-label={`See pricing & details for ${name}`}>See Pricing &amp; Details <Arrow /></Link>
+              <a href={`/maintenance?plan=${id}#plans`} aria-label={`See pricing & details for ${name}`}>See Pricing &amp; Details <Arrow /></a>
               <div className="plan-features"><span>What&apos;s included</span><ul>{features.map((item) => <li key={item}>{item}</li>)}</ul></div>
               <Link className="plan-restrictions" href="/terms">Restrictions apply</Link>
             </article>
           ); })}
         </div>
-        <div className="plan-compare-link"><Link href="/maintenance#compare">Compare all three plans side by side <Arrow /></Link><p>Prices shown for generators up to 28kW. Pick your size on the next page.</p></div>
+        {/* Full document navigation ensures the destination mounts before its anchor is restored. */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+        <div className="plan-compare-link"><a href="/maintenance#compare">Compare all three plans side by side <Arrow /></a><p>Prices shown for generators up to 28kW. Pick your size on the next page.</p></div>
       </section>
 
       <section className="crew-mosaic-section" aria-label="The crew, monitoring, and financing">

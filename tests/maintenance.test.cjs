@@ -28,3 +28,11 @@ test('missing, malformed and unknown query values fall back safely', () => {
     assert.deepEqual(readConfiguration(new URLSearchParams(query)), { selected: null, size: 0, annual: true });
   }
 });
+
+
+test('confirmed after-hours policy is consistent in cards and comparison without fee amounts', () => {
+  const { plans, comparison } = data.exports;
+  assert.deepEqual(plans.map(plan => plan.afterHours), ['Applies', 'Applies', 'Waived']);
+  assert.deepEqual(comparison.find(row => row[0] === 'After-hours emergency service charge'),
+    ['After-hours emergency service charge', 'Applies', 'Applies', 'Waived']);
+});
