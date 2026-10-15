@@ -33,3 +33,27 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # totalpower
+
+## Form email routing
+
+The quote form routes new installation, sales, estimate, and quote requests to
+`power@totalpowergenerators.com`, maintenance and service/repair requests to
+`service@totalpowergenerators.com`, and general inquiries to
+`Contact@totalpowergenerators.com`. Public contact links use the general address.
+
+The hosting environment can override these defaults. When deploying, update or
+remove old overrides:
+
+```dotenv
+SALES_EMAIL=power@totalpowergenerators.com
+SERVICE_EMAIL=service@totalpowergenerators.com
+HELLO_EMAIL=Contact@totalpowergenerators.com
+```
+
+`HELLO_EMAIL` remains the configuration key for general inquiries. Email delivery
+also requires `RESEND_API_KEY` and a verified sender in `QUOTE_FROM_EMAIL`. Deploy
+the updated code and environment settings to apply the changes to the live site;
+no repository or ownership transfer is needed.
+
+The separate builder inquiry form currently has no submission handler and does
+not send email.

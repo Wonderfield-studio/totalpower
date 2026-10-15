@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 
 const recipients: Record<string, string> = {
-  "New install": process.env.SALES_EMAIL ?? "sales@totalpowergenerators.com",
+  "New install": process.env.SALES_EMAIL ?? "power@totalpowergenerators.com",
   Maintenance: process.env.SERVICE_EMAIL ?? "service@totalpowergenerators.com",
   "Service or repair": process.env.SERVICE_EMAIL ?? "service@totalpowergenerators.com",
-  "General / other": process.env.HELLO_EMAIL ?? "hello@totalpowergenerators.com",
+  "General / other": process.env.HELLO_EMAIL ?? "Contact@totalpowergenerators.com",
 };
 
 const escapeHtml = (value: string) => value.replace(/[&<>'"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character] ?? character);

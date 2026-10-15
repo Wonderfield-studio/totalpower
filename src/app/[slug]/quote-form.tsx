@@ -14,7 +14,7 @@ export default function QuoteForm({ className, gridClassName }: { className: str
   const [need, setNeed] = useState(initialNeed);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [message, setMessage] = useState("");
-  const recipient = need === "New install" ? "sales@totalpowergenerators.com" : need === "Maintenance" || need === "Service or repair" ? "service@totalpowergenerators.com" : "hello@totalpowergenerators.com";
+  const recipient = need === "New install" ? "power@totalpowergenerators.com" : need === "Maintenance" || need === "Service or repair" ? "service@totalpowergenerators.com" : "Contact@totalpowergenerators.com";
   const planOptions = useMemo(() => Array.from(new Set([plan, ...plans.flatMap(name => sizes.flatMap(size => billing.map(cycle => `${name} · ${size} · ${cycle}`)))]).values()).filter(Boolean), [plan]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -37,5 +37,5 @@ export default function QuoteForm({ className, gridClassName }: { className: str
     {plan && <label>Plan<select name="plan" defaultValue={plan}>{planOptions.map(option => <option key={option}>{option}</option>)}</select></label>}
     <label>Best time to reach you<input name="best-time" /></label>
     <label>Who referred you? <span>(optional)</span><input name="referral" /></label>
-  </div><button type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Request My Free Quote →"}</button>{message && <p role="status">{message}</p>}<p>Requests are routed to the right team based on what you need. Or call <a href="tel:+13054719010">(305) 471-9010</a> · <a href="mailto:hello@totalpowergenerators.com">Email our team</a></p></form></section>;
+  </div><button type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Request My Free Quote →"}</button>{message && <p role="status">{message}</p>}<p>Requests are routed to the right team based on what you need. Or call <a href="tel:+13054719010">(305) 471-9010</a> · <a href="mailto:Contact@totalpowergenerators.com">Email our team</a></p></form></section>;
 }
